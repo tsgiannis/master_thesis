@@ -5,8 +5,11 @@ from flask import Flask, flash, redirect, render_template, \
      request, url_for
 
 app = Flask(__name__)
-
-@app.route("/templates/javascript_selected_table,html", methods=["post"])
+@app.route('/')
+def index():
+    return render_template(
+        'javascript_selected_table.html')
+@app.route("/print", methods = ["post"])
 def printer():
     data = request.get_json()
     print(data)
