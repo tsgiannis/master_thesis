@@ -1,0 +1,8 @@
+ Dataset (drop down: CLEFIP-0.54M (που να έχει και link μαζι με το name https://github.com/ekamater/CLEFIP-0.54M), USPTO-2Μ ( που να έχει και link μαζι με το name https://github.com/JasonHoou/USPTO-2M), WIPO)
+-Section (drop down: αν επιλέξει CLEFIP 0.54, Title, Abstract, Description, Claims, Applicants, Inventors, αν επιλέξει USPTO, Title, Abstract, Concatenated Title and Abstract αν επιλέξει WIPO, Title, Abstract, Description, Claims)
+-Language Model (drop down: FastText (300-D) (που να έχει και link μαζι με το name https://fasttext.cc/), Risch and Krestel (300-D) (που να έχει και link μαζι με το name https://hpi.de/naumann/projects/web-science/paar-patent-analysis-and-retrieval/patent-classification.html)
+-Deep Learning classifier (LSTM, GRU, Bi-LSTM, Bi-GRU)
+-Ensemble modeling (drop down: activated, disactivated),  το disactivated θα είναι preselected, στην περίπτωση του activated θα έχει και περισσότερα πράγματα, θα τα δούμε μετά
+-Single/Multi label: (drop down: single label - main classification code, multi label - all ipcr codes)
+-Structure considered: (drop down: flat, hierarchy) - μονο το flat θα είναι activated και και preselected
+- IPC 5+ level hierarchy: Section level (1st), Class level (2nd), Subclass (3r ), Group level (4th), Subgroup level (5th) στην περίπτωση μας μόνο το 3rd θα είναι activated και preselected

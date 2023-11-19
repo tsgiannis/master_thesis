@@ -7,13 +7,25 @@ from apps.home import blueprint
 from flask import render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
+from ..main_code import *
+from ..utilities import *
 
 
 @blueprint.route('/index')
 @login_required
 def index():
+    data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
+    datasets, b, c = load_config()
+    for dataset in datasets:
+        for key in dataset:
+            if 'link' in key:
+                print('found')
+            print(dataset[key])
 
-    return render_template('home/index.html', segment='index')
+    for key in datasets[0]:
+        print(key)
+        #print(d.name)
+    return render_template('home/index.html', segment='index',**locals())
 
 
 @blueprint.route('/<template>')
