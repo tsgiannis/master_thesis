@@ -64,88 +64,59 @@
 
 
     <div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Language Models
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in laguage_models[0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in language_models %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <div class="card-body">
             <form>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress">Address</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress2">Address 2</label>
-                    <input type="text" class="form-control" id="inputAddress2"
-                           placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputCity">City</label>
-                        <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="linp">State</label>
-                        <select id="inputState2" class="form-control">
-                            <option selected>Choose...</option>
-                            {% for o in a %}
-                            <option value="{{ o.name }}">{{ o.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="inputZip">Zip</label>
-                        <input type="text" class="form-control" id="inputZip">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <span id="dropdown_title_language">Selection of Language Models</span>
+  </button>
+  <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
+      {% for item in language_models %}
+    <a class="dropdown-item"  onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+    {% endfor %}
+  </div>
+</div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            Check me out
-                            <span class="form-check-sign">
-                <span class="check"></span>
-              </span>
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
+
             </form>
+
         </div>
     </div>
-    <table class="table">
-        <thead>
 
-
-        <tr>
-            {% for key in datasets[0]%}
-            <th>{{ key }}</th>
-            {% endfor %}
-        </tr>
-
-
-        </thead>
-        <tbody>
-        {% for item in datasets %}
-        <tr>
-            {% for key in item%}
-            {% if 'link' in key %}
-            <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
-            {% else %}
-            <td>{{ item[key] }}</td>
-            {% endif %}
-
-            {% endfor %}
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 </div>
 
 {% endblock content %}

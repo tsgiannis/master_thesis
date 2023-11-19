@@ -1,0 +1,49 @@
+[[datasets]] 
+name = 'CLEFIP-0.54M'
+link = 'https://github.com/ekamater/CLEFIP-0.54M'
+file = 'abstract.csv'
+sections = 'Title, Abstract, Description, Claims, Applicants, Inventors'
+[[datasets]] 
+name = 'USPTO-2Μ'
+link = 'https://github.com/JasonHoou/USPTO-2M'
+file = 'abstract_2.csv'
+sections = 'Title, Abstract, Concatenated Title and Abstract'
+[[datasets]]
+name='WIPO'
+link=''	
+file = 'abstract_3.csv'
+sections = 'Title, Abstract, Description, Claims'
+
+[[language_models]]
+group_name = 'FastText (300-D)'
+group_two_letters_identifier = 'ft'
+link = 'https://fasttext.cc'
+[[language_models.ft]]	
+name = 'wiki-news-300d-1M.vec'
+file = 'wiki-news-300d-1M.vec.zip'
+description = '1 million word vectors trained on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
+[[language_models.ft]]
+name = 'wiki-news-300d-1M-subword.vec'
+file = 'wiki-news-300d-1M-subword.vec.zip'
+description = '1 million word vectors trained with subword infomation on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
+[[language_models.ft]]
+name='crawl-300d-2M.vec'
+file = 'crawl-300d-2M.vec.zip'
+description = '2 million word vectors trained on Common Crawl (600B tokens).'
+[[language_models.ft]]
+name='crawl-300d-2M-subword'
+file = 'crawl-300d-2M-subword.zip'
+description = ' 2 million word vectors trained with subword information on Common Crawl (600B tokens).'
+
+[['Deep Learning classifier']]
+name = 'LSTM'
+file = 'lstm_classifier.h5'
+[['Deep Learning classifier']]
+name = 'GRU'
+file = 'gru_classifier.h5'
+[['Deep Learning classifier']]
+name = 'Bi-LSTM'
+file = 'bi-lstm_classifier.h5'
+[['Deep Learning classifier']]
+name = 'Bi-GRU'
+file = 'bi-gru_classifier.h5'

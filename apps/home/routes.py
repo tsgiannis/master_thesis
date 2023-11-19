@@ -15,7 +15,9 @@ from ..utilities import *
 @login_required
 def index():
     data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
-    datasets, b, c = load_config()
+    datasets, language_models, c = load_config()
+    #contains_list_ = contains_list_recursive(datasets)
+    contains_list = contains_list_recursive(language_models)
     for dataset in datasets:
         for key in dataset:
             if 'link' in key:

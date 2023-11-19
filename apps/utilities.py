@@ -18,6 +18,15 @@ def load_config():
     #config['project']['author']
     #config.get('project').get('author')
 
+
+def contains_list_recursive(data):
+    if isinstance(data, list):
+        return any(contains_list_recursive(item) for item in data)
+    elif isinstance(data, dict):
+        return any(isinstance(value, list) or contains_list_recursive(value) for value in data.values())
+    else:
+        return False
+
 if __name__ == '__main__':
     #load_config()
     a,b,c = load_config()
