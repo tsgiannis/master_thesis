@@ -8,24 +8,61 @@
 {% block content %}
 <div class="content">
     <div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Datasets
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in datasets[0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in datasets %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <div class="card-body">
             <form>
                 <div class="form-row">
 
                     <div class="form-row col-md-6">
-                        <label for="inputState">State</label>
-                        <select id="inputState" class="form-control">
-                            {% for o in datasets %}
-                            <option value="{{ o.name }}">{{ o.name }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="dropdown-toggle">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <span id="dropdown_title"> Selection of Dataset</span>
+  </button>
+  <div class="dropdown-menu" aria-labelledby="Selection of Dataset">
+      {% for item in datasets %}
+    <a class="dropdown-item"  onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+    {% endfor %}
+  </div>
+</div>
                     </div>
                 </div>
 
             </form>
-            <button type="submit" class="btn btn-primary">Sign in</button>
+
         </div>
     </div>
+
+
+
     <div class="card">
         <div class="card-body">
             <form>
@@ -55,7 +92,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="linp">State</label>
-                        <select id="inputState" class="form-control">
+                        <select id="inputState2" class="form-control">
                             <option selected>Choose...</option>
                             {% for o in a %}
                             <option value="{{ o.name }}">{{ o.name }}</option>
@@ -88,7 +125,7 @@
 
         <tr>
             {% for key in datasets[0]%}
-                <th>{{ key }}</th>
+            <th>{{ key }}</th>
             {% endfor %}
         </tr>
 
@@ -98,11 +135,11 @@
         {% for item in datasets %}
         <tr>
             {% for key in item%}
-                {% if 'link' in key %}
-                    <td><a href = {{ item[key] }} target="_blank" >{{ item[key] }}</a></td>
-                {% else %}
-                    <td>{{ item[key] }}</td>
-                {% endif %}
+            {% if 'link' in key %}
+            <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+            {% else %}
+            <td>{{ item[key] }}</td>
+            {% endif %}
 
             {% endfor %}
         </tr>
@@ -122,6 +159,10 @@
         demo.initDashboardPageCharts();
 
     });
+    function showGenre(item) {
+        console.log(item.innerHTML)
+  document.getElementById("dropdown_title").innerHTML = item.innerHTML;
+}
 </script>
 
 {% endblock javascripts %}

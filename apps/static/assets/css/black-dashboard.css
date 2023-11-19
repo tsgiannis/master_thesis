@@ -1431,6 +1431,14 @@ select.form-control:focus::-ms-value {
   font-size: inherit;
   line-height: 1.42857; }
 
+.colored-form-label {
+  padding-top: calc(0.5rem + 1px);
+  padding-bottom: calc(0.5rem + 1px);
+  margin-bottom: 0;
+  color: deepskyblue;
+  font-size: inherit;
+  line-height: 1.42857; }
+
 .col-form-label-lg {
   padding-top: calc(0.875rem + 1px);
   padding-bottom: calc(0.875rem + 1px);

@@ -26,7 +26,8 @@ def index():
         print(key)
         #print(d.name)
     return render_template('home/index.html', segment='index',**locals())
-
+"""TODO https://jsfiddle.net/enzDx/5/"""
+#https://stackoverflow.com/questions/63628163/trying-to-get-the-bootstrap-dropdown-button-text-to-change-to-the-item-selected
 
 @blueprint.route('/<template>')
 @login_required
