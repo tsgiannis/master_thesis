@@ -15,29 +15,25 @@ file = 'abstract_3.csv'
 sections = 'Title, Abstract, Description, Claims'
 
 [[language_models]]
+group_name = 'FastText (300-D)'
+group_two_letters_identifier = 'ft'
+link = 'https://fasttext.cc'
+[[language_models.ft]]	
 name = 'wiki-news-300d-1M.vec'
 file = 'wiki-news-300d-1M.vec.zip'
 description = '1 million word vectors trained on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
-[[language_models]]
+[[language_models.ft]]
 name = 'wiki-news-300d-1M-subword.vec'
 file = 'wiki-news-300d-1M-subword.vec.zip'
 description = '1 million word vectors trained with subword infomation on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
-[[language_models]]
+[[language_models.ft]]
 name='crawl-300d-2M.vec'
 file = 'crawl-300d-2M.vec.zip'
 description = '2 million word vectors trained on Common Crawl (600B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
-[[language_models]]
+[[language_models.ft]]
 name='crawl-300d-2M-subword'
 file = 'crawl-300d-2M-subword.zip'
 description = ' 2 million word vectors trained with subword information on Common Crawl (600B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
 
 [['Deep Learning classifier']]
 name = 'LSTM'

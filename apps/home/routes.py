@@ -27,6 +27,13 @@ def index():
     for key in datasets[0]:
         print(key)
         #print(d.name)
+
+    for item in language_models:
+        if isinstance(item, dict):
+            for key in item:
+                print(item[key])
+
+
     return render_template('home/index.html', segment='index',**locals())
 """TODO https://jsfiddle.net/enzDx/5/"""
 #https://stackoverflow.com/questions/63628163/trying-to-get-the-bootstrap-dropdown-button-text-to-change-to-the-item-selected
