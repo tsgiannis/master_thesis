@@ -15,23 +15,10 @@ from ..utilities import *
 @login_required
 def index():
     data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
-    datasets, language_models, c = load_config()
+    datasets, language_models, deep_learning = load_config()
     #contains_list_ = contains_list_recursive(datasets)
-    contains_list = contains_list_recursive(language_models)
-    for dataset in datasets:
-        for key in dataset:
-            if 'link' in key:
-                print('found')
-            print(dataset[key])
+    #contains_list = contains_list_recursive(language_models)
 
-    for key in datasets[0]:
-        print(key)
-        #print(d.name)
-
-    for item in language_models:
-        if isinstance(item, dict):
-            for key in item:
-                print(item[key])
 
 
     return render_template('home/index.html', segment='index',**locals())

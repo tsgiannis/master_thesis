@@ -44,15 +44,16 @@
 
                     <div class="form-row col-md-6">
                         <div class="dropdown-toggle">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <span id="dropdown_title"> Selection of Dataset</span>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="Selection of Dataset">
-      {% for item in datasets %}
-    <a class="dropdown-item"  onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
-    {% endfor %}
-  </div>
-</div>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="dropdown_title"> Selection of Dataset</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                                {% for item in datasets %}
+                                <a class="dropdown-item" onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -60,7 +61,6 @@
 
         </div>
     </div>
-
 
 
     <div class="card">
@@ -101,15 +101,71 @@
 
                     <div class="form-row col-md-6">
                         <div class="dropdown-toggle">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <span id="dropdown_title_language">Selection of Language Models</span>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
-      {% for item in language_models %}
-    <a class="dropdown-item"  onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
-    {% endfor %}
-  </div>
-</div>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="dropdown_title_language">Selection of Language Models</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in language_models %}
+                                <a class="dropdown-item" onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Deep Learning Classifiers
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in deep_learning[0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in deep_learning %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_deeplearning"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="dropdown_title_deeplearning">Selection of Deep Learning Classifier</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in deep_learning %}
+                                <a class="dropdown-item" onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -135,6 +191,7 @@
         console.log(item.innerHTML)
   document.getElementById("dropdown_title").innerHTML = item.innerHTML;
 }
+
 </script>
 
 {% endblock javascripts %}
