@@ -25,6 +25,7 @@ def index():
 """TODO https://jsfiddle.net/enzDx/5/"""
 #https://stackoverflow.com/questions/63628163/trying-to-get-the-bootstrap-dropdown-button-text-to-change-to-the-item-selected
 
+
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
@@ -61,3 +62,12 @@ def get_segment(request):
 
     except:
         return None
+
+
+@blueprint.route("/route" , methods=['GET', 'POST'])
+def data_sent():
+    selected_option = request.form.get('selected_option')
+    # Process the selected option as needed
+    return f'Selected option: {selected_option}'
+    select = request.form.get('datasets')
+    return(str(select)) # just to see what select is

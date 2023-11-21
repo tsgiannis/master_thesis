@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Dropdowns</h2>
+  <p>The .dropdown class is used to indicate a dropdown menu.</p>
+  <p>Use the .dropdown-menu class to actually build the dropdown menu.</p>
+  <p>To open the dropdown menu, use a button or a link with a class of .dropdown-toggle and data-toggle="dropdown".</p>
+  <div class="dropdown">
+       <form id = "myForm" method="POST" action="{{ url_for('my_blueprint.route_name') }}">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#" data-value="HTML" >HTML</a></li>
+      <li><a class="dropdown-item" href="#" data-value="CSS" >CSS</a></li>
+      <li><a class="dropdown-item" href="#" data-value="JavaScript" >JavaScript</a></li>
+    </ul>
+             <button type="submit" class="btn btn-primary">Submit</button>
+
+       </form>
+
+  </div>
+</div>
+
+
+<script>
+        // Update a hidden input field with the selected dropdown value
+        document.querySelectorAll('.dropdown-item').forEach(function (item) {
+            item.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent the default behavior of anchor tags
+                var selectedValue = this.getAttribute('data-value');
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'selected_option');
+                hiddenInput.setAttribute('value', selectedValue);
+                document.getElementById('myForm').appendChild(hiddenInput);
+            });
+        });
+    </script>
+</body>
+</html>

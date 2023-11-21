@@ -39,18 +39,18 @@
             </table>
         </div>
         <div class="card-body">
-            <form>
+            <form id = "form_datasets" method="POST" action="{{ url_for('home_blueprint.data_sent') }}">
                 <div class="form-row">
 
                     <div class="form-row col-md-6">
                         <div class="dropdown-toggle">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState"
+                            <button class="btn btn-secondary dropdown-toggle" type="submit" id="btnDatasets"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span id="dropdown_title"> Selection of Dataset</span>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                            <div name = 'datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
                                 {% for item in datasets %}
-                                <a class="dropdown-item" onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+                                <a class="dropdown-item" onclick="showGenre(this)" data-value = "{{item['name']}}" href="#">{{ item['name'] }}</a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -187,6 +187,10 @@
         demo.initDashboardPageCharts();
 
     });
+    $('.dropdown-item').on('click', function () {
+            var selectedValue = $(this).data('value');
+            $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValue + '">');
+        });
     function showGenre(item) {
         console.log(item.innerHTML)
   document.getElementById("dropdown_title").innerHTML = item.innerHTML;
