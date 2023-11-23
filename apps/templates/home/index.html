@@ -39,7 +39,7 @@
             </table>
         </div>
         <div class="card-body">
-            <form id = "form_datasets" method="POST" action="{{ url_for('home_blueprint.data_sent') }}">
+            <form id = "form_datasets" method="POST" action="{{ url_for('home_blueprint.routename') }}">
                 <div class="form-row">
 
                     <div class="form-row col-md-6">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-
+ <button type="submit" class="btn btn-primary">Submit</button>
             </form>
 
         </div>
@@ -192,8 +192,16 @@
             $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValue + '">');
         });
     function showGenre(item) {
-        console.log(item.innerHTML)
+        console.log(item.innerHTML,'111')
+        var selectedValue = item.innerHTML;
+        console.log(selectedValue+'!')
   document.getElementById("dropdown_title").innerHTML = item.innerHTML;
+  var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'selected_option');
+                hiddenInput.setAttribute('value', selectedValue);
+                hiddenInput.setAttribute('input_type', 'search');
+                document.getElementById('form_datasets').appendChild(hiddenInput);
 }
 
 </script>
