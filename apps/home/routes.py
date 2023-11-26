@@ -4,10 +4,10 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from apps.home import blueprint
-from flask import render_template, request
+from flask import render_template, request,jsonify
 from flask_login import login_required
 from jinja2 import TemplateNotFound
-
+import json
 
 from . import blueprint
 from ..main_code import *
@@ -17,9 +17,16 @@ from ..utilities import *
 
 @blueprint.route('/route',methods=['POST'])
 def routename():
+    # Your JSON string
+    json_string = '[{"key1":"value1"},{"key2":"value2"},{"key3":"value3"}]'
+
+    # Decode the JSON string to a Python data structure
+    decoded_data = json.loads(json_string)
     selected_option = request.form.get('selected_option')
     print(selected_option          )
-    return None
+    #return jsonify({'status': 'success'})
+    #return '', 204  # 204 status means 'No Content'
+    return render_template('index.html', updated_data=selected_option)
     # Process the selected option as needed
     #return f'Selected option: {selected_option}'
 

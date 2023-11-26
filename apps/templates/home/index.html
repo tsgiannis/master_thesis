@@ -6,6 +6,11 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% if updated_data %}
+<div id="SelectionBanner" style="display: none; color: green;">
+    Selection Received.
+</div>
+{% endif %}
 <div class="content">
     <div class="card">
         <div class="card-header text-center py-4">
@@ -182,14 +187,40 @@
 {% block javascripts %}
 
 <script>
-    $(document).ready(function () {
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
+var myCollection = [
+    { key1: 'value1' },
+    { key2: 'value2' },
+    { key3: 'value3' }
+];
+function addToCollection(collection, key, value) {
+    // Check if the key already exists in the collection
+    for (var i = 0; i < collection.length; i++) {
+        var pair = collection[i];
+        if (key in pair) {
+            // Update the existing value for the key
+            pair[key] = value;
+            return;  // Exit the function after updating
+        }
+    }
 
-    });
+    // If the key doesn't exist, add a new key-value pair
+    if (collection.length < 3) {
+        var newPair = {};
+        newPair[key] = value;
+        collection.push(newPair);
+    } else {
+        console.log('Collection already has 3 pairs. Cannot add more.');
+    }
+    //var jsonString = JSON.stringify(myCollection, null, 0);
+console.log(jsonString);
+}
+
+// Function to add a new key-value pair to the collection
+// Example usage
+//addToCollection(myCollection, 'key4', 'value4'); // Will not be added due to the limit
     $('.dropdown-item').on('click', function () {
-            var selectedValue = $(this).data('value');
-            $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValue + '">');
+            var selectedValuex = $(this).data('value');
+            $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValuex + '">');
         });
     function showGenre(item) {
         console.log(item.innerHTML,'111')
@@ -203,6 +234,16 @@
                 hiddenInput.setAttribute('input_type', 'search');
                 document.getElementById('form_datasets').appendChild(hiddenInput);
 }
+// Iterate over all forms on the page
+// document.querySelectorAll('form').forEach(function(form) {
+//     // Iterate over all dropdown-items within the form
+//     form.querySelectorAll('.dropdown-item.active').forEach(function(item) {
+//         // Access the value of each active dropdown-item
+//         var value = item.getAttribute('data-value');
+//         console.log('Form:', form, 'Dropdown Item Value:', value);
+//         // Do something with the value, such as adding it to an array or processing it further
+//     });
+// });
 
 </script>
 

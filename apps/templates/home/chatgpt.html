@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="myForm" method="post" action="/submit">
+    <!-- Other form elements -->
+
+    <!-- Hidden input to store the JSON string -->
+    <input type="hidden" name="json_data" id="json_data" value="">
+
+    <button type="submit" id="submitButton">Submit</button>
+</form>
+
+<div id="errorBanner" style="display: none; color: red;">
+    The number of forms with dropdown-items does not match the length of the collection.
+</div>
+
+<script>
+    // Initialize an object to store form values
+    var formValues = {};
+
+    // Iterate over all forms on the page
+    document.querySelectorAll('form').forEach(function(form) {
+        // Get the form name (you can customize this based on your needs)
+        var formName = form.getAttribute('name') || 'unnamedForm';
+
+        // Find the active dropdown-item within the form
+        var activeDropdownItem = form.querySelector('.dropdown-item.active');
+
+        // If an active dropdown-item is found, get its value
+        if (activeDropdownItem) {
+            var value = activeDropdownItem.getAttribute('data-value');
+            // Add the form name and its corresponding value to the collection
+            formValues[formName] = value;
+        }
+    });
+
+    // Check if the number of forms matches the length of the collection
+    var formCount = document.querySelectorAll('form').length;
+    if (Object.keys(formValues).length === formCount) {
+        // Convert the formValues object to a one-line JSON string
+        var jsonString = JSON.stringify(formValues);
+
+        // Log the one-line JSON string
+        console.log(jsonString);
+
+        // Set the value of the hidden input
+        document.getElementById('json_data').value = jsonString;
+
+        // You can also submit the form programmatically if needed
+        // document.getElementById('myForm').submit();
+    } else {
+        // Disable the submit button
+        document.getElementById('submitButton').disabled = true;
+
+        // Show the error banner
+        document.getElementById('errorBanner').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
