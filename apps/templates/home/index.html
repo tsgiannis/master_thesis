@@ -4,14 +4,14 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
-
 {% block content %}
-{% if updated_data %}
-<div id="SelectionBanner" style="display: none; color: green;">
-    Selection Received.
-</div>
-{% endif %}
+
 <div class="content">
+    {% if selected_option %}
+        <div class="alert alert-success" role="alert">
+            {{ selected_option }}
+        </div>
+    {% endif %}
     <div class="card">
         <div class="card-header text-center py-4">
             <h3 class="title">

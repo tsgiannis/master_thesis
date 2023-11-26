@@ -17,6 +17,7 @@ from ..utilities import *
 
 @blueprint.route('/route',methods=['POST'])
 def routename():
+    datasets, language_models, deep_learning = load_config()
     # Your JSON string
     json_string = '[{"key1":"value1"},{"key2":"value2"},{"key3":"value3"}]'
 
@@ -26,7 +27,7 @@ def routename():
     print(selected_option          )
     #return jsonify({'status': 'success'})
     #return '', 204  # 204 status means 'No Content'
-    return render_template('index.html', updated_data=selected_option)
+    return render_template('home/index.html',  **locals())
     # Process the selected option as needed
     #return f'Selected option: {selected_option}'
 
@@ -41,7 +42,7 @@ def index():
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
 
-    return render_template('home/index.html', segment='index', **locals())
+    return render_template('home/index.html',selected_option = None, segment='index', **locals())
 
 
 """TODO https://jsfiddle.net/enzDx/5/"""
