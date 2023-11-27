@@ -23,10 +23,11 @@ def routename():
 
     # Decode the JSON string to a Python data structure
     #decoded_data = json.loads(json_string)
-    selected_option = request.form.get('selections')
+    selected_options = json.loads(request.form.get('selections'))
     #print(selected_option          )
     #return jsonify({'status': 'success'})
     #return '', 204  # 204 status means 'No Content'
+    execute_trained_model(selected_options)
     return render_template('home/index.html',  **locals())
     # Process the selected option as needed
     #return f'Selected option: {selected_option}'
@@ -38,7 +39,7 @@ def routename():
 @login_required
 def index():
 
-    data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
+    #data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
     session['datasets'], session['language_models'], session['deep_learning'] = load_config()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)

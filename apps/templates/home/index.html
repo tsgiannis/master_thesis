@@ -311,6 +311,7 @@ function handleDropdownItemClick(item) {
             hiddenInput.setAttribute('value', jsonString);
             hiddenInput.setAttribute('input_type', 'search');
             document.getElementById('runForm').appendChild(hiddenInput);
+            document.getElementById('runForm').submit();
         }
     }
 
