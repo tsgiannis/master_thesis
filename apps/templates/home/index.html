@@ -12,6 +12,11 @@
             {{ selected_option }}
         </div>
     {% endif %}
+    {% if session['test'] %}
+        <div class="alert alert-primary" role="alert">
+            {{ session['test'] }}
+        </div>
+    {% endif %}
     <div class="card">
         <div class="card-header text-center py-4">
             <h3 class="title">
@@ -20,7 +25,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    {% for key in datasets[0]%}
+                    {% for key in session['datasets'][0]%}
                     <th>{{ key }}</th>
                     {% endfor %}
                 </tr>
@@ -28,7 +33,7 @@
 
                 </thead>
                 <tbody>
-                {% for item in datasets %}
+                {% for item in session['datasets'] %}
                 <tr>
                     {% for key in item%}
                     {% if 'link' in key %}
@@ -54,7 +59,7 @@
                                 <span id="dropdown_title"> Selection of Dataset</span>
                             </button>
                             <div name = 'datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
-                                {% for item in datasets %}
+                                {% for item in session['datasets'] %}
                                 <a class="dropdown-item" onclick="showGenre(this)" data-value = "{{item['name']}}" href="#">{{ item['name'] }}</a>
                                 {% endfor %}
                             </div>

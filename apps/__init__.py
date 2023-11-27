@@ -50,6 +50,7 @@ from apps.authentication.oauth import github_blueprint
 
 def create_app(config):
     app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'UxfE1t1ijaJs'
     app.config.from_object(config)
     register_extensions(app)
 

@@ -2,9 +2,9 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
-
+import apps.config
 from apps.home import blueprint
-from flask import render_template, request,jsonify
+from flask import render_template, request,jsonify,session
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 import json
@@ -37,8 +37,9 @@ def routename():
 @blueprint.route('/index')
 @login_required
 def index():
+
     data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
-    datasets, language_models, deep_learning = load_config()
+    session['datasets'], session['language_models'], session['deep_learning'] = load_config()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
 
