@@ -17,14 +17,14 @@ from ..utilities import *
 
 @blueprint.route('/route',methods=['POST'])
 def routename():
-    datasets, language_models, deep_learning = load_config()
+    #datasets, language_models, deep_learning = load_config()
     # Your JSON string
-    json_string = '[{"key1":"value1"},{"key2":"value2"},{"key3":"value3"}]'
+    #json_string = '[{"key1":"value1"},{"key2":"value2"},{"key3":"value3"}]'
 
     # Decode the JSON string to a Python data structure
-    decoded_data = json.loads(json_string)
+    #decoded_data = json.loads(json_string)
     selected_option = request.form.get('selected_option')
-    print(selected_option          )
+    #print(selected_option          )
     #return jsonify({'status': 'success'})
     #return '', 204  # 204 status means 'No Content'
     return render_template('home/index.html',  **locals())

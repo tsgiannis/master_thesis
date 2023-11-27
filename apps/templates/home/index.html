@@ -1,22 +1,50 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Dashboard {% endblock %}
+{% block title %} Intelligent Classifier {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<style>
+    .custom-btn-size {
+        font-size: 36px;
+    }
+           /* Custom background color for the modal content */
+    .custom-modal-content {
+            background-color: #fff666; /* Red color */
+        }
+</style>
+
+
+
+{% endblock stylesheets %}
+
 {% block content %}
 
 <div class="content">
     {% if selected_option %}
-        <div class="alert alert-success" role="alert">
-            {{ selected_option }}
-        </div>
+    <div class="alert alert-success" role="alert">
+        {{ selected_option }}
+    </div>
     {% endif %}
-    {% if session['test'] %}
-        <div class="alert alert-primary" role="alert">
-            {{ session['test'] }}
+   <div class="modal" id="selections_checker" tabindex="-1" role="dialog">
+        <div class="modal-dialog custom-modal-content" role="document">
+            <div class="modal-content custom-modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Selection Checker</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content for the modal -->
+                    <p>You missed to select all the options</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
     <div class="card">
         <div class="card-header text-center py-4">
             <h3 class="title">
@@ -49,7 +77,7 @@
             </table>
         </div>
         <div class="card-body">
-            <form id = "form_datasets" method="POST" action="{{ url_for('home_blueprint.routename') }}">
+            <form id="form_datasets" method="POST" action="{{ url_for('home_blueprint.routename') }}">
                 <div class="form-row">
 
                     <div class="form-row col-md-6">
@@ -58,15 +86,16 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span id="dropdown_title"> Selection of Dataset</span>
                             </button>
-                            <div name = 'datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                            <div name='datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
                                 {% for item in session['datasets'] %}
-                                <a class="dropdown-item" onclick="showGenre(this)" data-value = "{{item['name']}}" href="#">{{ item['name'] }}</a>
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" data-value="{{item['name']}}"
+                                   href="#">{{ item['name'] }}</a>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
- <button type="submit" class="btn btn-primary">Submit</button>
+
             </form>
 
         </div>
@@ -81,7 +110,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    {% for key in language_models[0]%}
+                    {% for key in session['language_models'][0]%}
                     <th>{{ key }}</th>
                     {% endfor %}
                 </tr>
@@ -89,7 +118,7 @@
 
                 </thead>
                 <tbody>
-                {% for item in language_models %}
+                {% for item in session['language_models'] %}
                 <tr>
                     {% for key in item%}
                     {% if 'link' in key %}
@@ -106,7 +135,7 @@
             </table>
         </div>
         <div class="card-body">
-            <form>
+            <form id="form_language_models">
                 <div class="form-row">
 
                     <div class="form-row col-md-6">
@@ -116,8 +145,8 @@
                                 <span id="dropdown_title_language">Selection of Language Models</span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
-                                {% for item in language_models %}
-                                <a class="dropdown-item" onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+                                {% for item in session['language_models'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -136,7 +165,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    {% for key in deep_learning[0]%}
+                    {% for key in session['deep_learning'][0]%}
                     <th>{{ key }}</th>
                     {% endfor %}
                 </tr>
@@ -144,7 +173,7 @@
 
                 </thead>
                 <tbody>
-                {% for item in deep_learning %}
+                {% for item in session['deep_learning'] %}
                 <tr>
                     {% for key in item%}
                     {% if 'link' in key %}
@@ -161,7 +190,7 @@
             </table>
         </div>
         <div class="card-body">
-            <form>
+            <form id = 'form_deep_learning_classifiers'>
                 <div class="form-row">
 
                     <div class="form-row col-md-6">
@@ -171,8 +200,8 @@
                                 <span id="dropdown_title_deeplearning">Selection of Deep Learning Classifier</span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
-                                {% for item in deep_learning %}
-                                <a class="dropdown-item" onclick="showGenre(this)" href="#">{{ item['name'] }}</a>
+                                {% for item in session['deep_learning'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -183,7 +212,13 @@
 
         </div>
     </div>
+    <form id="runForm" action="/run_endpoint" method="post">
+        <!-- Include any form fields as needed -->
 
+        <!-- Fancy RUN button inside the form -->
+        <button type="button" class="btn btn-success  btn-lg btn-block custom-btn-size" onclick="CheckNRun()">RUN
+        </button>
+    </form>
 </div>
 
 {% endblock content %}
@@ -192,12 +227,11 @@
 {% block javascripts %}
 
 <script>
-var myCollection = [
-    { key1: 'value1' },
-    { key2: 'value2' },
-    { key3: 'value3' }
-];
-function addToCollection(collection, key, value) {
+    var selections = [
+
+    ];
+
+    function addToCollection(collection, key, value) {
     // Check if the key already exists in the collection
     for (var i = 0; i < collection.length; i++) {
         var pair = collection[i];
@@ -216,39 +250,79 @@ function addToCollection(collection, key, value) {
     } else {
         console.log('Collection already has 3 pairs. Cannot add more.');
     }
-    //var jsonString = JSON.stringify(myCollection, null, 0);
-console.log(jsonString);
 }
 
-// Function to add a new key-value pair to the collection
-// Example usage
-//addToCollection(myCollection, 'key4', 'value4'); // Will not be added due to the limit
-    $('.dropdown-item').on('click', function () {
-            var selectedValuex = $(this).data('value');
-            $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValuex + '">');
-        });
+    // Function to add a new key-value pair to the collection
+    // Example usage
+    //addToCollection(myCollection, 'key4', 'value4'); // Will not be added due to the limit
+    //    $('.dropdown-item').on('click', function () {
+    //            var selectedValuex = $(this).data('value');
+    //            $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValuex + '">');
+    //        });
     function showGenre(item) {
-        console.log(item.innerHTML,'111')
-        var selectedValue = item.innerHTML;
-        console.log(selectedValue+'!')
-  document.getElementById("dropdown_title").innerHTML = item.innerHTML;
-  var hiddenInput = document.createElement('input');
-                hiddenInput.setAttribute('type', 'hidden');
-                hiddenInput.setAttribute('name', 'selected_option');
-                hiddenInput.setAttribute('value', selectedValue);
-                hiddenInput.setAttribute('input_type', 'search');
-                document.getElementById('form_datasets').appendChild(hiddenInput);
-}
-// Iterate over all forms on the page
-// document.querySelectorAll('form').forEach(function(form) {
-//     // Iterate over all dropdown-items within the form
-//     form.querySelectorAll('.dropdown-item.active').forEach(function(item) {
-//         // Access the value of each active dropdown-item
-//         var value = item.getAttribute('data-value');
-//         console.log('Form:', form, 'Dropdown Item Value:', value);
-//         // Do something with the value, such as adding it to an array or processing it further
-//     });
-// });
+        document.querySelectorAll('form').forEach(function (form) {
+            form.querySelectorAll('.dropdown-item.active').forEach(function (item) {
+                var value = item.getAttribute('data-value');
+                var key = item.parentElement.attributes('name')
+                addToCollection(selections, key, value)
+            })
+        })
+    }
+function handleDropdownItemClick(item) {
+            // Remove the 'active' class from all items
+            var dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(function (item) {
+                item.classList.remove('active');
+            });
+
+            // Add the 'active' class to the clicked item
+            item.classList.add('active');
+
+            // Get the text content of the active item
+            var activeItemText = item.textContent;
+            console.log('Active Dropdown Item:', activeItemText);
+            var value =activeItemText;
+                var key = item.parentElement.attributes.name.textContent
+                addToCollection(selections, key, value)
+        }    //console.log(item.innerHTML,'111')
+    //var selectedValue = item.innerHTML;
+
+    //console.log(selectedValue+'!')
+    function CheckNRun() {
+        if (selections.length < 3) {
+
+            showAlertModal();
+        } else {
+            var jsonString = JSON.stringify(selections, null, 0);
+
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'selected_option');
+            hiddenInput.setAttribute('value', jsonString);
+            hiddenInput.setAttribute('input_type', 'search');
+            document.getElementById('runForm').appendChild(hiddenInput);
+        }
+    }
+
+    function showAlertModal() {
+        $('#selections_checker').modal('show');
+
+        // Close the modal after 2 seconds
+        setTimeout(function () {
+            $('#selections_checker').modal('hide');
+        }, 3000);
+    }
+
+    // Iterate over all forms on the page
+    // document.querySelectorAll('form').forEach(function(form) {
+    //     // Iterate over all dropdown-items within the form
+    //     form.querySelectorAll('.dropdown-item.active').forEach(function(item) {
+    //         // Access the value of each active dropdown-item
+    //         var value = item.getAttribute('data-value');
+    //         console.log('Form:', form, 'Dropdown Item Value:', value);
+    //         // Do something with the value, such as adding it to an array or processing it further
+    //     });
+    // });
 
 </script>
 
