@@ -77,14 +77,14 @@
             </table>
         </div>
         <div class="card-body">
-            <form id="form_datasets" method="POST" action="{{ url_for('home_blueprint.routename') }}">
+          <form id="form_datasets">  <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
                 <div class="form-row">
 
                     <div class="form-row col-md-6">
                         <div class="dropdown-toggle">
                             <button class="btn btn-secondary dropdown-toggle" type="submit" id="btnDatasets"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="dropdown_title"> Selection of Dataset</span>
+                                <span id="span_datasets"> Selection of Dataset</span>
                             </button>
                             <div name='datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
                                 {% for item in session['datasets'] %}
@@ -142,9 +142,9 @@
                         <div class="dropdown-toggle">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="dropdown_title_language">Selection of Language Models</span>
+                                <span id="span_language_models">Selection of Language Models</span>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                            <div name='language_models'  class="dropdown-menu" aria-labelledby="Selection of Language Models">
                                 {% for item in session['language_models'] %}
                                 <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
                                 {% endfor %}
@@ -197,9 +197,9 @@
                         <div class="dropdown-toggle">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_deeplearning"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="dropdown_title_deeplearning">Selection of Deep Learning Classifier</span>
+                                <span id="span_deep_learning" data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                            <div name='deep_learning' class="dropdown-menu" aria-labelledby="Selection of Language Models">
                                 {% for item in session['deep_learning'] %}
                                 <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
                                 {% endfor %}
@@ -212,11 +212,11 @@
 
         </div>
     </div>
-    <form id="runForm" action="/run_endpoint" method="post">
+    <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
         <!-- Include any form fields as needed -->
 
         <!-- Fancy RUN button inside the form -->
-        <button type="button" class="btn btn-success  btn-lg btn-block custom-btn-size" onclick="CheckNRun()">RUN
+        <button type="button" class="btn btn-success  btn-lg btn-block custom-btn-size"  onclick="CheckNRun()" type="submit" >RUN
         </button>
     </form>
 </div>
@@ -270,20 +270,30 @@
     }
 function handleDropdownItemClick(item) {
             // Remove the 'active' class from all items
-            var dropdownItems = document.querySelectorAll('.dropdown-item');
-            dropdownItems.forEach(function (item) {
-                item.classList.remove('active');
-            });
+            var form = item.closest('form');
 
-            // Add the 'active' class to the clicked item
-            item.classList.add('active');
+            if (form) {
+                // Remove the 'active' class from all items within the form
+                var dropdownItems = form.querySelectorAll('.dropdown-item');
+                dropdownItems.forEach(function (item) {
+                    item.classList.remove('active');
+                });
 
-            // Get the text content of the active item
-            var activeItemText = item.textContent;
-            console.log('Active Dropdown Item:', activeItemText);
-            var value =activeItemText;
+                // Add the 'active' class to the clicked item
+                item.classList.add('active');
+
+                // Get the text content of the active item
+                var activeItemText = item.textContent;
+                var value =activeItemText;
                 var key = item.parentElement.attributes.name.textContent
                 addToCollection(selections, key, value)
+                document.getElementById('span_' + key).textContent = value
+
+            } else {
+                console.log('No form found.');
+            }
+
+
         }    //console.log(item.innerHTML,'111')
     //var selectedValue = item.innerHTML;
 
@@ -297,7 +307,7 @@ function handleDropdownItemClick(item) {
 
             var hiddenInput = document.createElement('input');
             hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'selected_option');
+            hiddenInput.setAttribute('name', 'selections');
             hiddenInput.setAttribute('value', jsonString);
             hiddenInput.setAttribute('input_type', 'search');
             document.getElementById('runForm').appendChild(hiddenInput);

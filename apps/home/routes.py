@@ -23,7 +23,7 @@ def routename():
 
     # Decode the JSON string to a Python data structure
     #decoded_data = json.loads(json_string)
-    selected_option = request.form.get('selected_option')
+    selected_option = request.form.get('selections')
     #print(selected_option          )
     #return jsonify({'status': 'success'})
     #return '', 204  # 204 status means 'No Content'
