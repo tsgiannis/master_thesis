@@ -11,6 +11,7 @@ import json
 
 from . import blueprint
 from ..main_code import *
+from execute import execute
 from ..utilities import *
 
 #https://stackoverflow.com/questions/71285841/submit-flask-form-without-re-rendering-the-page#:~:text=If%20you%20want%20to%20submit,submitted%20in%20the%20same%20format.
@@ -27,8 +28,12 @@ def routename():
     #print(selected_option          )
     #return jsonify({'status': 'success'})
     #return '', 204  # 204 status means 'No Content'
-    execute_trained_model(selected_options)
-    return render_template('home/index.html',  **locals())
+    df = execute(selected_options)
+    table_html = df.to_html(classes='table table-bordered table-striped', index=False)
+
+    # Render the template with the HTML content
+    #return render_template('index.html', table_html=table_html)
+    return render_template('home/predictions.html',  table_html=table_html)
     # Process the selected option as needed
     #return f'Selected option: {selected_option}'
 

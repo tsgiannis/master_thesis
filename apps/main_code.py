@@ -220,11 +220,7 @@ def calculate_metrics(predictions, prediction, y_true, number_of_test_data):
     return accuracy_total, MRR, P3, P5, P10
 
 
-def get_element_by_value(lst, key_name, target_value):
-    for element in lst:
-        if key_name in element and element[key_name] == target_value:
-            return element
-    return None  # Return None if key or value not found in any dictionary
+
 
 def execute_trained_model(arguments):
     words = 60

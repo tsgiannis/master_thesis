@@ -27,6 +27,12 @@ def contains_list_recursive(data):
     else:
         return False
 
+def get_element_by_value(lst, key_name, target_value):
+    for element in lst:
+        if key_name in element and element[key_name] == target_value:
+            return element
+    return None  # Return None if key or value not found in any dictionary
+
 if __name__ == '__main__':
     #load_config()
     a,b,c = load_config()

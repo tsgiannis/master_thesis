@@ -212,6 +212,23 @@
 
         </div>
     </div>
+    <div class="container mt-5">
+    <h2 class="mb-4">Enter Keywords or Upload a File</h2>
+
+    <form id="keywordForm" onsubmit="submitForm(event)">
+        <div class="form-group">
+            <label for="keywords">Enter Keywords:</label>
+            <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Type keywords here">
+        </div>
+
+        <div class="form-group">
+            <label for="fileInput">Upload File:</label>
+            <input type="file" class="form-control-file" id="fileInput" name="fileInput" accept=".txt">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
     <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
         <!-- Include any form fields as needed -->
 
@@ -230,7 +247,17 @@
     var selections = [
 
     ];
+    function readFile(file) {
+            var reader = new FileReader();
 
+            reader.onload = function (e) {
+                var fileContent = e.target.result;
+                var lines = fileContent.split('\n');
+                alert('File Content: \n' + lines.join(', '));
+            };
+
+            reader.readAsText(file);
+        }
     function addToCollection(collection, key, value) {
     // Check if the key already exists in the collection
     for (var i = 0; i < collection.length; i++) {
@@ -311,6 +338,20 @@ function handleDropdownItemClick(item) {
             hiddenInput.setAttribute('value', jsonString);
             hiddenInput.setAttribute('input_type', 'search');
             document.getElementById('runForm').appendChild(hiddenInput);
+            var keywords = document.getElementById('keywords').value;
+            var fileInput = document.getElementById('fileInput');
+
+            if (keywords.trim() !== '') {
+                // Keywords were entered
+                alert('Keywords: ' + keywords);
+            } else if (fileInput.files.length > 0) {
+                // File was uploaded
+                var file = fileInput.files[0];
+                readFile(file);
+            } else {
+                // No keywords or file provided
+                alert('Please enter keywords or upload a file.');
+            }
             document.getElementById('runForm').submit();
         }
     }
