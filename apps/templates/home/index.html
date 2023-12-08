@@ -226,7 +226,7 @@
             <input type="file" class="form-control-file" id="fileInput" name="fileInput" accept=".txt">
         </div>
 
-        <button type="submit" class="btn btn-primary">Upload</button>
+        <button type="submit" onclick="readFile()" class="btn btn-primary">Upload</button>
     </form>
 </div>
     <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
@@ -247,17 +247,49 @@
     var selections = [
 
     ];
-    function readFile(file) {
-            var reader = new FileReader();
+    function readFile() {
+        // Create a file input element
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.txt';
 
-            reader.onload = function (e) {
-                var fileContent = e.target.result;
-                var lines = fileContent.split('\n');
-                alert('File Content: \n' + lines.join(', '));
-            };
+        // Trigger a click on the file input
+        fileInput.click();
 
-            reader.readAsText(file);
-        }
+        // Listen for the change event on the file input
+        fileInput.addEventListener('change', function () {
+            // Check if a file is selected
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+
+                // Define the callback function when file reading is complete
+                reader.onload = function (e) {
+                    // Display the content in the keywords input
+                    var lines = e.target.result.split('\n')
+                        .filter(function(line) {
+                            return line.trim() !== '';  // Trim and check if not empty
+                        })
+                        .slice(0, 60);
+
+                    // Combine the lines into a single string with space delimiters
+                    var content = lines.join(' ');
+
+                    // Display in the keywords input
+                    var keywordsInput = document.getElementById('keywords');
+                    keywordsInput.value = content;
+                };
+
+                // Read the file as text
+                reader.readAsText(file);
+            } else {
+                alert('Please select a file.');
+            }
+        });
+
+        // Append the file input to the document body
+        document.body.appendChild(fileInput);
+    }
     function addToCollection(collection, key, value) {
     // Check if the key already exists in the collection
     for (var i = 0; i < collection.length; i++) {
@@ -330,6 +362,9 @@ function handleDropdownItemClick(item) {
 
             showAlertModal();
         } else {
+            var keywords = {};
+            keywords['keywords'] =  document.getElementById('keywords').value;
+            selections.push(keywords);
             var jsonString = JSON.stringify(selections, null, 0);
 
             var hiddenInput = document.createElement('input');

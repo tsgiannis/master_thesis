@@ -50,7 +50,8 @@ def execute(arguments):
 
     # Get the input text from the keyboard
 
-    text_list = ['car','flash','light']
+    #text_list = ['car','flash','light']
+    text_list = arguments[3]['keywords'].split(' ')
     #text_keywords = str(input("Please enter some keywords:\n"))
     #text_list.append((text_keywords))
 
