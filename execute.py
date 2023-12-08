@@ -92,8 +92,9 @@ def execute(arguments):
             list_class.append(class_label)
         pred_class.append(list_class)
 
-    outputDF = pd.DataFrame()
+    #outputDF = pd.DataFrame()
 
-    outputDF['labels'] = pred_class
+    outputDF=pd.DataFrame(pred_class).T
+    outputDF.columns = text_list
     #print("the predicted codes (sorted) in labels", outputDF)
     return outputDF

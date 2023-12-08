@@ -29,7 +29,7 @@ def routename():
     #return jsonify({'status': 'success'})
     #return '', 204  # 204 status means 'No Content'
     df = execute(selected_options)
-    table_html = df.to_html(classes='table table-bordered table-striped', index=False)
+    table_html = df.to_html(classes='table table-bordered table-striped text-center', index=False).replace('<th>', '<th class="text-center" th style = "background-color: red">')
 
     # Render the template with the HTML content
     #return render_template('index.html', table_html=table_html)
