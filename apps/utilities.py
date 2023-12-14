@@ -1,9 +1,10 @@
 #https://hackersandslackers.com/simplify-your-python-projects-configuration/
 import toml
+import os
 # instantiate
 # Read local `config.toml` file.
 def load_config():
-    config = toml.load('resources\\config.toml')
+    config = toml.load(os.path.join('resources','config.toml'))#'resources\\config.toml')
     #print(config)
 
     #Datasets
