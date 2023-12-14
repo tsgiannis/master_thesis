@@ -4,8 +4,16 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
+<style>
+        .data-table tbody tr td {
+            cursor: pointer;
+            transition: transform 0.3s ease;  /* Add a smooth transition effect */
+        }
 
-
+        .data-table tbody tr td.active {
+            transform: scale(2);  /* Adjust the magnification factor as needed */
+        }
+    </style>
 
 
 {% endblock stylesheets %}
@@ -13,13 +21,56 @@
 {% block content %}
 
 <!-- Your Bootstrap table -->
-<div class="container mt-5">
+<div class="container mt-5 data-table">
     <!-- Insert the generated HTML table here -->
     {{ table_html | safe }}
 </div>
-
+<!-- Modal structure -->
+<!-- Modal structure -->
+<div id="myModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cell Content</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalContent"></div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script>
+   // Add click event to each cell using jQuery
+    $(document).on('click', '.data-table tbody tr td', function() {
+        // Your custom logic when a cell is clicked
+        console.log('Clicked:', $(this).text());
+
+        // Show modal with cell content
+        showModal(this);
+    });
+
+    // Add mouseover and mouseout events to toggle the 'active' class
+    $(document).on('mouseover', '.data-table tbody tr td', function() {
+        $(this).addClass('active');
+    });
+
+    $(document).on('mouseout', '.data-table tbody tr td', function() {
+        $(this).removeClass('active');
+    });
+
+    // Show modal function
+    function showModal(cell) {
+        var modalContent = $('#modalContent');
+        modalContent.empty();  // Clear existing content
+
+        // Add content to modal (you can customize this part)
+        modalContent.text($(cell).text());
+
+        // Show the modal using Bootstrap modal methods
+        $('#myModal').modal('show');
+    }
+</script>
 {% endblock javascripts %}
