@@ -76,9 +76,9 @@
   <ul class ="ml-auto">
                         <li class="input-group d-flex align-items-center mb-0">
                             <label class="toggle">
-	<input class="toggle-checkbox" type="checkbox">
+	<input class="toggle-checkbox" type="checkbox" id="toggle-view">
 	<div class="toggle-switch"></div>
-	<span class="toggle-label">Wi-fi</span>
+	<span class="toggle-label" id = "toggleinfo">Compact</span>
 </label>
                         </li>
   </ul>
@@ -107,6 +107,7 @@
             </div>
         </div>
     </div>
+    <div id="fullview">
     <div class="card">
         <div class="card-header text-center py-4">
             <h3 class="title">
@@ -299,6 +300,34 @@
         </button>
     </form>
 </div>
+<div id="compactview">
+    <div class="card-group">
+  <div class="card">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+  </div>
+  <div class="card">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+  </div>
+  <div class="card">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+  </div>
+</div>
+</div>
 
 {% endblock content %}
 
@@ -472,7 +501,24 @@ function handleDropdownItemClick(item) {
     //         // Do something with the value, such as adding it to an array or processing it further
     //     });
     // });
+var toggleview = document.getElementById('toggle-view');
+var compactview = document.getElementById('compactview');
+var fullview = document.getElementById('fullview');
+var toggleinfo = document.getElementById('toggleinfo');
+fullview.style.display = 'none';
 
+toggleview.onchange = function () {
+  if (toggleview.checked) {
+    compactview.style.display = 'none';
+    fullview.style.display = 'block';
+    toggleinfo.innerHTML="Full"
+  } else {
+    fullview.style.display = 'none';
+    compactview.style.display = 'block';
+    toggleinfo.innerHTML="Compact"
+
+  }
+};
 </script>
 
 {% endblock javascripts %}
