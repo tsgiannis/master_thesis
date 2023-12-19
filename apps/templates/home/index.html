@@ -63,9 +63,9 @@
   position: relative;
   top: 2px;
 }
-.card-header{
+/*.card-header{
     font-size: 25px !important;
-}
+}*/
 </style>
 
 
@@ -502,7 +502,7 @@ function handleDropdownItemClick(item) {
                 var activeItemText = item.textContent;
                 var value =activeItemText;
                 var key = item.parentElement.attributes.name.textContent
-                if (key.indexOf('_compact'))
+                if (key.indexOf('_compact')>0)
                 {
                 key_for_collection = key.substring(0,key.indexOf('_compact'))
                 }
