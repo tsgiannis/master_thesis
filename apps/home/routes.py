@@ -61,6 +61,7 @@ def index():
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
+    session['datasets'], session['language_models'], session['deep_learning'] = load_config()
     try:
 
         if not template.endswith('.html'):
