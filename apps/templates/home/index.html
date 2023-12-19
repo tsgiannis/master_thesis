@@ -281,28 +281,87 @@
 <div id="compactview">
     <div class="card-group">
   <div class="card">
-    <img class="card-img-top" src="..." alt="Card image cap">
+<div class="card-header card text-white bg-success d-flex align-items-center">Datasets</div>
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+
+            <form id="form_datasets_compact">  <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="submit" id="btnDatasets_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_datasets_compact"> Selection of Dataset</span>
+                            </button>
+                            <div name='datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                                {% for item in session['datasets'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" data-value="{{item['name']}}"
+                                   href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
     </div>
+
+  <div class="card">
+      <div class="card-header card text-white bg-warning d-flex align-items-center">Language Models</div>
+    <div class="card-body">
+
+
+            <form id="form_language_models_compact">
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_language_models_compact">Selection of Language Models</span>
+                            </button>
+                            <div name='language_models'  class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in session['language_models'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
   </div>
   <div class="card">
-    <img class="card-img-top" src="..." alt="Card image cap">
+      <div class="card-header card text-white bg-info d-flex align-items-center">Deep Learning Classifiers</div>
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-    </div>
-  </div>
-  <div class="card">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-    </div>
+
+
+            <form id = 'form_deep_learning_classifiers_compact'>
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_deeplearning_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_deep_learning_compact" data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
+                            </button>
+                            <div name='deep_learning_compact' class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in session['deep_learning'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
   </div>
 
 </div>
