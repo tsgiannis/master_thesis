@@ -12,67 +12,56 @@
     .custom-modal-content {
             background-color: #fff666; /* Red color */
         }
-      /* The switch - the box around the slider */
-.switch_c {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Hide default HTML checkbox */
-.switch_c input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider_c {
-  position: absolute;
+.toggle {
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  display: inline-block;
 }
 
-.slider_c:before {
-  position: absolute;
+.toggle-switch {
+  display: inline-block;
+  background: #ccc;
+  border-radius: 16px;
+  width: 58px;
+  height: 32px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+.toggle-switch:before, .toggle-switch:after {
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
 }
-
-input:checked + .slider_c {
-  background-color: #2196F3;
-}
-
-input:focus + .slider_c {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider_c:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider_c.round_c {
-  border-radius: 34px;
-}
-
-.slider_c.round_c:before {
+.toggle-switch:before {
+  display: block;
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
   border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: left 0.25s;
+}
+.toggle:hover .toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.toggle-checkbox:checked + .toggle-switch {
+  background: #56c080;
+}
+.toggle-checkbox:checked + .toggle-switch:before {
+  left: 30px;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
+}
+
+.toggle-label {
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
 }
 </style>
 
@@ -86,10 +75,11 @@ input:checked + .slider_c:before {
     <div >
   <ul class ="ml-auto">
                         <li class="input-group d-flex align-items-center mb-0">
-                            <label class="switch_c">
-                            <input type="checkbox_c">
-                            <span class="slider_c round_c"></span>
-</label>Compact/Full
+                            <label class="toggle">
+	<input class="toggle-checkbox" type="checkbox">
+	<div class="toggle-switch"></div>
+	<span class="toggle-label">Wi-fi</span>
+</label>
                         </li>
   </ul>
 </div>
