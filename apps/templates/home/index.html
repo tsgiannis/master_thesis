@@ -63,7 +63,7 @@
   position: relative;
   top: 2px;
 }
- .card-header{
+.card-header{
     font-size: 25px !important;
 }
 </style>
@@ -297,7 +297,7 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span id="span_datasets_compact"> Selection of Dataset</span>
                             </button>
-                            <div name='datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                            <div name='datasets_compact' class="dropdown-menu" aria-labelledby="Selection of Dataset">
                                 {% for item in session['datasets'] %}
                                 <a class="dropdown-item" onclick="handleDropdownItemClick(this)" data-value="{{item['name']}}"
                                    href="#">{{ item['name'] }}</a>
@@ -326,7 +326,7 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span id="span_language_models_compact">Selection of Language Models</span>
                             </button>
-                            <div name='language_models'  class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                            <div name='language_models_compact'  class="dropdown-menu" aria-labelledby="Selection of Language Models">
                                 {% for item in session['language_models'] %}
                                 <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
                                 {% endfor %}
@@ -400,6 +400,7 @@
 {% block javascripts %}
 
 <script>
+
     var selections = [
 
     ];
@@ -501,9 +502,23 @@ function handleDropdownItemClick(item) {
                 var activeItemText = item.textContent;
                 var value =activeItemText;
                 var key = item.parentElement.attributes.name.textContent
-                addToCollection(selections, key, value)
-                document.getElementById('span_' + key).textContent = value
+                if (key.indexOf('_compact'))
+                {
+                key_for_collection = key.substring(0,key.indexOf('_compact'))
+                }
+                else
+                key_for_collection = key
 
+                addToCollection(selections, key_for_collection, value)
+                document.getElementById('span_' + key).textContent = value
+                //var parent_name = item.parentNode.getAttribute('name');
+                //if (parent_name.indexOf('compact')) {
+                //document.getElementById('span_' + key+'_compact').textContent = value
+                //}
+                //else
+                //{
+                //document.getElementById('span_' + key).textContent = value
+                //}
             } else {
                 console.log('No form found.');
             }
@@ -584,6 +599,7 @@ toggleview.onchange = function () {
 
   }
 };
+</script>
 </script>
 
 {% endblock javascripts %}
