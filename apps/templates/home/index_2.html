@@ -1,0 +1,605 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Intelligent Classifier {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style xmlns="http://www.w3.org/1999/html">
+    .custom-btn-size {
+        font-size: 36px;
+    }
+           /* Custom background color for the modal content */
+    .custom-modal-content {
+            background-color: #fff666; /* Red color */
+        }
+.toggle {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.toggle-switch {
+  display: inline-block;
+  background: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+  border-radius: 16px;
+  width: 58px;
+  height: 32px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+.toggle-switch:before, .toggle-switch:after {
+  content: "";
+}
+.toggle-switch:before {
+  display: block;
+  background: linear-gradient(to top, #09203f 0%, #537895 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0.25, 0, 0.25);
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: left 0.25s;
+}
+.toggle:hover .toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.toggle-checkbox:checked + .toggle-switch {
+  background: linear-gradient(179.1deg, rgb(43, 170, 96) 2.3%, rgb(129, 204, 104) 98.3%);
+}
+.toggle-checkbox:checked + .toggle-switch:before {
+  left: 30px;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
+}
+
+.toggle-label {
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
+}
+/*.card-header{
+    font-size: 25px !important;
+}*/
+</style>
+
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+    <div >
+  <ul class ="ml-auto">
+                        <li class="input-group d-flex align-items-center mb-0">
+                            <label class="toggle">
+	<input class="toggle-checkbox" type="checkbox" id="toggle-view">
+	<div class="toggle-switch"></div>
+	<span class="toggle-label" id = "toggleinfo">Compact</span>
+</label>
+                        </li>
+  </ul>
+</div>
+    {% if selected_option %}
+    <div class="alert alert-success" role="alert">
+        {{ selected_option }}
+    </div>
+    {% endif %}
+   <div class="modal" id="selections_checker" tabindex="-1" role="dialog">
+        <div class="modal-dialog custom-modal-content" role="document">
+            <div class="modal-content custom-modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Selection Checker</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content for the modal -->
+                    <p>You missed to select all the options</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="fullview">
+    <div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Datasets
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in session['datasets'][0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in session['datasets'] %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+          <form id="form_datasets">  <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="submit" id="btnDatasets"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_datasets"> Selection of Dataset</span>
+                            </button>
+                            <div name='datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                                {% for item in session['datasets'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" data-value="{{item['name']}}"
+                                   href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Language Models
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in session['language_models'][0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in session['language_models'] %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            <form id="form_language_models">
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_language_models">Selection of Language Models</span>
+                            </button>
+                            <div name='language_models'  class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in session['language_models'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Deep Learning Classifiers
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in session['deep_learning'][0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in session['deep_learning'] %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            <form id = 'form_deep_learning_classifiers'>
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_deeplearning"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_deep_learning" data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
+                            </button>
+                            <div name='deep_learning' class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in session['deep_learning'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+</div>
+<div id="compactview">
+    <div class="card-group">
+  <div class="card">
+<div class="card-header card text-white bg-success d-flex align-items-center">Datasets</div>
+    <div class="card-body">
+
+
+            <form id="form_datasets_compact">  <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="submit" id="btnDatasets_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_datasets_compact"> Selection of Dataset</span>
+                            </button>
+                            <div name='datasets_compact' class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                                {% for item in session['datasets'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" data-value="{{item['name']}}"
+                                   href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+  <div class="card">
+      <div class="card-header card text-white bg-warning d-flex align-items-center font-weight-bold">Language Models</div>
+    <div class="card-body">
+
+
+            <form id="form_language_models_compact">
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_language_models_compact">Selection of Language Models</span>
+                            </button>
+                            <div name='language_models_compact'  class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in session['language_models'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+  </div>
+  <div class="card">
+      <div class="card-header card text-white bg-info d-flex align-items-center">Deep Learning Classifiers</div>
+    <div class="card-body">
+
+
+            <form id = 'form_deep_learning_classifiers_compact'>
+                <div class="form-row">
+
+                    <div class="form-row col-md-6">
+                        <div class="dropdown-toggle">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_deeplearning_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_deep_learning_compact" data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
+                            </button>
+                            <div name='deep_learning_compact' class="dropdown-menu" aria-labelledby="Selection of Language Models">
+                                {% for item in session['deep_learning'] %}
+                                <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{ item['name'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+  </div>
+
+</div>
+    </div>
+      <div class="container mt-5">
+    <h2 class="mb-4">Enter Keywords or Upload a File</h2>
+
+    <form id="keywordForm" onsubmit="submitForm(event)">
+        <div class="form-group">
+            <label for="keywords">Enter Keywords:</label>
+            <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Type keywords here">
+        </div>
+
+        <div class="form-group">
+            <label for="fileInput">Upload File:</label>
+            <input type="file" class="form-control-file" id="fileInput" name="fileInput" accept=".txt">
+        </div>
+
+        <button type="submit" onclick="readFile()" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+        <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
+        <!-- Include any form fields as needed -->
+
+        <!-- Fancy RUN button inside the form -->
+        <button type="button" class="btn btn-success  btn-lg btn-block custom-btn-size"  onclick="CheckNRun()" type="submit" >RUN
+        </button>
+    </form>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+
+    var selections = [
+
+    ];
+    function readFile() {
+        // Create a file input element
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.txt';
+
+        // Trigger a click on the file input
+        fileInput.click();
+
+        // Listen for the change event on the file input
+        fileInput.addEventListener('change', function () {
+            // Check if a file is selected
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+
+                // Define the callback function when file reading is complete
+                reader.onload = function (e) {
+                    // Display the content in the keywords input
+                    var lines = e.target.result.split('\n')
+                        .filter(function(line) {
+                            return line.trim() !== '';  // Trim and check if not empty
+                        })
+                        .slice(0, 60);
+
+                    // Combine the lines into a single string with space delimiters
+                    var content = lines.join(' ');
+
+                    // Display in the keywords input
+                    var keywordsInput = document.getElementById('keywords');
+                    keywordsInput.value = content;
+                };
+
+                // Read the file as text
+                reader.readAsText(file);
+            } else {
+                alert('Please select a file.');
+            }
+        });
+
+        // Append the file input to the document body
+        document.body.appendChild(fileInput);
+    }
+    function addToCollection(collection, key, value) {
+    // Check if the key already exists in the collection
+    for (var i = 0; i < collection.length; i++) {
+        var pair = collection[i];
+        if (key in pair) {
+            // Update the existing value for the key
+            pair[key] = value;
+            return;  // Exit the function after updating
+        }
+    }
+
+    // If the key doesn't exist, add a new key-value pair
+    if (collection.length < 3) {
+        var newPair = {};
+        newPair[key] = value;
+        collection.push(newPair);
+    } else {
+        console.log('Collection already has 3 pairs. Cannot add more.');
+    }
+}
+
+    // Function to add a new key-value pair to the collection
+    // Example usage
+    //addToCollection(myCollection, 'key4', 'value4'); // Will not be added due to the limit
+    //    $('.dropdown-item').on('click', function () {
+    //            var selectedValuex = $(this).data('value');
+    //            $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValuex + '">');
+    //        });
+    function showGenre(item) {
+        document.querySelectorAll('form').forEach(function (form) {
+            form.querySelectorAll('.dropdown-item.active').forEach(function (item) {
+                var value = item.getAttribute('data-value');
+                var key = item.parentElement.attributes('name')
+                addToCollection(selections, key, value)
+            })
+        })
+    }
+function handleDropdownItemClick(item) {
+            // Remove the 'active' class from all items
+            var form = item.closest('form');
+
+            if (form) {
+                // Remove the 'active' class from all items within the form
+                var dropdownItems = form.querySelectorAll('.dropdown-item');
+                dropdownItems.forEach(function (item) {
+                    item.classList.remove('active');
+                });
+
+                // Add the 'active' class to the clicked item
+                item.classList.add('active');
+
+                // Get the text content of the active item
+                var activeItemText = item.textContent;
+                var value =activeItemText;
+                var key = item.parentElement.attributes.name.textContent
+                if (key.indexOf('_compact')>0)
+                {
+                key_for_collection = key.substring(0,key.indexOf('_compact'))
+                }
+                else
+                key_for_collection = key
+
+                addToCollection(selections, key_for_collection, value)
+                document.getElementById('span_' + key).textContent = value
+                //var parent_name = item.parentNode.getAttribute('name');
+                //if (parent_name.indexOf('compact')) {
+                //document.getElementById('span_' + key+'_compact').textContent = value
+                //}
+                //else
+                //{
+                //document.getElementById('span_' + key).textContent = value
+                //}
+            } else {
+                console.log('No form found.');
+            }
+
+
+        }    //console.log(item.innerHTML,'111')
+    //var selectedValue = item.innerHTML;
+
+    //console.log(selectedValue+'!')
+    function CheckNRun() {
+        if (selections.length < 3) {
+
+            showAlertModal();
+        } else {
+            var keywords = {};
+            keywords['keywords'] =  document.getElementById('keywords').value;
+            selections.push(keywords);
+            var jsonString = JSON.stringify(selections, null, 0);
+
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'selections');
+            hiddenInput.setAttribute('value', jsonString);
+            hiddenInput.setAttribute('input_type', 'search');
+            document.getElementById('runForm').appendChild(hiddenInput);
+            var keywords = document.getElementById('keywords').value;
+            var fileInput = document.getElementById('fileInput');
+
+            if (keywords.trim() !== '') {
+                // Keywords were entered
+                alert('Keywords: ' + keywords);
+            } else if (fileInput.files.length > 0) {
+                // File was uploaded
+                var file = fileInput.files[0];
+                readFile(file);
+            } else {
+                // No keywords or file provided
+                alert('Please enter keywords or upload a file.');
+            }
+            document.getElementById('runForm').submit();
+        }
+    }
+
+    function showAlertModal() {
+        $('#selections_checker').modal('show');
+
+        // Close the modal after 2 seconds
+        setTimeout(function () {
+            $('#selections_checker').modal('hide');
+        }, 3000);
+    }
+
+    // Iterate over all forms on the page
+    // document.querySelectorAll('form').forEach(function(form) {
+    //     // Iterate over all dropdown-items within the form
+    //     form.querySelectorAll('.dropdown-item.active').forEach(function(item) {
+    //         // Access the value of each active dropdown-item
+    //         var value = item.getAttribute('data-value');
+    //         console.log('Form:', form, 'Dropdown Item Value:', value);
+    //         // Do something with the value, such as adding it to an array or processing it further
+    //     });
+    // });
+var toggleview = document.getElementById('toggle-view');
+var compactview = document.getElementById('compactview');
+var fullview = document.getElementById('fullview');
+var toggleinfo = document.getElementById('toggleinfo');
+fullview.style.display = 'none';
+
+toggleview.onchange = function () {
+  if (toggleview.checked) {
+    compactview.style.display = 'none';
+    fullview.style.display = 'block';
+    toggleinfo.innerHTML="Full"
+  } else {
+    fullview.style.display = 'none';
+    compactview.style.display = 'block';
+    toggleinfo.innerHTML="Compact"
+
+  }
+};
+</script>
+</script>
+
+{% endblock javascripts %}

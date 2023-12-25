@@ -1,0 +1,117 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Intelligent Classifier {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="content">
+<div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Datasets
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in session['datasets'][0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in session['datasets'] %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Language Models
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in session['language_models'][0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in session['language_models'] %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+<div class="card">
+        <div class="card-header text-center py-4">
+            <h3 class="title">
+                Deep Learning Classifiers
+            </h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    {% for key in session['deep_learning'][0]%}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+
+
+                </thead>
+                <tbody>
+                {% for item in session['deep_learning'] %}
+                <tr>
+                    {% for key in item%}
+                    {% if 'link' in key %}
+                    <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
+                    {% else %}
+                    <td>{{ item[key] }}</td>
+                    {% endif %}
+
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}
