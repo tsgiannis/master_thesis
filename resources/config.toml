@@ -62,3 +62,31 @@ object = 'example_classifier.h5'
 name = 'Bi-GRU'
 file = 'bi-gru_classifier.h5'
 object = 'example_classifier.h5'
+
+[['IPC level']]
+name = 'Level 1 - Sections'
+default = 'no'
+[['IPC level']]
+name = 'Level 2 - Classes'
+default = 'no'
+[['IPC level']]
+name = 'Level 3 - Subclasses'
+default = 'yes'
+[['IPC level']]
+name = 'Level 4 - Groups'
+default = 'no'
+[['IPC level']]
+name = 'Level 5 - Subgroups '
+default = 'no'
+
+[['Structure considered']]
+structure='flat'
+[['Structure considered']]
+structure='hierarcy'
+
+[['Ensemble modeling']]
+structure='activated'
+default = 'no'
+[['Ensemble modeling']]
+structure='deactivated'
+default = 'yes'
