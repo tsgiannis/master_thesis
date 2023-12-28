@@ -79,6 +79,11 @@ default = 'no'
 name = 'Level 5 - Subgroups '
 default = 'no'
 
+[['Single/Multi label']]
+label='single label - main classification code'
+[['Single/Multi label']]
+structure='multi label - all IPCR codes'
+
 [['Structure considered']]
 structure='flat'
 [['Structure considered']]
