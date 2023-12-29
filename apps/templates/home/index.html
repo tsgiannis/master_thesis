@@ -472,11 +472,45 @@ hr {
                                         <button class="btn btn-secondary dropdown-toggle" type="submit"
                                                 id="btnIPC_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span id="span_IPC_compact"> Selection of Dataset</span>
+                                            <span id="span_IPC_compact"> Selection of IPCs</span>
                                         </button>
-                                        <div name='datasets_compact' class="dropdown-menu"
+                                        <div name='ipcs_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of IPCs">
-                                            {% for item in session['datasets'] %}
+                                            {% for item in session['ipcs'] %}
+                                            <a class="dropdown-item" onclick="handleDropdownItemClick(this)"
+                                               data-value="{{item['name']}}"
+                                               href="#">{{ item['name'] }}</a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-90">
+                    <div class="card-header card text-white bg-success d-flex align-items-center">Single - Multi Label</div>
+                    <div class="card-body">
+
+
+                        <form id="form_single-multi_compact">
+                            <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
+                            <div class="form-row">
+
+                                <div class="form-row col-md-6">
+                                    <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle" type="submit"
+                                                id="btnSML_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_SML_compact"> Selection of Single / Multi</span>
+                                        </button>
+                                        <div name='sml_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of Single / Multi labels">
+                                            {% for item in session['single_multi'] %}
                                             <a class="dropdown-item" onclick="handleDropdownItemClick(this)"
                                                data-value="{{item['name']}}"
                                                href="#">{{ item['name'] }}</a>

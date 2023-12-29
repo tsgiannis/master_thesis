@@ -45,7 +45,7 @@ def routename():
 def index():
 
     #data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
-    session['datasets'], session['language_models'], session['deep_learning'] = load_config()
+    session['datasets'], session['language_models'], session['deep_learning'],session['ipcs'],session['single_multi'] = load_config()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
 
@@ -61,7 +61,7 @@ def index():
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
-    session['datasets'], session['language_models'], session['deep_learning'] = load_config()
+    session['datasets'], session['language_models'], session['deep_learning'],session['ipcs'],session['single_multi'] = load_config()
     try:
 
         if not template.endswith('.html'):

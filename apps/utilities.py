@@ -14,7 +14,9 @@ def load_config():
     #deep learning classifiers
     classifiers = config['Deep Learning classifier']
         #Sections
-    return datasets,language_models,classifiers
+    ipcs = config['IPC level']
+    single_multi = config['Single_Multi_label']
+    return datasets,language_models,classifiers,ipcs,single_multi
     # Retrieving a value
     #config['project']['author']
     #config.get('project').get('author')
