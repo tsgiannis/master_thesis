@@ -16,6 +16,12 @@ link=''
 file = 'abstract_3.csv'
 object = 'encoder.pickle'
 sections = 'Title, Abstract, Description, Claims'
+[[datasets]]
+name='Risch'
+link=''	
+file = 'encoder_clefip_abstract_60_blstm_Risch.pickle'
+object = 'encoder_clefip_abstract_60_blstm_Risch.pickle'
+sections = 'Title, Abstract, Description, Claims'
 
 [[language_models]]
 name = 'wiki-news-300d-1M.vec'
@@ -31,6 +37,13 @@ object = 'tokenizer.pickle'
 description = '1 million word vectors trained with subword infomation on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
 group_name = 'FastText (300-D)'
 link = 'https://fasttext.cc'
+[[language_models]]
+name = 'tokenizer_clefip_abstract_60_blstm_Risch'
+file = 'tokenizer_clefip_abstract_60_blstm_Risch.zip'
+object = 'tokenizer_clefip_abstract_60_blstm_Risch.pickle'
+description = 'Rish Tokenizer.'
+group_name = 'Rish'
+link = 'https://rish.cc'
 [[language_models]]
 name='crawl-300d-2M.vec'
 file = 'crawl-300d-2M.vec.zip'
@@ -62,6 +75,10 @@ object = 'example_classifier.h5'
 name = 'Bi-GRU'
 file = 'bi-gru_classifier.h5'
 object = 'example_classifier.h5'
+[['Deep Learning classifier']]
+name = 'Risch_Deep'
+file = 'clefip_abstract_60_blstm_Risch.h5'
+object = 'clefip_abstract_60_blstm_Risch.h5'
 
 [['IPC level']]
 name = 'Level 1 - Sections'
