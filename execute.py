@@ -29,7 +29,7 @@ from apps.utilities import *
 def execute(arguments):
 # Load the model
 
-    datasets,language_models, deep_learning = load_config()
+    datasets,language_models, deep_learning,ipcs,single_multi = load_config()
     encoder_file = get_element_by_value(datasets, 'name', arguments[0]['datasets'])['object']
     word_vec_file = get_element_by_value(language_models, 'name', arguments[1]['language_models'])['object']
     classifier_file = get_element_by_value(deep_learning, 'name', arguments[2]['deep_learning'])['object']
