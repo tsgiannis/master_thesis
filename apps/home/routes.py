@@ -13,6 +13,7 @@ from . import blueprint
 from ..main_code import *
 from execute import execute
 from ..utilities import *
+from ..text_analysis import *
 
 #https://stackoverflow.com/questions/71285841/submit-flask-form-without-re-rendering-the-page#:~:text=If%20you%20want%20to%20submit,submitted%20in%20the%20same%20format.
 
@@ -28,6 +29,8 @@ def routename():
     #print(selected_option          )
     #return jsonify({'status': 'success'})
     #return '', 204  # 204 status means 'No Content'
+    meaningful,meaningless = keywords_processing(get_value_out_of_list_of_dicts(selected_options,'keywords'))
+    selected_options = replace_dictionary_value(selected_options,'keywords',' '.join(meaningful))
     df = execute(selected_options)
     table_html = df.to_html(classes='table table-bordered table-striped text-center', index=False).replace('<th>', '<th class="text-center" th style = "background-color: red">')
 

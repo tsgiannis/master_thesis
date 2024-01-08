@@ -77,7 +77,9 @@ hr {
   border: 0;
   border-top: 1px solid rgba(255, 230, 255, 0.2);
 }
-
+   .wrap-text-btn {
+        white-space: normal;
+    }
 
 </style>
 
@@ -123,14 +125,15 @@ hr {
         </div>
     </div>
      <div class="container">
-    <h2 class="mb-4">Enter Keywords or Upload a File</h2>
+         <h2 class="mb-4">Enter Keywords or Upload a File</h2>
+             <div class="row">
 
     <form id="keywordForm" onsubmit="submitForm(event)">
         <div class="input-group-append">
             <label for="keywords">Enter Keywords:</label>
             <input type="text" class="form-control align-middle" id="keywords" name="keywords" placeholder="Type keywords here">
 
-    <button class="btn btn-outline-secondary align-middle" type="button">Functionality</button>
+    <button class="btn btn-outline-secondary align-middle wrap-text-btn" type="button">Function<br>ality</button>
 
 
         </div>
@@ -142,8 +145,24 @@ hr {
 
         <button type="submit" onclick="readFile()" class="btn btn-primary">Upload</button>
     </form>
-</div>
+         <div class="col-md-6">
+            <div id="wordTable">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Good Words</th>
+                            <th>Bad Words</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Add rows with good and bad words dynamically here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
+</div>
+         </div>
     <hr/>
     <!-- Modal -->
 <div  class = "modal" id="resultsToDisplay" style="display: none;">
@@ -463,16 +482,16 @@ hr {
                     <div class="card-body">
 
 
-                        <form id="form_IPC_compact">
+                        <form id="form_IPCs_compact">
                             <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
                             <div class="form-row">
 
                                 <div class="form-row col-md-6">
                                     <div class="dropdown-toggle">
                                         <button class="btn btn-secondary dropdown-toggle" type="submit"
-                                                id="btnIPC_compact"
+                                                id="btnIPCs_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span id="span_IPC_compact"> Selection of IPCs</span>
+                                            <span id="span_ipcs_compact"> Selection of IPCs</span>
                                         </button>
                                         <div name='ipcs_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of IPCs">
@@ -506,7 +525,7 @@ hr {
                                         <button class="btn btn-secondary dropdown-toggle" type="submit"
                                                 id="btnSML_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span id="span_SML_compact"> Selection of Single / Multi</span>
+                                            <span id="span_sml_compact"> Selection of Single / Multi</span>
                                         </button>
                                         <div name='sml_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of Single / Multi labels">
