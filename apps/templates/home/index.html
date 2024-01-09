@@ -158,8 +158,8 @@ hr {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Good Words</th>
-                            <th>Bad Words</th>
+                            <th>Included keyWords</th>
+                            <th>Excluded keyWords</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -809,6 +809,7 @@ function updateTableRows(meaningful, meaningless) {
     // Add new rows based on 'meaningful' and 'meaningless' words
      for (let i = 0; i < maxRows; i++) {
                 const row = tableBody.insertRow();
+                row.style.cssText = '';
 
                 // Insert cell for 'meaningful' words in the first column
                 const cellMeaningful = row.insertCell(0);

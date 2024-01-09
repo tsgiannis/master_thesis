@@ -10815,7 +10815,7 @@ hr {
   margin-bottom: 1rem; }
 
 .table > tbody > tr > td {
-  color: rgba(255, 255, 255, 0.7) !important; }
+  //color: rgba(255, 255, 255, 0.7) !important; }
   .table > tbody > tr > td .photo {
     height: 30px;
     width: 30px;
