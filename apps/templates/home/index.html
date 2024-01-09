@@ -814,6 +814,7 @@ function updateTableRows(meaningful, meaningless) {
                 const cellMeaningful = row.insertCell(0);
                 if (i < meaningful.length) {
                     cellMeaningful.textContent = meaningful[i];
+                    cellMeaningful.style.cssText  = '';
                     cellMeaningful.classList.add('meaningful-word');
                 }
 
