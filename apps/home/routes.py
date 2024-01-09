@@ -39,7 +39,14 @@ def routename():
     return render_template('home/predictions.html',  table_html=table_html)
     # Process the selected option as needed
     #return f'Selected option: {selected_option}'
+@blueprint.route('/api/keyword_processing', methods=['POST'])
+def functionality_check():
+    keywords_dict = {}
 
+    meaningful,meaningless = keywords_processing(request.get_json()['keywords'])
+    keywords_dict['meaningful'] = meaningful
+    keywords_dict['meaningless'] = meaningless
+    return jsonify(keywords_dict)
 
 
 

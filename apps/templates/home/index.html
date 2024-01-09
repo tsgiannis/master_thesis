@@ -81,6 +81,14 @@ hr {
         white-space: normal;
     }
 
+    .meaningful-word {
+            color: green !important;
+        }
+
+        .meaningless-word {
+            color: red;
+        }
+
 </style>
 
 
@@ -133,7 +141,7 @@ hr {
             <label for="keywords">Enter Keywords:</label>
             <input type="text" class="form-control align-middle" id="keywords" name="keywords" placeholder="Type keywords here">
 
-    <button class="btn btn-outline-secondary align-middle wrap-text-btn" type="button">Function<br>ality</button>
+    <button class="btn btn-outline-secondary align-middle wrap-text-btn" type="button" onclick="keyword_processing()">Function<br>ality</button>
 
 
         </div>
@@ -773,6 +781,51 @@ hr {
 
         }
     };
+    // Assume this is triggered by some user action or event
+function keyword_processing() {
+    var keywords = document.getElementById('keywords').value
+    fetch('/api/keyword_processing', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ keywords }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        updateTableRows(data['meaningful'],data['meaningless']);
+        // Do something with the response from the Python function
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+function updateTableRows(meaningful, meaningless) {
+    const tableBody = document.querySelector('#wordTable tbody');
+
+    // Clear existing rows
+    tableBody.innerHTML = '';
+    const maxRows = Math.max(meaningful.length, meaningless.length);
+    // Add new rows based on 'meaningful' and 'meaningless' words
+     for (let i = 0; i < maxRows; i++) {
+                const row = tableBody.insertRow();
+
+                // Insert cell for 'meaningful' words in the first column
+                const cellMeaningful = row.insertCell(0);
+                if (i < meaningful.length) {
+                    cellMeaningful.textContent = meaningful[i];
+                    cellMeaningful.classList.add('meaningful-word');
+                }
+
+                // Insert cell for 'meaningless' words in the second column
+                const cellMeaningless = row.insertCell(1);
+                if (i < meaningless.length) {
+                    cellMeaningless.textContent = meaningless[i];
+                     cellMeaningless.classList.add('meaningless-word');
+                }
+            }
+}
+
 </script>
 </script>
 
