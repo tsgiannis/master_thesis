@@ -1,6 +1,8 @@
 #https://hackersandslackers.com/simplify-your-python-projects-configuration/
 import toml
 import os
+from functools import wraps
+from flask import  session
 # instantiate
 # Read local `config.toml` file.
 def load_config():
@@ -60,7 +62,35 @@ def replace_dictionary_value(inputlist, dict_key,new_value):
             input_dict[dict_key] = new_value
             break  # Exit the loop once 'keywords' is found
     return inputlist
+
+
+
+
+
+
+# Custom decorator to read the contents of a directory
+def read_directory(directory_name):
+    def decorator(view_func):
+        @wraps(view_func)
+        def decorated_view(*args, **kwargs):
+            # Construct the directory path based on the operating system
+            ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            directory_path = os.path.join(ROOT_DIRECTORY, directory_name)
+
+            # Read the contents of the specified directory
+            directory_contents = os.listdir(directory_path)
+
+            # Call the original view function with the directory contents
+            session['directories'] = directory_contents
+            return view_func(*args, **kwargs)
+
+        return decorated_view
+
+    return decorator
+
+
 if __name__ == '__main__':
     #load_config()
     a,b,c = load_config()
     print(a)
+

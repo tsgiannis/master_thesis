@@ -15,6 +15,12 @@ from execute import execute
 from ..utilities import *
 from ..text_analysis import *
 
+
+
+
+
+
+
 #https://stackoverflow.com/questions/71285841/submit-flask-form-without-re-rendering-the-page#:~:text=If%20you%20want%20to%20submit,submitted%20in%20the%20same%20format.
 
 @blueprint.route('/route',methods=['POST'])
@@ -52,8 +58,9 @@ def functionality_check():
 
 @blueprint.route('/index')
 @login_required
+@read_directory(directory_name='resources')
 def index():
-
+    directory_contents = session.get('directories', [])
     #data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
     session['datasets'], session['language_models'], session['deep_learning'],session['ipcs'],session['single_multi'] = load_config()
     # contains_list_ = contains_list_recursive(datasets)
