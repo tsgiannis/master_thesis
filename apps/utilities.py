@@ -73,15 +73,32 @@ def read_directory(directory_name):
     def decorator(view_func):
         @wraps(view_func)
         def decorated_view(*args, **kwargs):
+            list_directories = []
             # Construct the directory path based on the operating system
             ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             directory_path = os.path.join(ROOT_DIRECTORY, directory_name)
 
             # Read the contents of the specified directory
             directory_contents = os.listdir(directory_path)
+            for item in directory_contents:
+                if os.path.isdir(os.path.join(directory_path,item)):
+                    list_directories.append(item)
+                # Call the original view function with the directory contents
+            #dismember the directory names according to the preagreed naming
+            datasets = [item.split('_')[0] for item in list_directories]
+            language_models = [item.split('_')[1] for item in list_directories]
+            classifiers =  [item.split('_')[2] for item in list_directories]
+            IPC_level = [item.split('_')[3] for item in list_directories]
+            single_multi = [item.split('_')[4] for item in list_directories]
+            noofwords = [item.split('_')[5] for item in list_directories]
+            #Populate session elements
+            session['datasets'] = set(datasets)
+            session['language_models'] =set(language_models)
+            session['classifiers'] = set(classifiers)
+            session['IPC_level'] = set(IPC_level)
+            session['single_multi'] = set(single_multi)
+            session['noofwords'] = set(noofwords)
 
-            # Call the original view function with the directory contents
-            session['directories'] = directory_contents
             return view_func(*args, **kwargs)
 
         return decorated_view
