@@ -10,7 +10,7 @@
             transition: transform 0.3s ease;  /* Add a smooth transition effect */
         }
 
-        .data-table tbody tr td.active {
+        .data-table tbody tr td.active:not(:has(input[type="checkbox"])) {
             transform: scale(2);  /* Adjust the magnification factor as needed */
         }
         input.checkbox-cell  {
