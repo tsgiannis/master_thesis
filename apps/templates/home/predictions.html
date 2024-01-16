@@ -5,7 +5,7 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 <style>
-        .data-table tbody tr td {
+        .data-table tbody tr td:not(:has(input[type="checkbox"])) {
             cursor: pointer;
             transition: transform 0.3s ease;  /* Add a smooth transition effect */
         }
@@ -17,7 +17,7 @@
     /* Add any additional styles here */
     width: 25px; /* Adjust the width as needed */
     height: 25px;
-
+    border-radius: 4px;
 }
     </style>
 
@@ -78,5 +78,13 @@
         // Show the modal using Bootstrap modal methods
         $('#myModal').modal('show');
     }
+   function toggleCheckmark(checkbox, resultType) {
+    var checkmark = checkbox.nextSibling;
+    if (checkbox.checked) {
+      checkmark.style.display = 'inline';
+    } else {
+      checkmark.style.display = 'none';
+    }
+}
 </script>
 {% endblock javascripts %}
