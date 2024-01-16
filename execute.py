@@ -50,10 +50,10 @@ def execute(arguments):
 
     # Get the input text from the keyboard
 
-    #text_list = ['car','flash','light']
-    text_list = arguments[3]['keywords'].split(' ')
+    text_list = []
+    text_keywords = arguments[3]['keywords']
     #text_keywords = str(input("Please enter some keywords:\n"))
-    #text_list.append((text_keywords))
+    text_list.append((text_keywords))
 
     # Create an input dataframe
 

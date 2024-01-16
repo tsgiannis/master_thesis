@@ -82,22 +82,25 @@ def read_directory(directory_name):
             directory_contents = os.listdir(directory_path)
             for item in directory_contents:
                 if os.path.isdir(os.path.join(directory_path,item)):
-                    list_directories.append(item)
+                    split_result = item.split('_')
+                    if len(split_result) == 6 :
+                        list_directories.append(item)
                 # Call the original view function with the directory contents
             #dismember the directory names according to the preagreed naming
-            datasets = [item.split('_')[0] for item in list_directories]
-            language_models = [item.split('_')[1] for item in list_directories]
-            classifiers =  [item.split('_')[2] for item in list_directories]
-            IPC_level = [item.split('_')[3] for item in list_directories]
-            single_multi = [item.split('_')[4] for item in list_directories]
-            noofwords = [item.split('_')[5] for item in list_directories]
-            #Populate session elements
-            session['datasets'] = set(datasets)
-            session['language_models'] =set(language_models)
-            session['classifiers'] = set(classifiers)
-            session['IPC_level'] = set(IPC_level)
-            session['single_multi'] = set(single_multi)
-            session['noofwords'] = set(noofwords)
+            if len(list_directories) >0 :
+                datasets = [item.split('_')[0] for item in list_directories]
+                language_models = [item.split('_')[1] for item in list_directories]
+                classifiers =  [item.split('_')[2] for item in list_directories]
+                IPC_level = [item.split('_')[3] for item in list_directories]
+                single_multi = [item.split('_')[4] for item in list_directories]
+                noofwords = [item.split('_')[5] for item in list_directories]
+                #Populate session elements
+                # session['datasets'] = set(datasets)
+                # session['language_models'] =set(language_models)
+                # session['classifiers'] = set(classifiers)
+                # session['IPC_level'] = set(IPC_level)
+                # session['single_multi'] = set(single_multi)
+                # session['noofwords'] = set(noofwords)
 
             return view_func(*args, **kwargs)
 

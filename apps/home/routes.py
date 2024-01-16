@@ -38,7 +38,13 @@ def routename():
     meaningful,meaningless = keywords_processing(get_value_out_of_list_of_dicts(selected_options,'keywords'))
     selected_options = replace_dictionary_value(selected_options,'keywords',' '.join(meaningful))
     df = execute(selected_options)
-    table_html = df.to_html(classes='table table-bordered table-striped text-center', index=False).replace('<th>', '<th class="text-center" th style = "background-color: red">')
+    # Add new columns with checkboxes
+    df['Success'] = '<input type="checkbox" class="clickable checkbox-cell" onclick="toggleCheckmark(this, \'success\')">'
+    df['Failure'] = '<input type="checkbox" class="clickable checkbox-cell" onclick="toggleCheckmark(this, \'failure\')">'
+    # df['Success'] += '<span class="checkmark">✔️</span>'
+    # df['Failure'] += '<span class="checkmark">❌</span>'
+
+    table_html = df.to_html(classes='table table-bordered table-striped text-center', index=False,escape=False).replace('<th>', '<th class="text-center" th style = "background-color: red">')
 
     # Render the template with the HTML content
     #return render_template('index.html', table_html=table_html)
