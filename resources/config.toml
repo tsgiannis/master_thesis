@@ -3,13 +3,15 @@ name = 'CLEFIP-0.54M'
 link = 'https://github.com/ekamater/CLEFIP-0.54M'
 file = 'abstract.csv'
 object = 'encoder.pickle'
-sections = 'Title, Abstract, Description, Claims, Applicants, Inventors'
+[[datasets.sections]]
+sections_fields = ['Title', 'Abstract', 'Description', 'Claims', 'Applicants', 'Inventors']
 [[datasets]] 
 name = 'USPTO-2Μ'
 link = 'https://github.com/JasonHoou/USPTO-2M'
 file = 'abstract_2.csv'
 object = 'encoder.pickle'
-sections = 'Title, Abstract, Concatenated Title and Abstract'
+[[datasets.sections]]
+sections_fields = ['Title', 'Abstract', 'Concatenated Title and Abstract']
 [[datasets]]
 name='WIPO'
 link=''	
@@ -112,3 +114,8 @@ default = 'no'
 [['Ensemble modeling']]
 structure='deactivated'
 default = 'yes'
+
+[['no_of_words']]
+value = 60
+[['no_of_words']]
+value = 100

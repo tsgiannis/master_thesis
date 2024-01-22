@@ -64,6 +64,21 @@ def replace_dictionary_value(inputlist, dict_key,new_value):
     return inputlist
 
 
+def custom_dict_counter(dictionary):
+    elements_keys = 0
+
+    for key, value in dictionary.items():
+        elements_keys +=  1
+        sub_key = bool(False)
+
+        if isinstance(value, list):
+            for value_item in  value:
+                for key, value in value_item.items():
+                    if isinstance(value,list):
+                        if not sub_key :
+                            elements_keys += 1
+                            sub_key = bool(True)
+    return elements_keys
 
 
 
@@ -74,6 +89,8 @@ def read_directory(directory_name):
         @wraps(view_func)
         def decorated_view(*args, **kwargs):
             list_directories = []
+            config = toml.load(os.path.join('resources', 'config.toml'))  # 'resources\\config.toml')
+            elements_count  = custom_dict_counter(config)
             # Construct the directory path based on the operating system
             ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             directory_path = os.path.join(ROOT_DIRECTORY, directory_name)
@@ -83,17 +100,20 @@ def read_directory(directory_name):
             for item in directory_contents:
                 if os.path.isdir(os.path.join(directory_path,item)):
                     split_result = item.split('_')
-                    if len(split_result) == 6 :
+                    if len(split_result) == elements_count :
                         list_directories.append(item)
                 # Call the original view function with the directory contents
             #dismember the directory names according to the preagreed naming
             if len(list_directories) >0 :
-                datasets = [item.split('_')[0] for item in list_directories]
-                language_models = [item.split('_')[1] for item in list_directories]
-                classifiers =  [item.split('_')[2] for item in list_directories]
-                IPC_level = [item.split('_')[3] for item in list_directories]
-                single_multi = [item.split('_')[4] for item in list_directories]
+                methods = [item.split('_')[0] for item in list_directories]
+                languagemodels = [item.split('_')[1] for item in list_directories]
+                datasets =  [item.split('_')[2] for item in list_directories]
+                ipclevels = [item.split('_')[3] for item in list_directories]
+                sections = [item.split('_')[4] for item in list_directories]
                 noofwords = [item.split('_')[5] for item in list_directories]
+                singlemulti = [item.split('_')[6] for item in list_directories]
+                structures = [item.split('_')[7] for item in list_directories]
+                ensembles = [item.split('_')[8] for item in list_directories]
                 #Populate session elements
                 # session['datasets'] = set(datasets)
                 # session['language_models'] =set(language_models)
