@@ -91,6 +91,9 @@ hr {
     .custom-dropdown {
         width: 90%;
     }
+   a.disabled {
+    pointer-events: none;
+}
 </style>
 
 
@@ -394,8 +397,11 @@ hr {
                                         <div name='language_models_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of Language Models">
                                             {% for item in session['deep_learning'] %}
-                                            <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
-                                                item['name'] }}</a>
+                                            {% if item['name'].lower() not in session['dynamic.methods'] %}
+                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+        {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -535,13 +541,7 @@ hr {
   </div>
   </div>
   <!-- Add more rows as needed -->
-
 </div>
-
-
-
-
-   </div>
     <hr/>
     <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
     <!-- Include any form fields as needed -->
@@ -552,6 +552,12 @@ hr {
     </button>
 </form>
 </div>
+</div>
+
+
+
+
+
 
 
 

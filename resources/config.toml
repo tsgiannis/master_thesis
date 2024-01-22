@@ -1,28 +1,18 @@
 [[datasets]] 
 name = 'CLEFIP-0.54M'
 link = 'https://github.com/ekamater/CLEFIP-0.54M'
-file = 'abstract.csv'
 object = 'encoder.pickle'
 [[datasets.sections]]
 sections_fields = ['Title', 'Abstract', 'Description', 'Claims', 'Applicants', 'Inventors']
 [[datasets]] 
 name = 'USPTO-2Μ'
 link = 'https://github.com/JasonHoou/USPTO-2M'
-file = 'abstract_2.csv'
 object = 'encoder.pickle'
 [[datasets.sections]]
 sections_fields = ['Title', 'Abstract', 'Concatenated Title and Abstract']
 [[datasets]]
 name='WIPO'
-link=''	
-file = 'abstract_3.csv'
 object = 'encoder.pickle'
-sections = 'Title, Abstract, Description, Claims'
-[[datasets]]
-name='Risch'
-link=''	
-file = 'encoder_clefip_abstract_60_blstm_Risch.pickle'
-object = 'encoder_clefip_abstract_60_blstm_Risch.pickle'
 sections = 'Title, Abstract, Description, Claims'
 
 [[language_models]]
@@ -70,7 +60,7 @@ name = 'GRU'
 file = 'gru_classifier.h5'
 object = 'example_classifier.h5'
 [['Deep Learning classifier']]
-name = 'Bi-LSTM'
+name = 'BiLSTM'
 file = 'bi-lstm_classifier.h5'
 object = 'example_classifier.h5'
 [['Deep Learning classifier']]
