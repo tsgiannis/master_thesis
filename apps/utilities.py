@@ -115,12 +115,15 @@ def read_directory(directory_name):
                 structures = [item.split('_')[7] for item in list_directories]
                 ensembles = [item.split('_')[8] for item in list_directories]
                 #Populate session elements
-                # session['datasets'] = set(datasets)
-                # session['language_models'] =set(language_models)
-                # session['classifiers'] = set(classifiers)
-                # session['IPC_level'] = set(IPC_level)
-                # session['single_multi'] = set(single_multi)
-                # session['noofwords'] = set(noofwords)
+                session['dynamic.methods'] = list(set(methods))
+                session['dynamic.languagemodels'] =list(set(languagemodels))
+                session['dynamic.datasets'] = list(set(datasets))
+                session['dynamic.ipclevels'] = list(set(ipclevels))
+                session['dynamic.sections'] = list(set(sections))
+                session['dynamic.noofwords'] = list(set(noofwords))
+                session['dynamic.singlemulti'] = list(set(singlemulti))
+                session['dynamic.structures'] = list(set(structures))
+                session['dynamic.ensembles'] = list(set(ensembles))
 
             return view_func(*args, **kwargs)
 
