@@ -88,9 +88,7 @@ hr {
         .meaningless-word {
             color: red;
         }
-    .custom-dropdown {
-        width: 90%;
-    }
+
 </style>
 
 
@@ -378,40 +376,49 @@ hr {
 
     </div>
     <div id="compactview">
-<div class="container mt-4 text-center">
-  <div class="row justify-content-center">
+
+
+        <div class="btn-group-vertical">
+
+                
+                    <div class="row justify-content-center">
     <!-- Row 1 -->
     <div class="col-md-6">
-      <div class="form-group row align-items-center">
-        <label for="inputState_methods_compact" class="col-sm-4 col-form-label text-center bg-success font-weight-bold" style="height: 10%;">Machine Learning Methods</label>
-        <div class="col-md-8 h-80">
-            <div class="dropdown-toggle">
-                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
-                                                id="inputState_methods_compact"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span id="span_methods_compact">Selection of ML Methods</span>
-                                        </button>
-                                        <div name='language_models_compact' class="dropdown-menu"
-                                             aria-labelledby="Selection of Language Models">
-                                            {% for item in session['deep_learning'] %}
-                                            <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
-                                                item['name'] }}</a>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-        </div>
-      </div>
+      <label for="dropdown1">Label 1</label>
+      <select class="form-control" id="dropdown1">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+      </select>
     </div>
   </div>
 
   <div class="row mt-2 justify-content-center">
     <!-- Row 2 -->
     <div class="col-md-6">
-      <div class="form-group row align-items-center">
-        <label for="inputState_language_compact" class="col-sm-4 col-form-label text-center bg-primary font-weight-bold" style="height: 16%;">Language Models</label>
-        <div class="col-md-8 h-80">
-            <div class="dropdown-toggle">
-                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+      <label for="dropdown2">Label 2</label>
+      <select class="form-control" id="dropdown2">
+        <option value="optionA">Option A</option>
+        <option value="optionB">Option B</option>
+        <option value="optionC">Option C</option>
+      </select>
+    </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-90">
+                    <div class="card-header card text-white bg-warning d-flex align-items-center font-weight-bold">
+                        Language Models
+                    </div>
+                    <div class="card-body">
+
+
+                        <form id="form_language_models_compact">
+                            <div class="form-row">
+
+                                <div class="form-row col-md-6">
+                                    <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
                                                 id="inputState_language_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span id="span_language_models_compact">Selection of Language Models</span>
@@ -424,124 +431,122 @@ hr {
                                             {% endfor %}
                                         </div>
                                     </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
-    <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown3" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Datasets</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown3">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-      <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
-    <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-info font-weight-bold">IPC Levels</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown4">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-      <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
-    <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Patent Sections</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown5">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-        <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
-    <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-info font-weight-bold">Number of words</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown6">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-        <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
-    <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-warning font-weight-bold">Single/Multi Labels</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown7">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
-</div>
-    <div class="row mt-2 justify-content-center">
-<div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Structure</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown8">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
+                                </div>
+                            </div>
 
-  </div>
-    <div class="row mt-2 justify-content-center">
-<div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-danger font-weight-bold">Ensemble</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown9">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
+                        </form>
 
-  </div>
-  </div>
-  <!-- Add more rows as needed -->
-
-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-90">
+                    <div class="card-header card text-white bg-info d-flex align-items-center">Deep Learning
+                        Classifiers
+                    </div>
+                    <div class="card-body">
 
 
+                        <form id='form_deep_learning_classifiers_compact'>
+                            <div class="form-row">
+
+                                <div class="form-row col-md-6">
+                                    <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                id="inputState_deeplearning_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_deep_learning_compact"
+                                                  data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
+                                        </button>
+                                        <div name='deep_learning_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of Language Models">
+                                            {% for item in session['deep_learning'] %}
+                                            <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
+                                                item['name'] }}</a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-90">
+                    <div class="card-header card text-white bg-success d-flex align-items-center">IPCs</div>
+                    <div class="card-body">
 
 
-   </div>
+                        <form id="form_IPCs_compact">
+                            <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
+                            <div class="form-row">
+
+                                <div class="form-row col-md-6">
+                                    <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle" type="submit"
+                                                id="btnIPCs_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_ipcs_compact"> Selection of IPCs</span>
+                                        </button>
+                                        <div name='ipcs_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of IPCs">
+                                            {% for item in session['ipcs'] %}
+                                            <a class="dropdown-item" onclick="handleDropdownItemClick(this)"
+                                               data-value="{{item['name']}}"
+                                               href="#">{{ item['name'] }}</a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-90">
+                    <div class="card-header card text-white bg-success d-flex align-items-center">Single - Multi Label</div>
+                    <div class="card-body">
+
+
+                        <form id="form_single-multi_compact">
+                            <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
+                            <div class="form-row">
+
+                                <div class="form-row col-md-6">
+                                    <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle" type="submit"
+                                                id="btnSML_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_sml_compact"> Selection of Single / Multi</span>
+                                        </button>
+                                        <div name='sml_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of Single / Multi labels">
+                                            {% for item in session['single_multi'] %}
+                                            <a class="dropdown-item" onclick="handleDropdownItemClick(this)"
+                                               data-value="{{item['name']}}"
+                                               href="#">{{ item['name'] }}</a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
     <hr/>
     <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
     <!-- Include any form fields as needed -->
