@@ -99,11 +99,11 @@ structure='flat'
 structure='hierarcy'
 
 [['Ensemble modeling']]
-structure='activated'
-default = 'no'
-[['Ensemble modeling']]
-structure='deactivated'
+name='individual'
 default = 'yes'
+[['Ensemble modeling']]
+name='ensemble'
+default = 'no'
 
 [['no_of_words']]
 value = 60

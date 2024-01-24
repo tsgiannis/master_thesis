@@ -18,7 +18,9 @@ def load_config():
         #Sections
     ipcs = config['IPC level']
     single_multi = config['Single_Multi_label']
-    return datasets,language_models,methods,ipcs,single_multi
+    patent_sections = config['patent_sections']
+    ensemble = config['ensemble']
+    return methods,language_models,datasets,ipcs,patent_sections,
     # Retrieving a value
     #config['project']['author']
     #config.get('project').get('author')
@@ -123,7 +125,7 @@ def read_directory(directory_name):
                 session['dynamic.noofwords'] = list(set(noofwords))
                 session['dynamic.singlemulti'] = list(set(singlemulti))
                 session['dynamic.structures'] = list(set(structures))
-                session['dynamic.ensembles'] = list(set(ensembles))
+                session['dynamic.ensemble'] = list(set(ensembles))
 
             return view_func(*args, **kwargs)
 
