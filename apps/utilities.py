@@ -14,11 +14,11 @@ def load_config():
     #language_models
     language_models = config['language_models']
     #deep learning classifiers
-    classifiers = config['Deep Learning classifier']
+    methods = config['Deep Learning classifier']
         #Sections
     ipcs = config['IPC level']
     single_multi = config['Single_Multi_label']
-    return datasets,language_models,classifiers,ipcs,single_multi
+    return datasets,language_models,methods,ipcs,single_multi
     # Retrieving a value
     #config['project']['author']
     #config.get('project').get('author')
@@ -116,7 +116,7 @@ def read_directory(directory_name):
                 ensembles = [item.split('_')[8] for item in list_directories]
                 #Populate session elements
                 session['dynamic.methods'] = list(set(methods))
-                session['dynamic.languagemodels'] =list(set(languagemodels))
+                session['dynamic.language_models'] =list(set(languagemodels))
                 session['dynamic.datasets'] = list(set(datasets))
                 session['dynamic.ipclevels'] = list(set(ipclevels))
                 session['dynamic.sections'] = list(set(sections))

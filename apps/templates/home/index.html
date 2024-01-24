@@ -202,7 +202,7 @@ hr {
     </div>
   </div>
 </div>
-    </hr>
+    <hr>
     <div id="fullview">
         <div class="card">
             <div class="card-header text-center py-4">
@@ -364,10 +364,13 @@ hr {
                                 </button>
                                 <div name='deep_learning' class="dropdown-menu"
                                      aria-labelledby="Selection of Language Models">
-                                    {% for item in session['deep_learning'] %}
-                                    <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
-                                        item['name'] }}</a>
-                                    {% endfor %}
+                                    {% for item in session['methods'] %}
+                                            {% if item['name'].lower() not in session['dynamic.methods'] %}
+                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                            {% endif %}
+                                            {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -381,9 +384,13 @@ hr {
 
     </div>
     <div id="compactview">
+
+
 <div class="container mt-4 text-center">
   <div class="row justify-content-center">
-    <!-- Row 1 -->
+        <!-- ************************************ -->
+        <!-- Machine Learning Methods -->
+        <!-- Row 1 -->
     <div class="col-md-6">
       <div class="form-group row align-items-center">
         <label for="inputState_methods_compact" class="col-sm-4 col-form-label text-center bg-success font-weight-bold" style="height: 10%;">Machine Learning Methods</label>
@@ -396,12 +403,12 @@ hr {
                                         </button>
                                         <div name='language_models_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of Language Models">
-                                            {% for item in session['deep_learning'] %}
+                                            {% for item in session['methods'] %}
                                             {% if item['name'].lower() not in session['dynamic.methods'] %}
                                                 <button class="dropdown-item" disabled>{{ item['name'] }}</button>
                                             {% else %}
                                                 <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
-        {% endif %}
+                                            {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -409,9 +416,11 @@ hr {
       </div>
     </div>
   </div>
+        <!-- ************************************ -->
 
   <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
+        <!-- Row 2 -->
+        <!-- Language Models -->
     <div class="col-md-6">
       <div class="form-group row align-items-center">
         <label for="inputState_language_compact" class="col-sm-4 col-form-label text-center bg-primary font-weight-bold" style="height: 16%;">Language Models</label>
@@ -434,8 +443,11 @@ hr {
       </div>
     </div>
   </div>
+
+    <!-- ************************************ -->
   <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
+    <!-- Row 3 -->
+      <!-- Dataset -->
     <div class="col-md-6">
       <div class="form-group row">
         <label for="dropdown3" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Datasets</label>
@@ -450,7 +462,9 @@ hr {
     </div>
   </div>
       <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
+          <!-- ************************************ -->
+          <!-- IPC level -->
+    <!-- Row 4 -->
     <div class="col-md-6">
       <div class="form-group row">
         <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-info font-weight-bold">IPC Levels</label>
@@ -465,7 +479,9 @@ hr {
     </div>
   </div>
       <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
+          <!-- ************************************ -->
+          <!-- Row 5 -->
+    <!-- Patent Section -->
     <div class="col-md-6">
       <div class="form-group row">
         <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Patent Sections</label>
@@ -480,7 +496,9 @@ hr {
     </div>
   </div>
         <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
+             <!-- ************************************ -->
+             <!-- Single / Multi Label -->
+    <!-- Row 6 -->
     <div class="col-md-6">
       <div class="form-group row">
         <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-info font-weight-bold">Number of words</label>
@@ -495,7 +513,9 @@ hr {
     </div>
   </div>
         <div class="row mt-2 justify-content-center">
-    <!-- Row 2 -->
+            <!-- ************************************ -->
+             <!-- Structure -->
+    <!-- Row 7 -->
     <div class="col-md-6">
       <div class="form-group row">
         <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-warning font-weight-bold">Single/Multi Labels</label>
@@ -510,6 +530,9 @@ hr {
     </div>
 </div>
     <div class="row mt-2 justify-content-center">
+        <!-- ************************************ -->
+             <!-- Ensemble -->
+    <!-- Row 7 -->
 <div class="col-md-6">
       <div class="form-group row">
         <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Structure</label>
