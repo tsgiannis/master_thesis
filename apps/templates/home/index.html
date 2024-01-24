@@ -554,13 +554,25 @@ hr {
     <!-- Row 9 -->
 <div class="col-md-6">
       <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-danger font-weight-bold">Ensemble</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown9">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
+        <label for="ensemble_compact" class="col-sm-4 col-form-label text-center bg-danger font-weight-bold">Ensemble</label>
+        <div class="col-md-8 h-80">
+            <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                                id="ensemble_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_ensemble_compact">Selection of Ensemble</span>
+                                        </button>
+                                        <div name='ensemble_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of Ensemble">
+                                            {% for item in session['ensemble'] %}
+                                            {% if item['name'].lower() not in session['dynamic.ensemble'] %}
+                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
         </div>
       </div>
     </div>
