@@ -51,61 +51,61 @@ description = ' 2 million word vectors trained with subword information on Commo
 group_name = 'FastText (300-D)'
 link = 'https://fasttext.cc'
 
-[['Deep Learning classifier']]
+[[methods]]
 name = 'LSTM'
 file = 'lstm_classifier.h5'
 object = 'example_classifier.h5'
-[['Deep Learning classifier']]
+[[methods]]
 name = 'GRU'
 file = 'gru_classifier.h5'
 object = 'example_classifier.h5'
-[['Deep Learning classifier']]
+[[methods]]
 name = 'BiLSTM'
 file = 'bi-lstm_classifier.h5'
 object = 'example_classifier.h5'
-[['Deep Learning classifier']]
+[[methods]]
 name = 'Bi-GRU'
 file = 'bi-gru_classifier.h5'
 object = 'example_classifier.h5'
-[['Deep Learning classifier']]
+[[methods]]
 name = 'Risch_Deep'
 file = 'clefip_abstract_60_blstm_Risch.h5'
 object = 'clefip_abstract_60_blstm_Risch.h5'
 
-[['IPC level']]
+[[ipclevels]]
 name = 'Level 1 - Sections'
 default = 'no'
 [['IPC level']]
 name = 'Level 2 - Classes'
 default = 'no'
-[['IPC level']]
+[[ipclevels]]
 name = 'Level 3 - Subclasses'
 default = 'yes'
-[['IPC level']]
+[[ipclevels]]
 name = 'Level 4 - Groups'
 default = 'no'
-[['IPC level']]
+[[ipclevels]]
 name = 'Level 5 - Subgroups '
 default = 'no'
 
-[['Single_Multi_label']]
+[[singlemulti]]
 name='single label - main classification code'
-[['Single_Multi_label']]
+[[singlemulti]]
 name='multi label - all IPCR codes'
 
-[['Structure considered']]
+[[structure]]
 structure='flat'
 [['Structure considered']]
 structure='hierarcy'
 
-[['Ensemble modeling']]
+[['Ensemble']]
 name='individual'
 default = 'yes'
 [['Ensemble modeling']]
 name='ensemble'
 default = 'no'
 
-[['no_of_words']]
+[['noofwords']]
 value = 60
 [['no_of_words']]
 value = 100
