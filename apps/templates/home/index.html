@@ -270,7 +270,7 @@ hr {
                 <table class="table">
                     <thead>
                     <tr>
-                        {% for key in session['language_models'][0]%}
+                        {% for key in session['languagemodels'][0]%}
                         <th>{{ key }}</th>
                         {% endfor %}
                     </tr>
@@ -278,7 +278,7 @@ hr {
 
                     </thead>
                     <tbody>
-                    {% for item in session['language_models'] %}
+                    {% for item in session['languagemodels'] %}
                     <tr>
                         {% for key in item%}
                         {% if 'link' in key %}
@@ -306,7 +306,7 @@ hr {
                                 </button>
                                 <div name='language_models' class="dropdown-menu"
                                      aria-labelledby="Selection of Language Models">
-                                    {% for item in session['language_models'] %}
+                                    {% for item in session['languagemodels'] %}
                                     <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
                                         item['name'] }}</a>
                                     {% endfor %}
@@ -327,7 +327,7 @@ hr {
                 <table class="table">
                     <thead>
                     <tr>
-                        {% for key in session['deep_learning'][0]%}
+                        {% for key in session['methods'][0]%}
                         <th>{{ key }}</th>
                         {% endfor %}
                     </tr>
@@ -335,7 +335,7 @@ hr {
 
                     </thead>
                     <tbody>
-                    {% for item in session['deep_learning'] %}
+                    {% for item in session['methods'] %}
                     <tr>
                         {% for key in item%}
                         {% if 'link' in key %}
@@ -401,7 +401,7 @@ hr {
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span id="span_methods_compact">Selection of ML Methods</span>
                                         </button>
-                                        <div name='language_models_compact' class="dropdown-menu"
+                                        <div name='methods_models_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of Language Models">
                                             {% for item in session['methods'] %}
                                             {% if item['name'].lower() not in session['dynamic.methods'] %}
@@ -433,7 +433,7 @@ hr {
                                         </button>
                                         <div name='language_models_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of Language Models">
-                                            {% for item in session['language_models'] %}
+                                            {% for item in session['languagemodels'] %}
                                             <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
                                                 item['name'] }}</a>
                                             {% endfor %}

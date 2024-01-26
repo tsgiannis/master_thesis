@@ -1,4 +1,36 @@
-[[datasets]] 
+#1 Machine Learning Methods
+[[methods]]
+name = 'LSTM'
+file = 'lstm_classifier.h5'
+object = 'classifier.h5'
+[[methods]]
+name = 'GRU'
+file = 'gru_classifier.h5'
+object = 'classifier.h5'
+[[methods]]
+name = 'BiLSTM'
+file = 'bi-lstm_classifier.h5'
+object = 'classifier.h5'
+[[methods]]
+name = 'Bi-GRU'
+file = 'bi-gru_classifier.h5'
+object = 'classifier.h5'
+
+
+#2 Language Models
+[[languagemodels]]
+name = 'FastText (300-D)'
+object = 'tokenizer.pickle'
+description = '1 million word vectors trained on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
+link = 'https://fasttext.cc'
+[[languagemodels]]
+name = 'Risch and Krestel (300-D)'
+object = 'tokenizer.pickle'
+description = '1 million word vectors trained with subword infomation on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
+link = 'future'
+
+#3  & #4  Datasets & patent Section
+[[datasets]]
 name = 'CLEFIP-0.54M'
 link = 'https://github.com/ekamater/CLEFIP-0.54M'
 object = 'encoder.pickle'
@@ -15,63 +47,7 @@ name='WIPO'
 object = 'encoder.pickle'
 sections = 'Title, Abstract, Description, Claims'
 
-[[language_models]]
-name = 'wiki-news-300d-1M.vec'
-file = 'wiki-news-300d-1M.vec.zip'
-object = 'tokenizer.pickle'
-description = '1 million word vectors trained on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
-[[language_models]]
-name = 'wiki-news-300d-1M-subword.vec'
-file = 'wiki-news-300d-1M-subword.vec.zip'
-object = 'tokenizer.pickle'
-description = '1 million word vectors trained with subword infomation on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
-[[language_models]]
-name = 'tokenizer_clefip_abstract_60_blstm_Risch'
-file = 'tokenizer_clefip_abstract_60_blstm_Risch.zip'
-object = 'tokenizer_clefip_abstract_60_blstm_Risch.pickle'
-description = 'Rish Tokenizer.'
-group_name = 'Rish'
-link = 'https://rish.cc'
-[[language_models]]
-name='crawl-300d-2M.vec'
-file = 'crawl-300d-2M.vec.zip'
-object = 'tokenizer.pickle'
-description = '2 million word vectors trained on Common Crawl (600B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
-[[language_models]]
-name='crawl-300d-2M-subword'
-file = 'crawl-300d-2M-subword.zip'
-object = 'tokenizer.pickle'
-description = ' 2 million word vectors trained with subword information on Common Crawl (600B tokens).'
-group_name = 'FastText (300-D)'
-link = 'https://fasttext.cc'
-
-[[methods]]
-name = 'LSTM'
-file = 'lstm_classifier.h5'
-object = 'example_classifier.h5'
-[[methods]]
-name = 'GRU'
-file = 'gru_classifier.h5'
-object = 'example_classifier.h5'
-[[methods]]
-name = 'BiLSTM'
-file = 'bi-lstm_classifier.h5'
-object = 'example_classifier.h5'
-[[methods]]
-name = 'Bi-GRU'
-file = 'bi-gru_classifier.h5'
-object = 'example_classifier.h5'
-[[methods]]
-name = 'Risch_Deep'
-file = 'clefip_abstract_60_blstm_Risch.h5'
-object = 'clefip_abstract_60_blstm_Risch.h5'
-
+#5 IPC Levels
 [[ipclevels]]
 name = 'Level 1 - Sections'
 default = 'no'
@@ -88,24 +64,30 @@ default = 'no'
 name = 'Level 5 - Subgroups '
 default = 'no'
 
+#6 No of Words to be used
+[['noofwords']]
+value = 60
+[['noofwords']]
+value = 100
+
+#7 Single/Multi label
 [[singlemulti]]
 name='single label - main classification code'
 [[singlemulti]]
 name='multi label - all IPCR codes'
 
+#8 Structure considered
 [[structure]]
-structure='flat'
-[['Structure considered']]
-structure='hierarcy'
+name='flat'
+[[structure]]
+name='hierarcy'
 
-[['Ensemble']]
+#9 Ensemble modeling
+[[ensemble]]
 name='individual'
 default = 'yes'
-[['Ensemble modeling']]
+[[ensemble]]
 name='ensemble'
 default = 'no'
 
-[['noofwords']]
-value = 60
-[['no_of_words']]
-value = 100
+
