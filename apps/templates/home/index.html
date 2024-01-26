@@ -94,6 +94,9 @@ hr {
    a.disabled {
     pointer-events: none;
 }
+ .custom-margin {
+        margin-right: 5px; /* Adjust the value as needed */
+    }
 </style>
 
 
@@ -203,6 +206,7 @@ hr {
   </div>
 </div>
     <hr>
+    <!-- **** FULL VIEW START -->
     <div id="fullview">
         <div class="card">
             <div class="card-header text-center py-4">
@@ -383,6 +387,10 @@ hr {
 
 
     </div>
+    <!-- **** FULL VIEW END ********* -->
+
+
+    <!-- **** COMPACT VIEW START *****  -->
     <div id="compactview">
 
 
@@ -434,8 +442,11 @@ hr {
                                         <div name='language_models_compact' class="dropdown-menu"
                                              aria-labelledby="Selection of Language Models">
                                             {% for item in session['languagemodels'] %}
-                                            <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
-                                                item['name'] }}</a>
+                                            {% if item['name'].lower() not in session['dynamic.languagemodels'] %}
+                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                            {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -445,35 +456,82 @@ hr {
   </div>
 
     <!-- ************************************ -->
-  <div class="row mt-2 justify-content-center">
-    <!-- Row 3 -->
-      <!-- Dataset -->
-    <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown3" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Datasets</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown3">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
+ <div class="container mt-4 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8"> <!-- Adjust the width of the column as needed -->
+            <div class="form-group row">
+                <label for="inputState_datasets_compact" class="col-sm-4 col-form-label text-center bg-success font-weight-bold ">Datasets/Sections</label>
+                <div class="col-sm-8">
+                    <div class="d-flex justify-content-end"> <!-- Use flex utilities for alignment -->
+                        <div class="dropdown-toggle "> <!-- Added custom-margin and mr-2 classes -->
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                    id="inputState_datasets_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_datasets_compact">Selection of Datasets</span>
+                            </button>
+                            <div name='language_models_compact' class="dropdown-menu"
+                                aria-labelledby="Selection of Language Models">
+                                {% for item in session['datasets'] %}
+                                {% if item['name'].lower() not in session['dynamic.datasets'] %}
+                                    <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                {% else %}
+                                    <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="dropdown-toggle "> <!-- Added custom-margin class -->
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                    id="inputState_sections_compact"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="span_sections_compact">Selection of Patent Sections</span>
+                            </button>
+                            <div name='sections_compact' class="dropdown-menu"
+                                aria-labelledby="Selection of Section Per Dataset">
+                                {% for item in session['datasets'] %}
+                                {% if item['name'].lower() not in session['dynamic.datasets'] %}
+                                    <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                {% else %}
+                                    <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-      <div class="row mt-2 justify-content-center">
-          <!-- ************************************ -->
-          <!-- IPC level -->
-    <!-- Row 4 -->
+</div>
+
+
+
+
+
+      <<div class="row mt-2 justify-content-center">
+        <!-- Row 4 -->
+        <!-- IPC Levels -->
     <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-info font-weight-bold">IPC Levels</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown4">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
+      <div class="form-group row align-items-center">
+        <label for="inputState_ipclevels_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">IPC Levels</label>
+        <div class="col-md-8 h-80">
+            <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                                id="inputState_ipclevels_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_ipclevels_compact">Selection of IPC Levels</span>
+                                        </button>
+                                        <div name='ipclevels_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of IPC levels">
+                                            {% for item in session['ipclevels'] %}
+                                            {% if item['name'].lower() not in session['dynamic.ipclevels'] %}
+                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
         </div>
       </div>
     </div>
@@ -579,7 +637,7 @@ hr {
 
   </div>
   </div>
-  <!-- Add more rows as needed -->
+  <!-- *****  COMPACT VIEW END  ******  -->  -->
 </div>
     <hr/>
     <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">

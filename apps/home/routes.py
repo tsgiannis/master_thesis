@@ -67,8 +67,17 @@ def functionality_check():
 @read_directory(directory_name='resources')
 def index():
     directory_contents = session.get('directories', [])
-    #data = [{'name': 'red'}, {'name': 'green'}, {'name': 'blue'}]
-    session['datasets'], session['language_models'], session['deep_learning'],session['ipcs'],session['single_multi'] = load_config()
+    #methods
+    #languagemodels
+    #datasets
+    #ipclevels
+    #patentsections
+    #noofwords
+    #singlemulti
+    #structure
+    #ensemble
+    session['methods'], session['languagemodels'], session['datasets'],session['ipclevels'],\
+        session['nofowords'],session['singlemulti'],session['structure'],session['ensemble'] = load_config()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
 

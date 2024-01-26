@@ -7,20 +7,36 @@ from flask import  session
 # Read local `config.toml` file.
 def load_config():
     config = toml.load(os.path.join('resources','config.toml'))#'resources\\config.toml')
-    #print(config)
 
-    #Datasets
+
+    #Machine Learning Methods
+    methods = config['methods']
+
+    #Language Models
+    languagemodels = config['languagemodels']
+
+    # datasets
     datasets = config['datasets']
-    #language_models
-    language_models = config['language_models']
-    #deep learning classifiers
-    methods = config['Deep Learning classifier']
-        #Sections
-    ipcs = config['IPC level']
-    single_multi = config['Single_Multi_label']
-    patent_sections = config['patent_sections']
+
+    #Sections
+    datasets = config['datasets']
+
+    #IPC Levels
+    ipclevels = config['ipclevels']
+
+    #noofwords
+    noofwords = config['noofwords']
+
+    #Single /  Multi Lables
+    singlemulti = config['singlemulti']
+
+    # structure
+    structure = config['structure']
+
+    # ensemble
     ensemble = config['ensemble']
-    return methods,language_models,datasets,ipcs,patent_sections,
+
+    return methods,languagemodels,datasets,ipclevels,noofwords,singlemulti,structure,ensemble
     # Retrieving a value
     #config['project']['author']
     #config.get('project').get('author')
@@ -114,18 +130,18 @@ def read_directory(directory_name):
                 sections = [item.split('_')[4] for item in list_directories]
                 noofwords = [item.split('_')[5] for item in list_directories]
                 singlemulti = [item.split('_')[6] for item in list_directories]
-                structures = [item.split('_')[7] for item in list_directories]
-                ensembles = [item.split('_')[8] for item in list_directories]
+                structure = [item.split('_')[7] for item in list_directories]
+                ensemble = [item.split('_')[8] for item in list_directories]
                 #Populate session elements
                 session['dynamic.methods'] = list(set(methods))
-                session['dynamic.language_models'] =list(set(languagemodels))
+                session['dynamic.languagemodels'] =list(set(languagemodels))
                 session['dynamic.datasets'] = list(set(datasets))
                 session['dynamic.ipclevels'] = list(set(ipclevels))
                 session['dynamic.sections'] = list(set(sections))
                 session['dynamic.noofwords'] = list(set(noofwords))
                 session['dynamic.singlemulti'] = list(set(singlemulti))
-                session['dynamic.structures'] = list(set(structures))
-                session['dynamic.ensemble'] = list(set(ensembles))
+                session['dynamic.structures'] = list(set(structure))
+                session['dynamic.ensemble'] = list(set(ensemble))
 
             return view_func(*args, **kwargs)
 

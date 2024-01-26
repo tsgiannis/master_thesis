@@ -51,7 +51,7 @@ sections = 'Title, Abstract, Description, Claims'
 [[ipclevels]]
 name = 'Level 1 - Sections'
 default = 'no'
-[['IPC level']]
+[[ipclevels]]
 name = 'Level 2 - Classes'
 default = 'no'
 [[ipclevels]]
