@@ -134,8 +134,23 @@ def read_directory(directory_name):
     return decorator
 
 
+def read_naming():
+    ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    filepath =os.path.join(ROOT_DIRECTORY,'resources','naming.txt')
+    with open(filepath, 'r', encoding='utf-8') as file_obj:
+        for line in file_obj:
+            line = line.strip()
+            # if not line.startswith('#') :
+            #     print(line)
+            if  '#' in line:
+                # Take only the part left of #
+                line = line.split('#')[0].strip()
+                print(line)
+
+
 if __name__ == '__main__':
-    #load_config()
-    a,b,c = load_config()
-    print(a)
+    # #load_config()
+    # a,b,c = load_config()
+    # print(a)
+    read_naming()
 
