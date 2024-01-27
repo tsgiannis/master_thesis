@@ -31,19 +31,22 @@ link = 'future'
 
 #3  & #4  Datasets & patent Section
 [[datasets]]
-name = 'CLEFIP-0.54M'
+full_name = 'CLEFIP-0.54M'
+name = 'CLEFIP'
 link = 'https://github.com/ekamater/CLEFIP-0.54M'
 object = 'encoder.pickle'
 [[datasets.sections]]
 sections_fields = ['Title', 'Abstract', 'Description', 'Claims', 'Applicants', 'Inventors']
 [[datasets]] 
-name = 'USPTO-2Μ'
+full_name = 'USPTO-2Μ'
+name = 'USPTO'
 link = 'https://github.com/JasonHoou/USPTO-2M'
 object = 'encoder.pickle'
 [[datasets.sections]]
 sections_fields = ['Title', 'Abstract', 'Concatenated Title and Abstract']
 [[datasets]]
-name='WIPO'
+full_name='WIPO'
+name = 'WIPO'
 object = 'encoder.pickle'
 sections = 'Title, Abstract, Description, Claims'
 

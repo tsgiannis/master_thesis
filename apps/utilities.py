@@ -150,6 +150,14 @@ def read_directory(directory_name):
     return decorator
 
 
+def get_value_for_key_in_list_of_dictionaries(list_of_dictionaries,key,target_value):
+    result_dict = None
+    for d in list_of_dictionaries:
+        if key in d and d[key].lower() == target_value:
+            result_dict = d
+            break
+    return d['sections']
+
 def read_naming():
     ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     filepath =os.path.join(ROOT_DIRECTORY,'resources','naming.txt')

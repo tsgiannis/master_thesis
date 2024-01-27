@@ -16,7 +16,12 @@ from ..utilities import *
 from ..text_analysis import *
 
 
-
+@blueprint.route('/get_filtered_options', methods=['POST'])
+def get_filtered_options():
+    selected_value = request.json['selectedValue']
+    return_values = get_value_for_key_in_list_of_dictionaries(session['datasets'],'name',selected_value)
+    session['sections'] = return_values.split()
+    return jsonify({'success': True})
 
 
 
