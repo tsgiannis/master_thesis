@@ -97,6 +97,16 @@ hr {
  .custom-margin {
         margin-right: 5px; /* Adjust the value as needed */
     }
+ .btn-custom {
+    display: flex;
+     width: 96%;
+
+
+
+}
+
+
+
 </style>
 
 
@@ -404,7 +414,7 @@ hr {
         <label for="inputState_methods_compact" class="col-sm-4 col-form-label text-center bg-success font-weight-bold" style="height: 10%;">Machine Learning Methods</label>
         <div class="col-md-8 h-80">
             <div class="dropdown-toggle">
-                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
                                                 id="inputState_methods_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span id="span_methods_compact">Selection of ML Methods</span>
@@ -434,7 +444,7 @@ hr {
         <label for="inputState_language_compact" class="col-sm-4 col-form-label text-center bg-primary font-weight-bold" style="height: 16%;">Language Models</label>
         <div class="col-md-8 h-80">
             <div class="dropdown-toggle">
-                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
                                                 id="inputState_language_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span id="span_language_models_compact">Selection of Language Models</span>
@@ -464,7 +474,7 @@ hr {
                 <div class="col-md-8">
                     <div class="d-flex"> <!-- Use flex utilities for alignment -->
                         <div class="dropdown-toggle "> <!-- Added custom-margin and mr-2 classes -->
-                            <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
                                     id="inputState_datasets_compact"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span id="span_datasets_compact">Selection of Datasets</span>
@@ -481,7 +491,7 @@ hr {
                             </div>
                         </div>
                         <div class="dropdown-toggle "> <!-- Added custom-margin class -->
-                            <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
                                     id="inputState_sections_compact"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span id="span_sections_compact">Selection of Patent Sections</span>
@@ -516,7 +526,7 @@ hr {
         <label for="inputState_ipclevels_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">IPC Levels</label>
         <div class="col-md-8 h-80">
             <div class="dropdown-toggle">
-                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
                                                 id="inputState_ipclevels_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span id="span_ipclevels_compact">Selection of IPC Levels</span>
@@ -536,36 +546,32 @@ hr {
       </div>
     </div>
   </div>
-      <div class="row mt-2 justify-content-center">
-          <!-- ************************************ -->
-          <!-- Row 5 -->
-    <!-- Patent Section -->
-    <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Patent Sections</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown5">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
+
         <div class="row mt-2 justify-content-center">
              <!-- ************************************ -->
              <!-- Νο Of Words -->
     <!-- Row 6 -->
     <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-info font-weight-bold">Number of words</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown6">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
+      <div class="form-group row align-items-center">
+        <label for="inputState_noofwords_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">Number of Words</label>
+        <div class="col-md-8 h-80">
+            <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
+                                                id="inputState_noofwords_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_noofwords_compact">Selection of Number Of words</span>
+                                        </button>
+                                        <div name='noofwords_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of Number of Words">
+                                            {% for item in session['noofwords'] %}
+                                            {% if item['value'] not in session['dynamic.noofwords'] %}
+                                                <button class="dropdown-item" disabled>{{ item['value'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['value'] }}</button>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
         </div>
       </div>
     </div>
@@ -575,14 +581,26 @@ hr {
              <!-- Single / Multi label -->
     <!-- Row 7 -->
     <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-warning font-weight-bold">Single/Multi Labels</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="dropdown7">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
+      <div class="form-group row align-items-center">
+        <label for="inputState_singlemulti_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">Single / Multi</label>
+        <div class="col-md-8 h-80">
+            <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
+                                                id="inputState_singlemulti_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_singlemulti_compact">Selection of Single/Multi</span>
+                                        </button>
+                                        <div name='singlemulti_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of Single / Multi">
+                                            {% for item in session['singlemulti'] %}
+                                            {% if item['name'].lower() not in session['dynamic.singlemulti'] %}
+                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
         </div>
       </div>
     </div>
@@ -592,14 +610,26 @@ hr {
              <!-- Structure -->
     <!-- Row 8 -->
 <div class="col-md-6">
-      <div class="form-group row">
-        <label for="dropdown2" class="col-sm-4 col-form-label text-center bg-success font-weight-bold">Structure</label>
-        <div class="col-sm-8">
-          <select class="form-control" id="ensemble">
-            <option value="optionA">Option A</option>
-            <option value="optionB">Option B</option>
-            <option value="optionC">Option C</option>
-          </select>
+      <div class="form-group row align-items-center">
+        <label for="inputState_structure_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">Structure</label>
+        <div class="col-md-8 h-80">
+            <div class="dropdown-toggle">
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
+                                                id="inputState_structure_compact"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span id="span_structure_compact">Selection of Structure</span>
+                                        </button>
+                                        <div name='structure_compact' class="dropdown-menu"
+                                             aria-labelledby="Selection of Structure">
+                                            {% for item in session['structure'] %}
+                                            {% if item['name'].lower() not in session['dynamic.structure'] %}
+                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                            {% else %}
+                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
         </div>
       </div>
     </div>
@@ -615,7 +645,7 @@ hr {
         <label for="ensemble_compact" class="col-sm-4 col-form-label text-center bg-danger font-weight-bold">Ensemble</label>
         <div class="col-md-8 h-80">
             <div class="dropdown-toggle">
-                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown" type="button"
+                                        <button class="btn btn-secondary dropdown-toggle custom-dropdown btn-custom" type="button"
                                                 id="ensemble_compact"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span id="span_ensemble_compact">Selection of Ensemble</span>

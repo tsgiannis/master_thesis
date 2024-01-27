@@ -77,7 +77,7 @@ def index():
     #structure
     #ensemble
     session['methods'], session['languagemodels'], session['datasets'],session['ipclevels'],\
-        session['nofowords'],session['singlemulti'],session['structure'],session['ensemble'] = load_config()
+        session['noofwords'],session['singlemulti'],session['structure'],session['ensemble'] = load_config()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
 
