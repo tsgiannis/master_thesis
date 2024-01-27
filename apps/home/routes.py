@@ -20,8 +20,16 @@ from ..text_analysis import *
 def get_filtered_options():
     selected_value = request.json['selectedValue']
     return_values = get_value_for_key_in_list_of_dictionaries(session['datasets'],'name',selected_value)
-    session['sections'] = return_values.split()
-    return jsonify({'success': True})
+    return_list= [item.lower() for item in return_values.split()]
+    session['sections'] = return_list
+    dropdown_options_html = ''
+    for item in session['sections']:
+        if item.lower() not in session['dynamic.sections']:
+            dropdown_options_html += f'<button class="dropdown-item" disabled>{item}</button>'
+        else:
+            dropdown_options_html += f'<button class="dropdown-item" onclick="handleDropdownItemClick(this)">{item}</button>'
+    return dropdown_options_html
+    #return jsonify({'success': True})
 
 
 
@@ -83,7 +91,7 @@ def index():
     #ensemble
     session['methods'], session['languagemodels'], session['datasets'],session['ipclevels'],\
         session['noofwords'],session['singlemulti'],session['structure'],session['ensemble'] = load_config()
-    session['sections'] = 'Please Select Dataset'
+    session['sections'] = 'Please Select Dataset'.split()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
 
