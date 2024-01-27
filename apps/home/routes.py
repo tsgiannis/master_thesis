@@ -83,6 +83,7 @@ def index():
     #ensemble
     session['methods'], session['languagemodels'], session['datasets'],session['ipclevels'],\
         session['noofwords'],session['singlemulti'],session['structure'],session['ensemble'] = load_config()
+    session['sections'] = 'Please Select Dataset'
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
 
