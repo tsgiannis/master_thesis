@@ -447,6 +447,7 @@ hr {
         <!-- Row 2 -->
         <!-- Language Models -->
     <div class="col-md-6">
+         <form id='form_compact_languagemodels'>
       <div class="form-group row align-items-center">
         <label for="inputState_language_compact" class="col-sm-4 col-form-label text-center bg-primary font-weight-bold" style="height: 16%;">Language Models</label>
         <div class="col-md-8 h-80">
@@ -460,15 +461,16 @@ hr {
                                              aria-labelledby="Selection of Language Models">
                                             {% for item in session['languagemodels'] %}
                                             {% if item['name'].lower() not in session['dynamic.languagemodels'] %}
-                                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
+                                                <button class="dropdown-item" disabled>{{ item['display_name'] }}</button>
                                             {% else %}
-                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                                <button class="dropdown-item" value ="{{item['name']}}" onclick="handleDropdownItemClick(this)">{{ item['display_name'] }}</button>
                                             {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
         </div>
       </div>
+         </form>
     </div>
   </div>
 
@@ -493,9 +495,9 @@ hr {
                                 aria-labelledby="Selection of Datasets">
                                 {% for item in session['datasets'] %}
                                 {% if item['name'].lower() not in session['dynamic.datasets'] %}
-                                    <button class="dropdown-item"  disabled>{{ item['full_name'] }}</button>
+                                    <button class="dropdown-item"  disabled>{{ item['display_name'] }}</button>
                                 {% else %}
-                                    <button class="dropdown-item" value ="{{item['name']}}" onclick="handleDropdownItemClick(this);getFilteredOptions(this)">{{ item['full_name'] }}</button>
+                                    <button class="dropdown-item" value ="{{item['name']}}" onclick="handleDropdownItemClick(this);getFilteredOptions(this)">{{ item['display__name'] }}</button>
                                 {% endif %}
                                 {% endfor %}
                             </div>
@@ -534,6 +536,7 @@ hr {
         <!-- Row 4 -->
         <!-- IPC Levels -->
     <div class="col-md-6">
+        <form id='form_compact_ipclevels'>
       <div class="form-group row align-items-center">
         <label for="inputState_ipclevels_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">IPC Levels</label>
         <div class="col-md-8 h-80">
@@ -549,13 +552,15 @@ hr {
                                             {% if item['name'].lower() not in session['dynamic.ipclevels'] %}
                                                 <button class="dropdown-item" disabled>{{ item['name'] }}</button>
                                             {% else %}
-                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['name'] }}</button>
+                                                <button class="dropdown-item" value ="{{item['name']}}" onclick="handleDropdownItemClick(this)">{{ item['display_name'] }}</button>
                                             {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
         </div>
       </div>
+        </form>
+
     </div>
   </div>
 
@@ -564,6 +569,7 @@ hr {
              <!-- Νο Of Words -->
     <!-- Row 6 -->
     <div class="col-md-6">
+        <form id='form_compact_noofwords'>
       <div class="form-group row align-items-center">
         <label for="inputState_noofwords_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">Number of Words</label>
         <div class="col-md-8 h-80">
@@ -579,13 +585,14 @@ hr {
                                             {% if item['value'] not in session['dynamic.noofwords'] %}
                                                 <button class="dropdown-item" disabled>{{ item['value'] }}</button>
                                             {% else %}
-                                                <button class="dropdown-item" onclick="handleDropdownItemClick(this)">{{ item['value'] }}</button>
+                                                <button class="dropdown-item" value = "{{item['value']}}" onclick="handleDropdownItemClick(this)">{{ item['value'] }}</button>
                                             {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
         </div>
       </div>
+            </form>
     </div>
   </div>
         <div class="row mt-2 justify-content-center">
@@ -593,6 +600,7 @@ hr {
              <!-- Single / Multi label -->
     <!-- Row 7 -->
     <div class="col-md-6">
+        <form id='form_compact_singlemulti'>
       <div class="form-group row align-items-center">
         <label for="inputState_singlemulti_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">Single / Multi</label>
         <div class="col-md-8 h-80">
@@ -615,6 +623,7 @@ hr {
                                     </div>
         </div>
       </div>
+            </form>
     </div>
 </div>
     <div class="row mt-2 justify-content-center">
@@ -622,6 +631,7 @@ hr {
              <!-- Structure -->
     <!-- Row 8 -->
 <div class="col-md-6">
+    <form id='form_compact_structure'>
       <div class="form-group row align-items-center">
         <label for="inputState_structure_compact" class="col-sm-4 col-form-label text-center bg-info font-weight-bold" style="height: 16%;">Structure</label>
         <div class="col-md-8 h-80">
@@ -644,6 +654,7 @@ hr {
                                     </div>
         </div>
       </div>
+        </form>
     </div>
 
   </div>
@@ -653,6 +664,7 @@ hr {
 
     <!-- Row 9 -->
 <div class="col-md-6">
+    <form id='form_compact_ensemble'>
       <div class="form-group row">
         <label for="ensemble_compact" class="col-sm-4 col-form-label text-center bg-danger font-weight-bold">Ensemble</label>
         <div class="col-md-8 h-80">
@@ -675,6 +687,7 @@ hr {
                                     </div>
         </div>
       </div>
+    </form>
     </div>
 
   </div>

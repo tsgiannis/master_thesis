@@ -19,52 +19,59 @@ object = 'classifier.h5'
 
 #2 Language Models
 [[languagemodels]]
-name = 'FastText (300-D)'
+display_name = 'FastText (300-D)'
+name='fasttext'
 object = 'tokenizer.pickle'
 description = '1 million word vectors trained on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
 link = 'https://fasttext.cc'
 [[languagemodels]]
-name = 'Risch and Krestel (300-D)'
+display_name = 'Risch and Krestel (300-D)'
+name = 'risch'
 object = 'tokenizer.pickle'
 description = '1 million word vectors trained with subword infomation on Wikipedia 2017, UMBC webbase corpus and statmt.org news dataset (16B tokens).'
 link = 'future'
 
 #3  & #4  Datasets & patent Section
 [[datasets]]
-full_name = 'CLEFIP-0.54M'
+display_name = 'CLEFIP-0.54M'
 name = 'CLEFIP'
 link = 'https://github.com/ekamater/CLEFIP-0.54M'
 object = 'encoder.pickle'
 [[datasets.sections]]
 sections_fields = ['Title', 'Abstract', 'Description', 'Claims', 'Applicants', 'Inventors']
 [[datasets]] 
-full_name = 'USPTO-2Μ'
+display_name = 'USPTO-2Μ'
 name = 'USPTO'
 link = 'https://github.com/JasonHoou/USPTO-2M'
 object = 'encoder.pickle'
 [[datasets.sections]]
 sections_fields = ['Title', 'Abstract', 'Concatenated Title and Abstract']
 [[datasets]]
-full_name='WIPO'
+display_name='WIPO'
 name = 'WIPO'
 object = 'encoder.pickle'
 sections = 'Title, Abstract, Description, Claims'
 
 #5 IPC Levels
 [[ipclevels]]
-name = 'Level 1 - Sections'
+display_name = 'Level 1 - Sections'
+name = 'section'
 default = 'no'
 [[ipclevels]]
-name = 'Level 2 - Classes'
+display_name = 'Level 2 - Classes'
+name = 'class'
 default = 'no'
 [[ipclevels]]
-name = 'Level 3 - Subclasses'
+display_name = 'Level 3 - Subclasses'
+name='subclass'
 default = 'yes'
 [[ipclevels]]
-name = 'Level 4 - Groups'
+display_name = 'Level 4 - Groups'
+name = 'group'
 default = 'no'
 [[ipclevels]]
-name = 'Level 5 - Subgroups '
+display_name = 'Level 5 - Subgroups '
+name='group'
 default = 'no'
 
 #6 No of Words to be used
@@ -75,10 +82,11 @@ value = 100
 
 #7 Single/Multi label
 [[singlemulti]]
-name='single label - main classification code'
+display_name='single label - main classification code'
+name = 'single'
 [[singlemulti]]
-name='multi label - all IPCR codes'
-
+display_name='multi label - all IPCR codes'
+name='multi'
 #8 Structure considered
 [[structure]]
 name='flat'
