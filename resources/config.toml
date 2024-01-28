@@ -87,6 +87,7 @@ name = 'single'
 [[singlemulti]]
 display_name='multi label - all IPCR codes'
 name='multi'
+
 #8 Structure considered
 [[structure]]
 name='flat'

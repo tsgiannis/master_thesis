@@ -20,7 +20,7 @@ from ..text_analysis import *
 def get_filtered_options():
     selected_value = request.json['selectedValue']
     return_values = get_value_for_key_in_list_of_dictionaries(session['datasets'],'name',selected_value)
-    return_list= [item.lower() for item in return_values.split()]
+    return_list= [item.lower().replace(',','') for item in return_values.split()]
     session['sections'] = return_list
     dropdown_options_html = ''
     for item in session['sections']:
@@ -90,7 +90,7 @@ def index():
     #structure
     #ensemble
     session['methods'], session['languagemodels'], session['datasets'],session['ipclevels'],\
-        session['noofwords'],session['singlemulti'],session['structure'],session['ensemble'] = load_config()
+        session['noofwords'],session['singlemulti'],session['structures'],session['ensemble'] = load_config()
     session['sections'] = 'Please Select Dataset'.split()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)

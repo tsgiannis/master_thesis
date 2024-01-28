@@ -31,12 +31,12 @@ def load_config():
     singlemulti = config['singlemulti']
 
     # structure
-    structure = config['structure']
+    structures = config['structure']
 
     # ensemble
     ensemble = config['ensemble']
 
-    return methods,languagemodels,datasets,ipclevels,noofwords,singlemulti,structure,ensemble
+    return methods,languagemodels,datasets,ipclevels,noofwords,singlemulti,structures,ensemble
     # Retrieving a value
     #config['project']['author']
     #config.get('project').get('author')
