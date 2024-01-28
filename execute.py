@@ -29,6 +29,21 @@ from apps.utilities import *
 def execute(arguments):
 # Load the model
 
+    method = get_value_out_of_list_of_dicts(arguments, 'methods')
+    languagemodel= get_value_out_of_list_of_dicts(arguments, 'languagemodels')
+    dataset=get_value_out_of_list_of_dicts(arguments,'datasets')
+    patentsection = get_value_out_of_list_of_dicts(arguments, 'sections')
+    ipclevel = get_value_out_of_list_of_dicts(arguments, 'ipclevels')
+    noofwords = get_value_out_of_list_of_dicts(arguments, 'noofwords')
+    singlemulti = get_value_out_of_list_of_dicts(arguments, 'singlemulti')
+    structure = get_value_out_of_list_of_dicts(arguments, 'structure')
+    ensemble = get_value_out_of_list_of_dicts(arguments, 'ensemble')
+    resultstodisplay = get_value_out_of_list_of_dicts(arguments, 'results')
+
+
+
+
+
     methods,languagemodels,datasets,ipclevels,noofwords,singlemulti,structures,ensemble = load_config()
     encoder_file = get_element_by_value(datasets, 'name', arguments[0]['datasets'])['object']
     word_vec_file = get_element_by_value(languagemodels, 'name', arguments[1]['language_models'])['object']
@@ -51,7 +66,7 @@ def execute(arguments):
     # Get the input text from the keyboard
 
     text_list = []
-    text_keywords = arguments[3]['keywords']
+    text_keywords = get_value_out_of_list_of_dicts(arguments, 'keywords')
     #text_keywords = str(input("Please enter some keywords:\n"))
     text_list.append((text_keywords))
 

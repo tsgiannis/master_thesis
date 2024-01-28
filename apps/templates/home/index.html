@@ -340,16 +340,16 @@
                 </table>
             </div>
             <div class="card-body">
-                <form id="form_language_models">
+                <form id="form_languagemodels">
                     <div class="form-row">
 
                         <div class="form-row col-md-6">
                             <div class="dropdown-toggle">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span id="span_language_models">Selection of Language Models</span>
+                                    <span id="span_languagemodels">Selection of Language Models</span>
                                 </button>
-                                <div name='language_models' class="dropdown-menu"
+                                <div name='languagemodels' class="dropdown-menu"
                                      aria-labelledby="Selection of Language Models">
                                     {% for item in session['languagemodels'] %}
                                     <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
@@ -494,9 +494,9 @@
                                             type="button"
                                             id="inputState_language_compact"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span id="span_language_models_compact">Selection of Language Models</span>
+                                        <span id="span_languagemodels_compact">Selection of Language Models</span>
                                     </button>
-                                    <div name='language_models_compact' class="dropdown-menu"
+                                    <div name='languagemodels_compact' class="dropdown-menu"
                                          aria-labelledby="Selection of Language Models">
                                         {% for item in session['languagemodels'] %}
                                         {% if item['name'].lower() not in session['dynamic.languagemodels'] %}
@@ -855,12 +855,12 @@
         }
 
         // If the key doesn't exist, add a new key-value pair
-        if (collection.length < 3) {
+        if (collection.length < 11) {
             var newPair = {};
             newPair[key] = value;
             collection.push(newPair);
         } else {
-            console.log('Collection already has 3 pairs. Cannot add more.');
+            console.log('Collection already has 11 pairs. Cannot add more.');
         }
     }
 
@@ -894,10 +894,14 @@
 
             // Add the 'active' class to the clicked item
             item.classList.add('active');
-
-            // Get the text content of the active item
             var activeItemText = item.textContent;
             var value = activeItemText;
+            // Get the text content of the active item
+            if (item.getAttribute('value') !== null) {
+                value = item.value.toLowerCase();
+            }
+
+
             var key = item.parentElement.attributes.name.textContent
             if (key.indexOf('_compact') > 0) {
                 key_for_collection = key.substring(0, key.indexOf('_compact'))
@@ -986,7 +990,7 @@
 
     function processSelections(keywords) {
         // Create JSON string
-        var selections = [];
+
         var keywordObj = {keywords: keywords};
         selections.push(keywordObj);
         var jsonString = JSON.stringify(selections, null, 0);
@@ -1027,13 +1031,14 @@
     }
 
     function CheckNRun() {
-        if (selections.length < 3) {
+        if (selections.length < 9) {
 
             showAlertModal();
         } else {
             // Call showResultsModals and obtain the selected option
             showResultsModals().then(function (selectedOption) {
                 const resultstodisplay = selectedOption;
+                addToCollection(selections,'results',resultstodisplay);
                 console.log("Selected option assigned to variable:", resultstodisplay);
                 // Pass someSelection to another function or use it as needed
 
