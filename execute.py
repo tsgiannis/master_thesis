@@ -28,7 +28,7 @@ from apps.utilities import *
 
 def execute(arguments):
 # Load the model
-
+    directory_elements = []
     method = get_value_out_of_list_of_dicts(arguments, 'methods')
     languagemodel= get_value_out_of_list_of_dicts(arguments, 'languagemodels')
     dataset=get_value_out_of_list_of_dicts(arguments,'datasets')
@@ -38,12 +38,17 @@ def execute(arguments):
     singlemulti = get_value_out_of_list_of_dicts(arguments, 'singlemulti')
     structure = get_value_out_of_list_of_dicts(arguments, 'structure')
     ensemble = get_value_out_of_list_of_dicts(arguments, 'ensemble')
+
+    directory_elements = [method,languagemodel,dataset,patentsection,ipclevel,noofwords,singlemulti,structure,ensemble]
+
+
+    # construct directory
+    directory_path = "_".join(directory_elements)
+    ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    parent_directory =os.path.join(ROOT_DIRECTORY,'resources')
+    directory_to_use = os.path.join(parent_directory,directory_path)
+
     resultstodisplay = get_value_out_of_list_of_dicts(arguments, 'results')
-
-
-
-
-
     methods,languagemodels,datasets,ipclevels,noofwords,singlemulti,structures,ensemble = load_config()
     encoder_file = get_element_by_value(datasets, 'name', arguments[0]['datasets'])['object']
     word_vec_file = get_element_by_value(languagemodels, 'name', arguments[1]['language_models'])['object']
