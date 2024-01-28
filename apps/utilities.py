@@ -128,7 +128,7 @@ def read_directory(directory_name):
                 datasets =  [item.split('_')[2] for item in list_directories]
                 ipclevels = [item.split('_')[3] for item in list_directories]
                 sections = [item.split('_')[4] for item in list_directories]
-                noofwords = [item.split('_')[5] for item in list_directories]
+                noofwords = [int(item.split('_')[5]) for item in list_directories]
                 singlemulti = [item.split('_')[6] for item in list_directories]
                 structure = [item.split('_')[7] for item in list_directories]
                 ensemble = [item.split('_')[8] for item in list_directories]
