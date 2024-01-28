@@ -118,6 +118,12 @@
 {% block content %}
 
 <div class="content">
+    <!-- Button to remind the user to input keywords -->
+    <!-- Button to mark the end of user input -->
+    <button id="inputComplete" class="btn btn-primary" onclick="completeUserInput()"
+            style="position: fixed; top: 50px; right: 100px; display: none;">Input Complete
+    </button>
+
     <div>
         <ul class="ml-auto">
             <li class="input-group d-flex align-items-center mb-0">
@@ -146,6 +152,25 @@
                 <div class="modal-body">
                     <!-- Content for the modal -->
                     <p>You missed to select all the options</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="keywords_checker" tabindex="-1" role="dialog">
+        <div class="modal-dialog custom-modal-content" role="document">
+            <div class="modal-content custom-modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Keywords Checker</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content for the modal -->
+                    <p>You missed to enter Keywords</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -211,10 +236,10 @@
                 <div class="modal-body">
                     <p>Please select No of Results to Display:</p>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-secondary mr-2" >3</button>
-                        <button type="button" class="btn btn-secondary mr-2" >5</button>
-                        <button type="button" class="btn btn-secondary mr-2" >10</button>
-                        <button type="button" class="btn btn-secondary mr-2" >all</button>
+                        <button type="button" class="btn btn-secondary mr-2">3</button>
+                        <button type="button" class="btn btn-secondary mr-2">5</button>
+                        <button type="button" class="btn btn-secondary mr-2">10</button>
+                        <button type="button" class="btn btn-secondary mr-2">all</button>
                     </div>
                 </div>
 
@@ -742,15 +767,24 @@
 </form>
 
 
-
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
 <script>
+    // Hide the button initially
+    document.getElementById('inputComplete').style.display = 'none';
 
     var selections = [];
+
+    function showInputCompleteButton() {
+        document.getElementById('inputComplete').style.display = 'block';
+    }
+
+    function hideInputCompleteButton() {
+        document.getElementById('inputComplete').style.display = 'none';
+    }
 
     function getFilteredOptions(item) {
         var selectedValue = item.value;
@@ -890,34 +924,107 @@
 
     //console.log(selectedValue+'!')
 
-function showResultsModal() {
-    return new Promise(function(resolve, reject) {
-        $('#resultsToDisplay').modal('show');
+    function showResultsModal() {
+        return new Promise(function (resolve, reject) {
+            $('#resultsToDisplay').modal('show');
 
-        // Event listener for the buttons in the modal
-        $('#resultsToDisplay .btn').click(function() {
-            var selectedOption = $(this).text().trim(); // Get the text of the clicked button
-            $('#resultsToDisplay').modal('hide');
-            console.log("Selected option:", selectedOption);
-            resolve(selectedOption); // Resolve the promise with the selected option
+            // Event listener for the buttons in the modal
+            $('#resultsToDisplay .btn').click(function () {
+                var selectedOption = $(this).text().trim(); // Get the text of the clicked button
+                $('#resultsToDisplay').modal('hide');
+                console.log("Selected option:", selectedOption);
+                resolve(selectedOption); // Resolve the promise with the selected option
+            });
+
+            // Close the modal after 5 seconds if no selection is made
+            var timeoutId = setTimeout(function () {
+                $('#resultsToDisplay').modal('hide');
+                var defaultOption = '3';
+                console.log("No selection made within 3 seconds. Resolving with default value:", defaultOption);
+                resolve(defaultOption); // Resolve with default value after timeout
+            }, 5000);
         });
+    }
 
-        // Close the modal after 5 seconds if no selection is made
-        var timeoutId = setTimeout(function() {
-            $('#resultsToDisplay').modal('hide');
-            var defaultOption = '3';
-            console.log("No selection made within 3 seconds. Resolving with default value:", defaultOption);
-            resolve(defaultOption); // Resolve with default value after timeout
-        }, 5000);
-    });
-}
+    function waitForKeywords(callback) {
+        var intervalId = setInterval(function () {
+            var keywords = document.getElementById('keywords').value.trim();
+            if (keywords !== '') {
+                clearInterval(intervalId); // Stop the interval
+                callback(keywords); // Call the callback with the keywords
+            }
+        }, 1000); // Check every second
+    }
+
+    // Function to handle the completion of user input
+    function completeUserInput() {
+        hideInputCompleteButton(); // Hide the button
+        hideKeywordsMissingModal(); // Hide any alert modal
+        processSelections(); // Process the selections
+    }
+
+    // Function to show the alert modal for missing keywords
+    function showAlertModal() {
+        // Show your alert modal implementation here
+    }
+
+    // Function to hide the alert modal
+    function hideAlertModal() {
+        // Hide your alert modal implementation here
+    }
+
+    function hideKeywordsMissingModal() {
+        // Hide your alert modal implementation here
+    }
+
+    // Function to display the modal and obtain the selected option
+    async function showResultsModals() {
+        const selectedOption = await showResultsModal();
+        return selectedOption;
+    }
 
 
-// Function to display the modal and obtain the selected option
-async function showResultsModals() {
-    const selectedOption = await showResultsModal();
-    return selectedOption;
-}
+    function processSelections(keywords) {
+        // Create JSON string
+        var selections = [];
+        var keywordObj = {keywords: keywords};
+        selections.push(keywordObj);
+        var jsonString = JSON.stringify(selections, null, 0);
+
+        // Create hidden input
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'selections');
+        hiddenInput.setAttribute('value', jsonString);
+        hiddenInput.setAttribute('input_type', 'search');
+        document.getElementById('runForm').appendChild(hiddenInput);
+
+        // Other actions using keywords
+        //var fileInput = document.getElementById('fileInput');
+        //if (fileInput.files.length > 0) {
+          //  var file = fileInput.files[0];
+            //readFile(file);
+        //} else {
+            // No file uploaded
+          //  alert('Please upload a file.');
+        //}
+    }
+
+    // Function to check if keywords are already present
+    function checkKeywordsPresence() {
+        var keywords = document.getElementById('keywords').value.trim();
+        return keywords !== '';
+    }
+
+    // Function to wait for the input complete button click
+    function waitForInputComplete() {
+        return new Promise(function (resolve) {
+            document.getElementById('inputComplete').addEventListener('click', function () {
+                var keywords = document.getElementById('keywords').value.trim();
+                resolve(keywords);
+            });
+        });
+    }
 
     function CheckNRun() {
         if (selections.length < 3) {
@@ -930,43 +1037,49 @@ async function showResultsModals() {
                 console.log("Selected option assigned to variable:", resultstodisplay);
                 // Pass someSelection to another function or use it as needed
 
-                var keywords = {};
-                keywords['keywords'] = document.getElementById('keywords').value;
-                selections.push(keywords);
-                var jsonString = JSON.stringify(selections, null, 0);
-
-                var hiddenInput = document.createElement('input');
-                hiddenInput.setAttribute('type', 'hidden');
-                hiddenInput.setAttribute('name', 'selections');
-                hiddenInput.setAttribute('value', jsonString);
-                hiddenInput.setAttribute('input_type', 'search');
-                document.getElementById('runForm').appendChild(hiddenInput);
-                var keywords = document.getElementById('keywords').value;
-                var fileInput = document.getElementById('fileInput');
-
-                if (keywords.trim() !== '') {
-                    // Keywords were entered
-                    alert('Keywords: ' + keywords);
-                } else if (fileInput.files.length > 0) {
-                    // File was uploaded
-                    var file = fileInput.files[0];
-                    readFile(file);
+                // Check if keywords are already present
+                if (checkKeywordsPresence()) {
+                    // If keywords are already present, process selections directly
+                    processSelections(document.getElementById('keywords').value.trim());
+                    document.getElementById('runForm').submit();
                 } else {
-                    // No keywords or file provided
-                    alert('Please enter keywords or upload a file.');
+                    showKeyWordsMissingModal(); // Show alert modal for missing keywords
+                    showInputCompleteButton();
+                    // If keywords are not already present, wait for user input
+                    // Call waitForInputComplete to wait for the input complete button click
+                    waitForInputComplete().then(function (keywords) {
+                        // Continue processing after the button click
+                        console.log('Input complete button clicked with keywords:', keywords);
+                        processSelections(keywords);
+                        document.getElementById('runForm').submit();
+                    });
                 }
-                document.getElementById('runForm').submit();
+
 
 
             });
         }
     }
+
+    function completeUserInput() {
+        var keywords = document.getElementById('keywords').value.trim();
+        processSelections(keywords);
+    }
+
     function showAlertModal() {
         $('#selections_checker').modal('show');
 
         // Close the modal after 2 seconds
         setTimeout(function () {
             $('#selections_checker').modal('hide');
+        }, 3000);
+    }
+
+    function showKeyWordsMissingModal() {
+        $('#keywords_checker').modal('show');
+        // Close the modal after 2 seconds
+        setTimeout(function () {
+            $('#keywords_checker').modal('hide');
         }, 3000);
     }
 
