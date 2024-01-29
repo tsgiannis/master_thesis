@@ -38,18 +38,18 @@ def execute(arguments):
     singlemulti = get_value_out_of_list_of_dicts(arguments, 'singlemulti')
     structure = get_value_out_of_list_of_dicts(arguments, 'structure')
     ensemble = get_value_out_of_list_of_dicts(arguments, 'ensemble')
-
-    directory_elements = [method,languagemodel,dataset,patentsection,ipclevel,noofwords,singlemulti,structure,ensemble]
+    no_of_words = get_value_out_of_list_of_dicts(arguments, 'noofwords')
+    directory_elements = [method,languagemodel,dataset,ipclevel,patentsection,no_of_words,singlemulti,structure,ensemble]
 
 
     # construct directory
     directory_path = "_".join(directory_elements)
-    ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    ROOT_DIRECTORY = os.getcwd()
     parent_directory =os.path.join(ROOT_DIRECTORY,'resources')
-    directory_to_use = os.path.join(parent_directory,directory_path)
+    directory_to_use = os.path.join(parent_directory,directory_path).lower()
 
     resultstodisplay = get_value_out_of_list_of_dicts(arguments, 'results')
-    no_of_words = get_value_out_of_list_of_dicts(arguments, 'noofwords')
+
 
 
     # Load the classifier

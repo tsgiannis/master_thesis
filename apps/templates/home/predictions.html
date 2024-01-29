@@ -25,7 +25,7 @@
 {% endblock stylesheets %}
 
 {% block content %}
-
+ <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
 <!-- Your Bootstrap table -->
 <div class="container mt-5 data-table">
     <!-- Insert the generated HTML table here -->
@@ -49,6 +49,42 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
+    // Plain JavaScript function to handle button click
+// Plain JavaScript function to handle button click
+function saveToDatabase() {
+    // Collect data from the table
+    var tableData = [];
+    var rows = document.getElementById('codesTable').getElementsByTagName('tr');
+    for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip header row
+        var code = rows[i].getElementsByTagName('td')[0].textContent;
+        var isCorrect = rows[i].querySelector('.correctCheckbox').checked;
+        var anotherValue = rows[i].querySelector('.anotherCheckbox').checked;
+        tableData.push({ code: code, isCorrect: isCorrect, anotherValue: anotherValue });
+    }
+
+    // Send data to backend
+    fetch('/save_to_database', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tableData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save data to database');
+        }
+        console.log('Data saved successfully');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    // Retrieve authenticated user information (if available)
+    var authenticatedUser = localStorage.getItem('authenticatedUser');
+    console.log('Authenticated user:', authenticatedUser);
+}
+
    // Add click event to each cell using jQuery
     $(document).on('click', '.data-table tbody tr td', function() {
         // Your custom logic when a cell is clicked

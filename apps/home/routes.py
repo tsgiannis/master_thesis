@@ -2,6 +2,8 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
+from flask_sqlalchemy import SQLAlchemy
+
 import apps.config
 from apps.home import blueprint
 from flask import render_template, request, jsonify, session
@@ -14,8 +16,19 @@ from ..main_code import *
 from execute import execute
 from ..utilities import *
 from ..text_analysis import *
-
-
+#app = Flask(__name__)
+#db = SQLAlchemy(app)
+# @blueprint.route('/save_to_database', methods=['POST'])
+# def save_to_database():
+#     table_data = request.json
+#     for row in table_data:
+#         code = row['code']
+#         is_correct = row['isCorrect']
+#         another_value = row['anotherValue']
+#         new_code = Code(code=code, is_correct=is_correct, another_value=another_value)
+#         db.session.add(new_code)
+#     db.session.commit()
+#     return 'Data saved to database successfully'
 @blueprint.route('/get_filtered_options', methods=['POST'])
 def get_filtered_options():
     selected_value = request.json['selectedValue']
