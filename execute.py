@@ -49,22 +49,21 @@ def execute(arguments):
     directory_to_use = os.path.join(parent_directory,directory_path)
 
     resultstodisplay = get_value_out_of_list_of_dicts(arguments, 'results')
-    methods,languagemodels,datasets,ipclevels,noofwords,singlemulti,structures,ensemble = load_config()
-    encoder_file = get_element_by_value(datasets, 'name', arguments[0]['datasets'])['object']
-    word_vec_file = get_element_by_value(languagemodels, 'name', arguments[1]['language_models'])['object']
-    classifier_file = get_element_by_value(methods, 'name', arguments[2]['deep_learning'])['object']
-    classifier_file = os.path.join('resources',classifier_file)
-    example_classifier = models.load_model(classifier_file, compile=False)
+    no_of_words = get_value_out_of_list_of_dicts(arguments, 'noofwords')
+
+
+    # Load the classifier
+    classifier_file = os.path.join(directory_to_use,'classifier.h5')
+    classifier = models.load_model(classifier_file, compile=False)
 
     # Load the tokenizer
-    word_vec_file = os.path.join('resources',word_vec_file)
+    word_vec_file = os.path.join(directory_to_use,'tokenizer.pickle')
     with open(word_vec_file, 'rb') as handle:
         token = pickle.load(handle)
 
     # Load the encoder
 
-
-    encoder_file = os.path.join('resources',encoder_file)
+    encoder_file = os.path.join(directory_to_use,'encoder.pickle')
     with open(encoder_file, 'rb') as f:
         encoder = pickle.load(f)
 
@@ -83,11 +82,11 @@ def execute(arguments):
     # Convert text to sequence of tokens
     # maxlen is 60 words since the classifier has been trained to get as input text of 60 words
 
-    maxlen = 60
+    maxlen = int(no_of_words)
     input_seq_x = sequence.pad_sequences(token.texts_to_sequences(inputDF['text']), maxlen)
 
     # Use the classifier to make the prediction
-    predictions = example_classifier.predict(input_seq_x)
+    predictions = classifier.predict(input_seq_x)
 
     sorted_categories = np.argsort(predictions)
     sorted_categories = np.fliplr(sorted_categories)
