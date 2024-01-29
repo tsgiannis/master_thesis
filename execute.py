@@ -101,7 +101,12 @@ def execute(arguments):
 
     for row in range(len(text_list)):
         list_class = []
-        for i in range(number_of_codes):
+        # Depending on the results to display we limit -or not - the iteration
+        if resultstodisplay.isnumeric() :
+            range_to_iterate =int(resultstodisplay)
+        else:
+            range_to_iterate = number_of_codes
+        for i in range(range_to_iterate):
             class_number = sorted_categories[row, i]
             class_number_zeros = np.zeros(number_of_codes)
             class_number_zeros[class_number] = 1
