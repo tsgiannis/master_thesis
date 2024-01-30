@@ -16,6 +16,7 @@ from ..main_code import *
 from execute import execute
 from ..utilities import *
 from ..text_analysis import *
+from ..extensions import db
 #app = Flask(__name__)
 #db = SQLAlchemy(app)
 # @blueprint.route('/save_to_database', methods=['POST'])
@@ -61,6 +62,7 @@ def routename():
     # return '', 204  # 204 status means 'No Content'
     meaningful, meaningless = keywords_processing(get_value_out_of_list_of_dicts(selected_options, 'keywords'))
     selected_options = replace_dictionary_value(selected_options, 'keywords', ' '.join(meaningful))
+
     df = execute(selected_options)
     # Add new columns with checkboxes
     df[
