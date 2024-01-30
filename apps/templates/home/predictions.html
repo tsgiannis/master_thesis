@@ -19,12 +19,35 @@
     height: 25px;
     border-radius: 4px;
 }
+.fancy-header {
+      background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .fancy-header h1 {
+      font-size: 36px;
+      margin-bottom: 0;
+    }
+    .fancy-header p {
+      font-size: 18px;
+    }
     </style>
 
 
 {% endblock stylesheets %}
 
 {% block content %}
+<div class="container-fluid fancy-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Experiment NO {{ session['logging_id'] }}</h1>
+        <p>These are the results for the keywords : {{ session['keywords'] }}</p>
+
+    </div>
+  </div>
+</div>
  <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
 <!-- Your Bootstrap table -->
 <div class="container mt-5 data-table">

@@ -21,7 +21,7 @@ import math
 import matplotlib.pyplot as plt
 import csv
 import pickle
-
+import datetime
 import pickle
 import os
 from apps.utilities import *
@@ -91,6 +91,7 @@ def execute(arguments):
 
     text_list = []
     text_keywords = get_value_out_of_list_of_dicts(arguments, 'keywords')
+    session['keywords'] = text_keywords
     #text_keywords = str(input("Please enter some keywords:\n"))
     text_list.append((text_keywords))
 
@@ -100,6 +101,7 @@ def execute(arguments):
 # Create a new Logging instance and set its attributes
     new_log_entry = Logging(
     UserIns=session['username'],
+    DateIns = datetime.datetime.now(),
     Keywords=text_keywords,
     method=method,
     languagemodel=languagemodel,
@@ -116,7 +118,7 @@ def execute(arguments):
 
 # Commit the session to persist the changes to the database
     db.session.commit()
-    session['logging_id'] = new_log_entry.id
+    session['logging_id'] = new_log_entry.ID
 
 
 
