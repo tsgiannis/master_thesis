@@ -5,6 +5,9 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 <style>
+          thead th {
+            color: green;
+        }
         .data-table tbody tr td:not(:has(input[type="checkbox"])) {
             cursor: pointer;
             transition: transform 0.3s ease;  /* Add a smooth transition effect */
@@ -13,12 +16,51 @@
         .data-table tbody tr td.active:not(:has(input[type="checkbox"])) {
             transform: scale(2);  /* Adjust the magnification factor as needed */
         }
-        input.checkbox-cell  {
-    /* Add any additional styles here */
-    width: 25px; /* Adjust the width as needed */
-    height: 25px;
-    border-radius: 4px;
+
+
+  .flipswitch {
+  position: relative;
+  background: white;
+  width: 120px;
+  height: 40px;
+  -webkit-appearance: initial;
+  border-radius: 3px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  outline: none;
+  font-size: 10px;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #ddd;
 }
+
+.flipswitch:after {
+  position: absolute;
+  top: 5%;
+  display: block;
+  line-height: 32px;
+  width: 45%;
+  height: 90%;
+  background: #fff;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.3s ease-in 0s;
+  color: black;
+  border: #888 1px solid;
+  border-radius: 3px;
+}
+.flipswitch:checked:after {
+  left: 53%;
+  content: "IRRELEVANT";
+  background:red;
+}
+.flipswitch:after {
+  left: 2%;
+  content: "RELEVANT";
+  background:green;
+}
+
+
 .fancy-header {
       background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
       color: #fff;
@@ -32,12 +74,18 @@
     .fancy-header p {
       font-size: 18px;
     }
+
+
+
+
+
     </style>
 
 
 {% endblock stylesheets %}
 
 {% block content %}
+<div class = "content">
 <div class="container-fluid fancy-header">
   <div class="container">
     <div class="row">
@@ -48,11 +96,30 @@
     </div>
   </div>
 </div>
+</div>
  <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
 <!-- Your Bootstrap table -->
 <div class="container mt-5 data-table">
     <!-- Insert the generated HTML table here -->
-    {{ table_html | safe }}
+    <table class="table table-bordered table-striped text-center">
+        <thead >
+            <tr>
+                <th scope="col">Codes</th>
+                <th scope="col">Relevant/Irrelevant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in dataframe.iterrows() %}
+            <tr>
+                <td>{{ row['Codes'] }}</td>
+                <td>
+                    <input type="checkbox" id="checkbox{{ loop.index }}" name="checkbox{{ loop.index }}" class = "flipswitch">
+                    <label for="checkbox{{ loop.index }}"></label>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 <!-- Modal structure -->
 <!-- Modal structure -->
@@ -67,6 +134,7 @@
         </div>
     </div>
 </div>
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -109,13 +177,14 @@ function saveToDatabase() {
 }
 
    // Add click event to each cell using jQuery
-    $(document).on('click', '.data-table tbody tr td', function() {
-        // Your custom logic when a cell is clicked
-        console.log('Clicked:', $(this).text());
+$(document).on('click', '.data-table tbody tr td:not(:has(input[type="checkbox"]))', function() {
+    // Your custom logic when a cell is clicked
+    console.log('Clicked:', $(this).text());
 
-        // Show modal with cell content
-        showModal(this);
-    });
+    // Show modal with cell content
+    showModal(this);
+});
+
 
     // Add mouseover and mouseout events to toggle the 'active' class
     $(document).on('mouseover', '.data-table tbody tr td', function() {
@@ -137,13 +206,34 @@ function saveToDatabase() {
         // Show the modal using Bootstrap modal methods
         $('#myModal').modal('show');
     }
-   function toggleCheckmark(checkbox, resultType) {
-    var checkmark = checkbox.nextSibling;
-    if (checkbox.checked) {
-      checkmark.style.display = 'inline';
-    } else {
-      checkmark.style.display = 'none';
+   function toggleCheckmark(checkbox) {
+   //checkbox.checked = !checkbox.checked;
+    // Find the parent row of the checkbox
+    //var row = checkbox.closest('tr');
+
+    // Find the checkmark span in the row
+    //var checkmark = row.querySelector('.checkmark');
+
+    //if (checkmark) {
+        // Get the result type from the checkbox's data-result attribute
+      //  var resultType = checkbox.getAttribute('data-result');
+
+        // Update checkmark content based on result type
+      //  checkmark.innerHTML = (resultType === 'success') ? '✔️' : '❌';
+   // } else {
+        // Create a new checkmark span
+        //var checkmark = document.createElement('span');
+        //checkmark.className = 'checkmark';
+
+        // Get the result type from the checkbox's data-result attribute
+       // var resultType = checkbox.getAttribute('data-result');
+
+        // Set checkmark content based on result type
+       // checkmark.innerHTML = (resultType === 'success') ? '✔️' : '❌';
+
+        // Append checkmark span after the checkbox
+        //checkbox.parentNode.appendChild(checkmark);
     }
-}
+
 </script>
 {% endblock javascripts %}

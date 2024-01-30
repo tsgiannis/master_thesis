@@ -94,6 +94,16 @@ def execute(arguments):
     session['keywords'] = text_keywords
     #text_keywords = str(input("Please enter some keywords:\n"))
     text_list.append((text_keywords))
+    # check if username is populated
+    if 'username' in session:
+        pass
+        #username = session['username']
+    else:
+        # If 'username' is not in the session, replace it with 'N.A'
+        username = 'N.A'
+        session['username'] = username  #
+
+
 
     # Create an input dataframe
     # *** HERE I Log the current procedure *****
@@ -167,6 +177,6 @@ def execute(arguments):
     #outputDF = pd.DataFrame()
 
     outputDF=pd.DataFrame(pred_class).T
-    outputDF.columns = text_list
+    outputDF.columns = ['Codes']
     #print("the predicted codes (sorted) in labels", outputDF)
     return outputDF
