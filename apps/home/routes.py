@@ -21,17 +21,27 @@ from ..extensions import db
 
 # app = Flask(__name__)
 # db = SQLAlchemy(app)
-# @blueprint.route('/save_to_database', methods=['POST'])
-# def save_to_database():
-#     table_data = request.json
-#     for row in table_data:
-#         code = row['code']
-#         is_correct = row['isCorrect']
-#         another_value = row['anotherValue']
-#         new_code = Code(code=code, is_correct=is_correct, another_value=another_value)
-#         db.session.add(new_code)
-#     db.session.commit()
-#     return 'Data saved to database successfully'
+
+class LoggingDetails(db.Model):
+    __tablename__ = 'LoggingDetails'
+
+    ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    LoggingID = db.Column(db.Text, nullable=False)
+    PatentCode = db.Column(db.Text, nullable=False)
+    Relevance = db.Column(db.Integer)
+
+
+@blueprint.route('/save_to_database', methods=['POST'])
+def save_to_database():
+    table_data = request.json
+    for row in table_data:
+        loggingID = row['LoggingID']
+        patentCode = row['PatentCode']
+        relevance = row['Relevance']
+        new_loggingDetails =LoggingDetails(LoggingID=loggingID, PatentCode=patentCode, Relevance=relevance)
+        db.session.add(new_loggingDetails)
+    db.session.commit()
+    return 'Data saved to database successfully'
 @blueprint.route('/get_filtered_options', methods=['POST'])
 def get_filtered_options():
     selected_value = request.json['selectedValue']
