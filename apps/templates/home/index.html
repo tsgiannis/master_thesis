@@ -197,10 +197,10 @@
 
                 <div class="form-group">
                     <label for="fileInput">Upload File:</label>
-                    <input type="file" class="form-control-file" id="fileInput" name="fileInput" accept=".txt">
+                    <input type="file" class="form-control-file" id="fileInput" name="fileInput" accept=".txt"  onchange='readFile(event)'>
                 </div>
 
-                <button type="submit" onclick="readFile()" class="btn btn-primary">Upload</button>
+                <button  onclick="readFile()" class="btn btn-primary">Upload</button>
             </form>
             <div class="col-md-6">
                 <div id="wordTable">
@@ -290,7 +290,7 @@
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span id="span_datasets"> Selection of Dataset</span>
                                 </button>
-                                <div name='datasets' class="dropdown-menu" aria-labelledby="Selection of Dataset">
+                                <div name='datasets' class="dropdown-menu" id="Selection of Dataset">
                                     {% for item in session['datasets'] %}
                                     <a class="dropdown-item" onclick="handleDropdownItemClick(this)"
                                        data-value="{{item['name']}}"
@@ -350,7 +350,7 @@
                                     <span id="span_languagemodels">Selection of Language Models</span>
                                 </button>
                                 <div name='languagemodels' class="dropdown-menu"
-                                     aria-labelledby="Selection of Language Models">
+                                     id="Selection of Language Models">
                                     {% for item in session['languagemodels'] %}
                                     <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
                                         item['name'] }}</a>
@@ -409,7 +409,7 @@
                                         <span id="span_methods" data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
                                     </button>
                                     <div name='deep_learning' class="dropdown-menu"
-                                         aria-labelledby="Selection of Language Models">
+                                         id="Selection of Language Models">
                                         {% for item in session['methods'] %}
                                         {% if item['name'].lower() not in session['dynamic.methods'] %}
                                         <button class="dropdown-item" disabled>{{ item['name'] }}</button>
@@ -459,7 +459,7 @@
                                         <span id="span_methods_compact">Selection of ML Methods</span>
                                     </button>
                                     <div name='methods_compact' class="dropdown-menu"
-                                         aria-labelledby="Selection of Language Models">
+                                         id="Selection of Language Models">
                                         {% for item in session['methods'] %}
                                         {% if item['name'].lower() not in session['dynamic.methods'] %}
                                         <button class="dropdown-item" disabled>{{ item['name'] }}</button>
@@ -497,7 +497,7 @@
                                         <span id="span_languagemodels_compact">Selection of Language Models</span>
                                     </button>
                                     <div name='languagemodels_compact' class="dropdown-menu"
-                                         aria-labelledby="Selection of Language Models">
+                                         id="Selection of Language Models">
                                         {% for item in session['languagemodels'] %}
                                         {% if item['name'].lower() not in session['dynamic.languagemodels'] %}
                                         <button class="dropdown-item" disabled>{{ item['display_name'] }}</button>
@@ -534,7 +534,7 @@
                                                 <span id="span_datasets_compact">Selection of Datasets</span>
                                             </button>
                                             <div name='datasets_compact' class="dropdown-menu"
-                                                 aria-labelledby="Selection of Datasets">
+                                                 id="Selection of Datasets">
                                                 {% for item in session['datasets'] %}
                                                 {% if item['name'].lower() not in session['dynamic.datasets'] %}
                                                 <button class="dropdown-item"
@@ -554,7 +554,7 @@
                                                 <span id="span_sections_compact">Selection of Patent Sections</span>
                                             </button>
                                             <div name='sections_compact' id='sections_compact' class="dropdown-menu"
-                                                 aria-labelledby="Selection of Sections Per Dataset">
+                                                 id="Selection of Sections Per Dataset">
                                                 {% for item in session['sections'] %}
                                                 {% if item.lower() not in session['dynamic.sections'] %}
                                                 <button class="dropdown-item" disabled>{{ item }}</button>
@@ -594,7 +594,7 @@
                                     <span id="span_ipclevels_compact">Selection of IPC Levels</span>
                                 </button>
                                 <div name='ipclevels_compact' class="dropdown-menu"
-                                     aria-labelledby="Selection of IPC levels">
+                                     id="Selection of IPC levels">
                                     {% for item in session['ipclevels'] %}
                                     {% if item['name'].lower() not in session['dynamic.ipclevels'] %}
                                     <button class="dropdown-item" disabled>{{ item['name'] }}</button>
@@ -631,7 +631,7 @@
                                     <span id="span_noofwords_compact">Selection of Number Of words</span>
                                 </button>
                                 <div name='noofwords_compact' class="dropdown-menu"
-                                     aria-labelledby="Selection of Number of Words">
+                                     id="Selection of Number of Words">
                                     {% for item in session['noofwords'] %}
                                     {% if item['value'] not in session['dynamic.noofwords'] %}
                                     <button class="dropdown-item" disabled>{{ item['value'] }}</button>
@@ -666,7 +666,7 @@
                                     <span id="span_singlemulti_compact">Selection of Single/Multi</span>
                                 </button>
                                 <div name='singlemulti_compact' class="dropdown-menu"
-                                     aria-labelledby="Selection of Single / Multi">
+                                     id="Selection of Single / Multi">
                                     {% for item in session['singlemulti'] %}
                                     {% if item['name'].lower() not in session['dynamic.singlemulti'] %}
                                     <button class="dropdown-item" disabled>{{ item['name'] }}</button>
@@ -701,7 +701,7 @@
                                     <span id="span_structure_compact">Selection of Structure</span>
                                 </button>
                                 <div name='structure_compact' class="dropdown-menu"
-                                     aria-labelledby="Selection of Structure">
+                                     id="Selection of Structure">
                                     {% for item in session['structures'] %}
                                     {% if item['name'].lower() not in session['dynamic.structures'] %}
                                     <button class="dropdown-item" disabled>{{ item['name'] }}</button>
@@ -822,49 +822,63 @@
         xhr.send(JSON.stringify({selectedValue: selectedValue}));
     }
 
-    function readFile() {
-        // Create a file input element
-        var fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.txt';
+    function readFile(event) {
+            var openFile = function(event) {
+  var input = event.target;
 
-        // Trigger a click on the file input
-        fileInput.click();
-
-        // Listen for the change event on the file input
-        fileInput.addEventListener('change', function () {
-            // Check if a file is selected
-            if (fileInput.files.length > 0) {
-                var file = fileInput.files[0];
-                var reader = new FileReader();
-
-                // Define the callback function when file reading is complete
-                reader.onload = function (e) {
-                    // Display the content in the keywords input
-                    var lines = e.target.result.split('\n')
-                        .filter(function (line) {
-                            return line.trim() !== '';  // Trim and check if not empty
-                        })
-                        .slice(0, 60);
-
-                    // Combine the lines into a single string with space delimiters
-                    var content = lines.join(' ');
-
-                    // Display in the keywords input
-                    var keywordsInput = document.getElementById('keywords');
-                    keywordsInput.value = content;
-                };
-
-                // Read the file as text
-                reader.readAsText(file);
-            } else {
-                alert('Please select a file.');
-            }
-        });
-
-        // Append the file input to the document body
-        document.body.appendChild(fileInput);
-    }
+  var reader = new FileReader();
+  reader.onload = function() {
+    var text = reader.result;
+    var node = document.getElementById('output');
+    node.innerText = text;
+    console.log(reader.result.substring(0, 200));
+  };
+  reader.readAsText(input.files[0]);
+};
+        }
+    // function readFile() {
+    //     // Create a file input element
+    //     var fileInput = document.createElement('input');
+    //     fileInput.type = 'file';
+    //     fileInput.accept = '.txt';
+    //
+    //     // Trigger a click on the file input
+    //     fileInput.click();
+    //
+    //     // Listen for the change event on the file input
+    //     fileInput.addEventListener('change', function () {
+    //         // Check if a file is selected
+    //         if (fileInput.files.length > 0) {
+    //             var file = fileInput.files[0];
+    //             var reader = new FileReader();
+    //
+    //             // Define the callback function when file reading is complete
+    //             reader.onload = function (e) {
+    //                 // Display the content in the keywords input
+    //                 var lines = e.target.result.split('\n')
+    //                     .filter(function (line) {
+    //                         return line.trim() !== '';  // Trim and check if not empty
+    //                     })
+    //                     .slice(0, 60);
+    //
+    //                 // Combine the lines into a single string with space delimiters
+    //                 var content = lines.join(' ');
+    //
+    //                 // Display in the keywords input
+    //                 var keywordsInput = document.getElementById('keywords');
+    //                 keywordsInput.value = content;
+    //             };
+    //
+    //             // Read the file as text
+    //             reader.readAsText(file);
+    //         } else {
+    //             alert('Please select a file.');
+    //         }
+    //     });
+    //
+    //     // Append the file input to the document body
+    //     document.body.appendChild(fileInput);
+    // }
 
     function addToCollection(collection, key, value) {
         // Check if the key already exists in the collection

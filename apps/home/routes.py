@@ -17,7 +17,7 @@ from execute import execute
 from ..utilities import *
 from ..text_analysis import *
 from ..extensions import db
-
+#https://stackoverflow.com/questions/53921939/bootstrap-4-2-1-failed-to-execute-queryselector-on-document-javascriptv
 
 # app = Flask(__name__)
 # db = SQLAlchemy(app)
