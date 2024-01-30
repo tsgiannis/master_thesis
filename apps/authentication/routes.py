@@ -3,7 +3,7 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, session
 from flask_login import (
     current_user,
     login_user,
@@ -49,7 +49,7 @@ def login():
 
         # Check the password
         if user and verify_pass(password, user.password):
-
+            session['username'] = user
             login_user(user)
             return redirect(url_for('authentication_blueprint.route_default'))
 

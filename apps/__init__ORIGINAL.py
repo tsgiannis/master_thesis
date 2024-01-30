@@ -8,9 +8,10 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module
-from .extensions import db,login_manager
 
 
+db = SQLAlchemy()
+login_manager = LoginManager()
 
 
 def register_extensions(app):

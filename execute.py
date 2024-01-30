@@ -1,5 +1,6 @@
 # Import libraries
 import os.path
+from datetime import datetime
 
 import tensorflow
 from tensorflow import keras
@@ -24,6 +25,25 @@ import pickle
 import pickle
 import os
 from apps.utilities import *
+from apps.extensions import db
+
+# Define the model class for the Logging table
+class Logging(db.Model):
+    ID = db.Column(db.Integer, primary_key=True)
+    UserIns = db.Column(db.String(50))
+    DateIns = db.Column(db.DateTime)
+    Keywords = db.Column(db.String(255))
+    method = db.Column(db.String(50))
+    languagemodel = db.Column(db.String(50))
+    dataset = db.Column(db.String(50))
+    ipclevel = db.Column(db.String(50))
+    noofwords = db.Column(db.Integer)
+    singlemulti = db.Column(db.String(50))
+    structure = db.Column(db.String(50))
+    ensemble = db.Column(db.String(50))
+
+
+
 
 
 def execute(arguments):
@@ -75,6 +95,31 @@ def execute(arguments):
     text_list.append((text_keywords))
 
     # Create an input dataframe
+    # *** HERE I Log the current procedure *****
+    # **** START ******
+# Create a new Logging instance and set its attributes
+    new_log_entry = Logging(
+    UserIns=session['username'],
+    Keywords=text_keywords,
+    method=method,
+    languagemodel=languagemodel,
+    dataset=dataset,
+    ipclevel=ipclevel,
+    noofwords=no_of_words,
+    singlemulti=singlemulti,
+    structure=structure,
+    ensemble=ensemble
+)
+
+# Add the instance to the session
+    db.session.add(new_log_entry)
+
+# Commit the session to persist the changes to the database
+    db.session.commit()
+    session['logging_id'] = new_log_entry.id
+
+
+
 
     inputDF = pd.DataFrame()
     inputDF['text'] = text_list
