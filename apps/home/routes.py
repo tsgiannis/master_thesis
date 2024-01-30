@@ -17,8 +17,10 @@ from execute import execute
 from ..utilities import *
 from ..text_analysis import *
 from ..extensions import db
-#app = Flask(__name__)
-#db = SQLAlchemy(app)
+
+
+# app = Flask(__name__)
+# db = SQLAlchemy(app)
 # @blueprint.route('/save_to_database', methods=['POST'])
 # def save_to_database():
 #     table_data = request.json
@@ -65,10 +67,11 @@ def routename():
 
     df = execute(selected_options)
     # Add new columns with checkboxes
-    df[
-        'Success'] = '<input type="checkbox" class="clickable checkbox-cell" onclick="toggleCheckmark(this, \'success\')">'
-    df[
-        'Failure'] = '<input type="checkbox" class="clickable checkbox-cell" onclick="toggleCheckmark(this, \'failure\')">'
+    # df[
+    #  'Success'] = '<input type="checkbox" class="custom-checkbox" onclick="toggleCheckmark(this)" data-result="success">'
+    #df[
+      #'Failure'] = '<input type="checkbox" class="custom-checkbox" onclick="toggleCheckmark(this)" data-result="failure">'
+    #df['RelIR'] = '< input type = "checkbox" class="flipswitch" >'
     # df['Success'] += '<span class="checkmark">✔️</span>'
     # df['Failure'] += '<span class="checkmark">❌</span>'
 
@@ -77,7 +80,7 @@ def routename():
 
     # Render the template with the HTML content
     # return render_template('index.html', table_html=table_html)
-    return render_template('home/predictions.html', table_html=table_html)
+    return render_template('home/predictions.html', dataframe = df)
     # Process the selected option as needed
     # return f'Selected option: {selected_option}'
 
@@ -107,7 +110,7 @@ def index():
     # structure
     # ensemble
     session['methods'], session['languagemodels'], session['datasets'], session['ipclevels'], \
-    session['noofwords'], session['singlemulti'], session['structures'], session['ensemble'] = load_config()
+        session['noofwords'], session['singlemulti'], session['structures'], session['ensemble'] = load_config()
     session['sections'] = 'Please Select Dataset'.split()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)

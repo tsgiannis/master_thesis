@@ -6,7 +6,10 @@
 {% block stylesheets %}
 <style>
           thead th {
-            color: green;
+            color: white;
+        }
+        td
+        { color:white;
         }
         .data-table tbody tr td:not(:has(input[type="checkbox"])) {
             cursor: pointer;
@@ -53,11 +56,13 @@
   left: 53%;
   content: "IRRELEVANT";
   background:red;
+
 }
 .flipswitch:after {
   left: 2%;
   content: "RELEVANT";
   background:green;
+
 }
 
 
@@ -90,7 +95,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <h1>Experiment NO {{ session['logging_id'] }}</h1>
+        <h1 id = "sessionNo" name = "{{ session['logging_id'] }}">Experiment NO {{ session['logging_id'] }}</h1>
         <p>These are the results for the keywords : {{ session['keywords'] }}</p>
 
     </div>
@@ -101,7 +106,7 @@
 <!-- Your Bootstrap table -->
 <div class="container mt-5 data-table">
     <!-- Insert the generated HTML table here -->
-    <table class="table table-bordered table-striped text-center">
+    <table id = "codesTable" class="table table-bordered table-striped text-center">
         <thead >
             <tr>
                 <th scope="col">Codes</th>
@@ -113,8 +118,8 @@
             <tr>
                 <td>{{ row['Codes'] }}</td>
                 <td>
-                    <input type="checkbox" id="checkbox{{ loop.index }}" name="checkbox{{ loop.index }}" class = "flipswitch">
-                    <label for="checkbox{{ loop.index }}"></label>
+                    <input type="checkbox" id="checkbox{{ loop.index }}" name="checkbox{{ loop.index }}" class = "flipswitch" data-target="value{{ loop.index }}">
+                    <label id="value{{ loop.index }}" style="display: none;" data-value="1">1</label>
                 </td>
             </tr>
             {% endfor %}
@@ -144,13 +149,16 @@
 // Plain JavaScript function to handle button click
 function saveToDatabase() {
     // Collect data from the table
+    var sessionID =document.getElementById('sessionNo').getAttribute("name");
     var tableData = [];
     var rows = document.getElementById('codesTable').getElementsByTagName('tr');
     for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip header row
         var code = rows[i].getElementsByTagName('td')[0].textContent;
-        var isCorrect = rows[i].querySelector('.correctCheckbox').checked;
-        var anotherValue = rows[i].querySelector('.anotherCheckbox').checked;
-        tableData.push({ code: code, isCorrect: isCorrect, anotherValue: anotherValue });
+        const labelId = '#value' + i;
+
+        var relevance = rows[i].querySelector(labelId).innerHTML;
+
+        tableData.push({id:sessionID, code: code, relevance: relevance });
     }
 
     // Send data to backend
@@ -234,6 +242,22 @@ $(document).on('click', '.data-table tbody tr td:not(:has(input[type="checkbox"]
         // Append checkmark span after the checkbox
         //checkbox.parentNode.appendChild(checkmark);
     }
+document.addEventListener('change', function(event) {
+  if (event.target.classList.contains('flipswitch')) {
+    const checkbox = event.target;
+    const valueLabelId = checkbox.getAttribute('data-target');
+    const valueLabel = document.getElementById(valueLabelId);
+
+    if (checkbox.checked) {
+      valueLabel.innerHTML = '2';
+    } else {
+      valueLabel.innerHTML = '1';
+    }
+
+    const dataValue = valueLabel.innerHTML;
+    console.log(dataValue); // Output: The value of the data-value attribute
+  }
+});
 
 </script>
 {% endblock javascripts %}
