@@ -158,7 +158,7 @@ function saveToDatabase() {
 
         var relevance = rows[i].querySelector(labelId).innerHTML;
 
-        tableData.push({id:sessionID, code: code, relevance: relevance });
+        tableData.push({LoggingID:sessionID, PatentCode: code, Relevance: relevance });
     }
 
     // Send data to backend
