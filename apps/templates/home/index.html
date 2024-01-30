@@ -128,7 +128,7 @@
         <ul class="ml-auto">
             <li class="input-group d-flex align-items-center mb-0">
                 <label class="toggle">
-                    <input class="toggle-checkbox" type="checkbox" id="toggle-view">
+                    <input class="toggle-checkbox" type="checkbox" id="toggle-view" onclick="handleToggleView()">
                     <div class="toggle-switch"></div>
                     <span class="toggle-label" id="toggleinfo">Compact</span>
                 </label>
@@ -182,7 +182,7 @@
         <h2 class="mb-4">Enter Keywords or Upload a File</h2>
         <div class="row">
 
-            <form id="keywordForm" onsubmit="submitForm(event)">
+            <form id="keywordForm" >
                 <div class="input-group-append">
                     <label for="keywords">Enter Keywords:</label>
                     <input type="text" class="form-control align-middle" id="keywords" name="keywords"
@@ -248,7 +248,7 @@
     </div>
     <hr>
     <!-- **** FULL VIEW START -->
-    <div id="fullview">
+    <div id="fullview" style ="display : none;">
         <div class="card">
             <div class="card-header text-center py-4">
                 <h3 class="title">
@@ -398,10 +398,10 @@
             </div>
             <div class="card-body">
                 <form id='form_deep_learning_classifiers'>
-                    <div class="form-row">
+
 
                         <div class="form-row col-md-6">
-                            <form id='form_methods'>
+
                                 <div class="dropdown-toggle">
                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                             id="inputState_deeplearning"
@@ -420,9 +420,9 @@
                                         {% endfor %}
                                     </div>
                                 </div>
-                            </form>
+
                         </div>
-                    </div>
+
 
                 </form>
 
@@ -567,6 +567,7 @@
                                         </div>
                                     </div>
 
+                                </div>
                                 </div>
                         </form>
                     </div>
@@ -773,6 +774,28 @@
 {% block javascripts %}
 
 <script>
+    function handleToggleView() {
+        var toggleview = document.getElementById('toggle-view');
+        var compactview = document.getElementById('compactview');
+        var fullview = document.getElementById('fullview');
+        var toggleinfo = document.getElementById('toggleinfo');
+        //fullview.style.display = 'none';
+
+        toggleview.onchange = function () {
+            if (toggleview.checked) {
+                compactview.style.display = 'none';
+                fullview.style.display = 'block';
+                toggleinfo.innerHTML = "Full"
+            } else {
+                fullview.style.display = 'none';
+                compactview.style.display = 'block';
+                toggleinfo.innerHTML = "Compact"
+
+            }
+        };
+    }
+
+
     // Hide the button initially
     document.getElementById('inputComplete').style.display = 'none';
 
@@ -864,13 +887,7 @@
         }
     }
 
-    // Function to add a new key-value pair to the collection
-    // Example usage
-    //addToCollection(myCollection, 'key4', 'value4'); // Will not be added due to the limit
-    //    $('.dropdown-item').on('click', function () {
-    //            var selectedValuex = $(this).data('value');
-    //            $('#form_datasets').append('<input type="hidden" name="selected_option" value="' + selectedValuex + '">');
-    //        });
+
     function showGenre(item) {
         document.querySelectorAll('form').forEach(function (form) {
             form.querySelectorAll('.dropdown-item.active').forEach(function (item) {
@@ -910,23 +927,12 @@
 
             addToCollection(selections, key_for_collection, value)
             document.getElementById('span_' + key).textContent = activeItemText
-            //var parent_name = item.parentNode.getAttribute('name');
-            //if (parent_name.indexOf('compact')) {
-            //document.getElementById('span_' + key+'_compact').textContent = value
-            //}
-            //else
-            //{
-            //document.getElementById('span_' + key).textContent = value
-            //}
         } else {
             console.log('No form found.');
         }
 
 
-    }    //console.log(item.innerHTML,'111')
-    //var selectedValue = item.innerHTML;
-
-    //console.log(selectedValue+'!')
+    }
 
     function showResultsModal() {
         return new Promise(function (resolve, reject) {
@@ -1003,15 +1009,7 @@
         hiddenInput.setAttribute('input_type', 'search');
         document.getElementById('runForm').appendChild(hiddenInput);
 
-        // Other actions using keywords
-        //var fileInput = document.getElementById('fileInput');
-        //if (fileInput.files.length > 0) {
-          //  var file = fileInput.files[0];
-            //readFile(file);
-        //} else {
-            // No file uploaded
-          //  alert('Please upload a file.');
-        //}
+
     }
 
     // Function to check if keywords are already present
@@ -1038,7 +1036,7 @@
             // Call showResultsModals and obtain the selected option
             showResultsModals().then(function (selectedOption) {
                 const resultstodisplay = selectedOption;
-                addToCollection(selections,'results',resultstodisplay);
+                addToCollection(selections, 'results', resultstodisplay);
                 console.log("Selected option assigned to variable:", resultstodisplay);
                 // Pass someSelection to another function or use it as needed
 
@@ -1056,10 +1054,9 @@
                         // Continue processing after the button click
                         console.log('Input complete button clicked with keywords:', keywords);
                         processSelections(keywords);
-                        document.getElementById('runForm').submit();
+                        document.getElementById('run ').submit();
                     });
                 }
-
 
 
             });
@@ -1088,34 +1085,8 @@
         }, 3000);
     }
 
-    // Iterate over all forms on the page
-    // document.querySelectorAll('form').forEach(function(form) {
-    //     // Iterate over all dropdown-items within the form
-    //     form.querySelectorAll('.dropdown-item.active').forEach(function(item) {
-    //         // Access the value of each active dropdown-item
-    //         var value = item.getAttribute('data-value');
-    //         console.log('Form:', form, 'Dropdown Item Value:', value);
-    //         // Do something with the value, such as adding it to an array or processing it further
-    //     });
-    // });
-    var toggleview = document.getElementById('toggle-view');
-    var compactview = document.getElementById('compactview');
-    var fullview = document.getElementById('fullview');
-    var toggleinfo = document.getElementById('toggleinfo');
-    fullview.style.display = 'none';
 
-    toggleview.onchange = function () {
-        if (toggleview.checked) {
-            compactview.style.display = 'none';
-            fullview.style.display = 'block';
-            toggleinfo.innerHTML = "Full"
-        } else {
-            fullview.style.display = 'none';
-            compactview.style.display = 'block';
-            toggleinfo.innerHTML = "Compact"
 
-        }
-    };
 
     // Assume this is triggered by some user action or event
     function keyword_processing() {
