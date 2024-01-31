@@ -532,7 +532,7 @@
                             <div class="col-md-8 h-80">
 
                                 <div class="dropdown"     >
-                                    <button id="selected_methods" class="dropbtn" onclick="toggleDropdown(this)">Select a ML Method</button>
+                                    <button id="selected_method" class="dropbtn" onclick="toggleDropdown(this)">Select a ML Method</button>
                                     <div class="dropdown-content">
                                         {% for item in session['methods'] %}
                                         {% if item['name'].lower() not in session['dynamic.methods'] %}
@@ -567,7 +567,7 @@
                             <div class="col-md-8 h-80">
 
                                 <div class="dropdown_methods" >
-                                    <button id="selected_languagemodels" class="dropbtn" onclick="toggleDropdown(this)">Select a Language Model</button>
+                                    <button id="selected_languagemodel" class="dropbtn" onclick="toggleDropdown(this)">Select a Language Model</button>
                                     <div class="dropdown-content">
                                         {% for item in session['languagemodels'] %}
                                         {% if item['name'].lower() not in session['dynamic.languagemodels'] %}
@@ -622,9 +622,18 @@
                                 </div>
                             </div>
                                         <div class="dropdown_sections" >
-                                <button id="selected_sections" class="dropbtn" onclick="toggleDropdown(this)">Select an Section</button>
-                                <div class="dropdown-content" id="sections">
-                                    <p Please Select the Corresponding dataset></p>
+                                <button id="selected_sections" class="dropbtn" onclick="toggleDropdown(this)">Select an IPC Level</button>
+                                <div class="dropdown-content">
+                                    {% for item in session['sections'] %}
+                                    {% if item.lower() not in session['dynamic.sections'] %}
+                                    <a href="#" data-value="{{ item['name'] }}" class="disabled">{{ item['display_name']
+                                        }}</a>
+
+                                    {% else %}
+                                    <a href="#" data-value="{{ item['name'] }}" onclick="selectedOption(this)">{{
+                                        item['display_name'] }}</a>
+                                    {% endif %}
+                                    {% endfor %}
 
                                 </div>
                             </div>
@@ -650,7 +659,7 @@
                                style="height: 16%;">IPC Levels</label>
                         <div class="col-md-8 h-80">
                             <div class="dropdown" >
-                                <button id="selected_ipclevels" class="dropbtn" onclick="toggleDropdown(this)">Select an IPC Level</button>
+                                <button id="selected_ipclevel" class="dropbtn" onclick="toggleDropdown(this)">Select an IPC Level</button>
                                 <div class="dropdown-content">
                                     {% for item in session['ipclevels'] %}
                                     {% if item['name'].lower() not in session['dynamic.ipclevels'] %}
@@ -858,13 +867,13 @@
     }
 
     function getFilteredOptions(item) {
-        var selectedValue = item.getAttribute('data-value')
+        var selectedValue = item.value;
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/get_filtered_options', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-               document.getElementById('sections').innerHTML = xhr.responseText;
+                document.getElementById('sections_compact').innerHTML = xhr.responseText;
             }
         };
         xhr.send(JSON.stringify({selectedValue: selectedValue}));
@@ -1200,12 +1209,9 @@ function selectedOption(item) {
     var div = item.parentNode;
     var button = item.parentNode.parentNode.querySelector('button');
     var elementid = button.getAttribute('id');
-    document.getElementById(elementid).innerText = item.innerHTML
+    document.getElementById(elementid).innerText = item.getAttribute('data-value');
     div.classList.remove('hovered');
-    var key_for_collection = button.id.split('_')[1]
-    value = item.getAttribute('data-value')
 
-            addToCollection(selections, key_for_collection, value)
     // Hide the dropdown after selection is made
     var dropdownContent = button.nextElementSibling;
     dropdownContent.classList.remove('show');
