@@ -1,10 +1,47 @@
-{% extends "layouts/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page with Sidebar</title>
+<style>
+    /* Style for the entire page */
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: #fff;
+        font-family: Arial, sans-serif;
+    }
 
-{% block title %} Intelligent Classifier {% endblock %}
+    /* Style for the sidebar */
+    .sidebar {
+        width: 250px;
+        background-color: #333;
+        height: 100vh; /* Full height of the viewport */
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}
-<style xmlns="http://www.w3.org/1999/html">
+    /* Style for the container */
+    .container {
+        margin-left: 250px; /* Same as the width of the sidebar */
+        padding: 20px;
+    }
+
+    /* Style for the sidebar links */
+    .sidebar a {
+        display: block;
+        padding: 10px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    /* Style for the sidebar links on hover */
+    .sidebar a:hover {
+        background-color: #555;
+    }
     .custom-btn-size {
         font-size: 36px;
     }
@@ -186,37 +223,26 @@
 .dropdown-content.show {
     display: block;
 }
-
 </style>
+</head>
+<body>
 
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
+    <!-- Add more links as needed -->
+</div>
 
-{% endblock stylesheets %}
-
-{% block content %}
-
-<div class="content">
-    <!-- Button to remind the user to input keywords -->
-    <!-- Button to mark the end of user input -->
-    <button id="inputComplete" class="btn btn-primary" onclick="completeUserInput()"
+<!-- Container -->
+<div class="container">
+     <button id="inputComplete" class="btn btn-primary" onclick="completeUserInput()"
             style="position: fixed; top: 50px; right: 100px; display: none;">Input Complete
     </button>
 
-    <div>
-        <ul class="ml-auto">
-            <li class="input-group d-flex align-items-center mb-0">
-                <label class="toggle">
-                    <input class="toggle-checkbox" type="checkbox" id="toggle-view" onclick="handleToggleView()">
-                    <div class="toggle-switch"></div>
-                    <span class="toggle-label" id="toggleinfo">Compact</span>
-                </label>
-            </li>
-        </ul>
-    </div>
-    {% if selected_option %}
-    <div class="alert alert-success" role="alert">
-        {{ selected_option }}
-    </div>
-    {% endif %}
+
+    {
     <div class="modal" id="selections_checker" tabindex="-1" role="dialog">
         <div class="modal-dialog custom-modal-content" role="document">
             <div class="modal-content custom-modal-content">
@@ -326,195 +352,6 @@
         </div>
     </div>
     <hr>
-    <!-- **** FULL VIEW START -->
-    <div id="fullview" style="display : none;">
-        <div class="card">
-            <div class="card-header text-center py-4">
-                <h3 class="title">
-                    Datasets
-                </h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        {% for key in session['datasets'][0]%}
-                        <th>{{ key }}</th>
-                        {% endfor %}
-                    </tr>
-
-
-                    </thead>
-                    <tbody>
-                    {% for item in session['datasets'] %}
-                    <tr>
-                        {% for key in item%}
-                        {% if 'link' in key %}
-                        <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
-                        {% else %}
-                        <td>{{ item[key] }}</td>
-                        {% endif %}
-
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-body">
-                <form id="form_datasets">  <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
-                    <div class="form-row">
-
-                        <div class="form-row col-md-6">
-                            <div class="dropdown-toggle">
-                                <button class="btn btn-secondary dropdown-toggle" type="submit" id="btnDatasets"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span id="span_datasets"> Selection of Dataset</span>
-                                </button>
-                                <div name='datasets' class="dropdown-menu" id="Selection of Dataset">
-                                    {% for item in session['datasets'] %}
-                                    <a class="dropdown-item" onclick="handleDropdownItemClick(this)"
-                                       data-value="{{item['name']}}"
-                                       href="#">{{ item['name'] }}</a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-
-
-        <div class="card">
-            <div class="card-header text-center py-4">
-                <h3 class="title">
-                    Language Models
-                </h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        {% for key in session['languagemodels'][0]%}
-                        <th>{{ key }}</th>
-                        {% endfor %}
-                    </tr>
-
-
-                    </thead>
-                    <tbody>
-                    {% for item in session['languagemodels'] %}
-                    <tr>
-                        {% for key in item%}
-                        {% if 'link' in key %}
-                        <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
-                        {% else %}
-                        <td>{{ item[key] }}</td>
-                        {% endif %}
-
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-body">
-                <form id="form_languagemodels">
-                    <div class="form-row">
-
-                        <div class="form-row col-md-6">
-                            <div class="dropdown-toggle">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span id="span_languagemodels">Selection of Language Models</span>
-                                </button>
-                                <div name='languagemodels' class="dropdown-menu"
-                                     id="Selection of Language Models">
-                                    {% for item in session['languagemodels'] %}
-                                    <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
-                                        item['name'] }}</a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header text-center py-4">
-                <h3 class="title">
-                    Deep Learning Classifiers
-                </h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        {% for key in session['methods'][0]%}
-                        <th>{{ key }}</th>
-                        {% endfor %}
-                    </tr>
-
-
-                    </thead>
-                    <tbody>
-                    {% for item in session['methods'] %}
-                    <tr>
-                        {% for key in item%}
-                        {% if 'link' in key %}
-                        <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
-                        {% else %}
-                        <td>{{ item[key] }}</td>
-                        {% endif %}
-
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-body">
-                <form id='form_deep_learning_classifiers'>
-
-
-                    <div class="form-row col-md-6">
-
-                        <div class="dropdown-toggle">
-                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                    id="inputState_deeplearning"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="span_methods" data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
-                            </button>
-                            <div name='deep_learning' class="dropdown-menu" onclick = "toggleDropdown"
-                                 id="Selection of Language Models2">
-                                {% for item in session['methods'] %}
-                                {% if item['name'].lower() not in session['dynamic.methods'] %}
-                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
-                                {% else %}
-                                <button class="dropdown-item"
-                                        onclick="handleDropdownItemClick(this)">{{ item['name'] }}
-                                </button>
-                                {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </form>
-
-            </div>
-        </div>
-
-
-    </div>
-    <!-- **** FULL VIEW END ********* -->
-
-
-    <!-- **** COMPACT VIEW START *****  -->
     <div id="compactview">
 
 
@@ -812,24 +649,9 @@
 
         </div>
     </div>
-    <!-- *****  COMPACT VIEW END  ******  -->  -->
 </div>
-<hr/>
-<form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
-    <!-- Include any form fields as needed -->
 
-    <!-- Fancy RUN button inside the form -->
-    <button type="button" class="btn btn-success  btn-lg btn-block custom-btn-size" onclick="CheckNRun()" type="submit">
-        RUN
-    </button>
-</form>
-
-
-{% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
-
+</body>
 <script>
     function handleToggleView() {
         var toggleview = document.getElementById('toggle-view');
@@ -1285,10 +1107,6 @@ function toggleDropdown(button) {
     });
 }
 
-
-
-
 </script>
 
-
-{% endblock javascripts %}
+</html>
