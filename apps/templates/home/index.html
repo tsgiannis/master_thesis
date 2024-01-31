@@ -1277,11 +1277,13 @@ function toggleDropdown(button) {
     var dropdownContent = button.nextElementSibling;
     dropdownContent.classList.toggle('show'); // Toggle visibility
 
-    // Close the dropdown after a selection is made
+    // Stop the default action of the click event
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Stop event propagation when clicking inside the dropdown content
     dropdownContent.addEventListener('click', function(event) {
-        if (event.target.tagName === 'A') {
-            dropdownContent.classList.remove('show');
-        }
+        event.stopPropagation(); // Prevent event from propagating further
     });
 }
 
