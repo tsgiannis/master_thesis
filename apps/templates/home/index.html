@@ -1207,10 +1207,14 @@
     }
 function selectedOption(item) {
     var div = item.parentNode;
-    var button = item.parentNode.parentNode.querySelector('button')
-    var elementid = button.getAttribute('id')
-  document.getElementById(elementid).innerText = item.getAttribute('data-value');
-  div.classList.remove('hovered');
+    var button = item.parentNode.parentNode.querySelector('button');
+    var elementid = button.getAttribute('id');
+    document.getElementById(elementid).innerText = item.getAttribute('data-value');
+    div.classList.remove('hovered');
+
+    // Hide the dropdown after selection is made
+    var dropdownContent = button.nextElementSibling;
+    dropdownContent.classList.remove('show');
 }
 function showFileChooser() {
     var fileInput = document.getElementById('fileInput');
@@ -1280,13 +1284,17 @@ function toggleDropdown(button) {
     // Stop the default action of the click event
     event.preventDefault();
     event.stopPropagation();
-
-    // Stop event propagation when clicking inside the dropdown content
-    dropdownContent.addEventListener('click', function(event) {
-        event.stopPropagation(); // Prevent event from propagating further
-    });
 }
 
+// Close dropdowns when clicking outside of them
+document.body.addEventListener('click', function(event) {
+    var dropdowns = document.querySelectorAll('.dropdown-content');
+    dropdowns.forEach(function(dropdown) {
+        if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+});
 
 
 
