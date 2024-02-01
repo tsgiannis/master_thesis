@@ -17,7 +17,9 @@ from execute import execute
 from ..utilities import *
 from ..text_analysis import *
 from ..extensions import db
-#https://stackoverflow.com/questions/53921939/bootstrap-4-2-1-failed-to-execute-queryselector-on-document-javascriptv
+
+
+# https://stackoverflow.com/questions/53921939/bootstrap-4-2-1-failed-to-execute-queryselector-on-document-javascriptv
 
 # app = Flask(__name__)
 # db = SQLAlchemy(app)
@@ -38,10 +40,12 @@ def save_to_database():
         loggingID = row['LoggingID']
         patentCode = row['PatentCode']
         relevance = row['Relevance']
-        new_loggingDetails =LoggingDetails(LoggingID=loggingID, PatentCode=patentCode, Relevance=relevance)
+        new_loggingDetails = LoggingDetails(LoggingID=loggingID, PatentCode=patentCode, Relevance=relevance)
         db.session.add(new_loggingDetails)
     db.session.commit()
     return 'Data saved to database successfully'
+
+
 @blueprint.route('/get_filtered_options', methods=['POST'])
 def get_filtered_options():
     selected_value = request.json['selectedValue']
@@ -51,9 +55,9 @@ def get_filtered_options():
     dropdown_options_html = ''
     for item in session['sections']:
         if item.lower() not in session['dynamic.sections']:
-            dropdown_options_html += f'<button class="dropdown-item" disabled>{item}</button>'
+            dropdown_options_html += f'<a href="#"  class="disabled">' + item + '</a>'
         else:
-            dropdown_options_html += f'<button class="dropdown-item" onclick="handleDropdownItemClick(this)">{item}</button>'
+            dropdown_options_html += f'<a href="#" data-value="' + item +'" onclick="selectedOption(this)">'+ item + '</a>'
     return dropdown_options_html
     # return jsonify({'success': True})
 
@@ -79,9 +83,9 @@ def routename():
     # Add new columns with checkboxes
     # df[
     #  'Success'] = '<input type="checkbox" class="custom-checkbox" onclick="toggleCheckmark(this)" data-result="success">'
-    #df[
-      #'Failure'] = '<input type="checkbox" class="custom-checkbox" onclick="toggleCheckmark(this)" data-result="failure">'
-    #df['RelIR'] = '< input type = "checkbox" class="flipswitch" >'
+    # df[
+    # 'Failure'] = '<input type="checkbox" class="custom-checkbox" onclick="toggleCheckmark(this)" data-result="failure">'
+    # df['RelIR'] = '< input type = "checkbox" class="flipswitch" >'
     # df['Success'] += '<span class="checkmark">✔️</span>'
     # df['Failure'] += '<span class="checkmark">❌</span>'
 
@@ -90,7 +94,7 @@ def routename():
 
     # Render the template with the HTML content
     # return render_template('index.html', table_html=table_html)
-    return render_template('home/predictions.html', dataframe = df)
+    return render_template('home/predictions.html', dataframe=df)
     # Process the selected option as needed
     # return f'Selected option: {selected_option}'
 
@@ -120,7 +124,7 @@ def index():
     # structure
     # ensemble
     session['methods'], session['languagemodels'], session['datasets'], session['ipclevels'], \
-        session['noofwords'], session['singlemulti'], session['structures'], session['ensemble'] = load_config()
+    session['noofwords'], session['singlemulti'], session['structures'], session['ensemble'] = load_config()
     session['sections'] = 'Please Select Dataset'.split()
     # contains_list_ = contains_list_recursive(datasets)
     # contains_list = contains_list_recursive(language_models)
