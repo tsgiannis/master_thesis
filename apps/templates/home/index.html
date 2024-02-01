@@ -1299,7 +1299,6 @@ function handleFileSelect(event) {
         var reader = new FileReader();
         reader.onload = function (e) {
 
-
             var lines = e.target.result.split('\n')
                          .filter(function (line) {
                              return line.trim() !== '';  // Trim and check if not empty
