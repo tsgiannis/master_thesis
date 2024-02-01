@@ -186,6 +186,20 @@
 .dropdown-content.show {
     display: block;
 }
+.custom-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+}
 
 </style>
 
@@ -278,8 +292,8 @@
                            onchange='readFile(this)' class="hidden">
                 </div>
 
-                <button id="readFileBtn" class="skip-dropdown-close" onclick="uploadFile()">Upload Keywords File</button>
 
+                <div id="customButton" class="custom-button">Upload Keywords File</div>
             </form>
             <div class="col-md-6">
                 <div id="wordTable">
@@ -1332,7 +1346,10 @@ function uploadFile() {
     // Trigger a click on the file input
     fileInput.click();
 }
-
+document.getElementById('customButton').addEventListener('click', function() {
+    // Your click event handler logic goes here
+    uploadFile();
+});
 </script>
 
 
