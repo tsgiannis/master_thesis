@@ -186,6 +186,20 @@
 .dropdown-content.show {
     display: block;
 }
+.custom-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+}
 
 </style>
 
@@ -278,8 +292,8 @@
                            onchange='readFile(this)' class="hidden">
                 </div>
 
-                <button id="readFileBtn" onclick="showFileChooser()">Upload Keywords File</button>
 
+                <div id="customButton" class="custom-button">Upload Keywords File</div>
             </form>
             <div class="col-md-6">
                 <div id="wordTable">
@@ -1212,7 +1226,9 @@ function selectedOption(item) {
 }
 function showFileChooser() {
     var fileInput = document.getElementById('fileInput');
+    event.stopPropagation();
     fileInput.click();
+
 }
 //function readFile() {
   // Trigger click event on hidden file input
@@ -1245,22 +1261,22 @@ function showFileChooser() {
 //  }-->
 //);
 
-function readFile(input) {
-    var file = input.files[0];
-    var reader = new FileReader();
+<!--function readFile(input) {-->
+<!--    var file = input.files[0];-->
+<!--    var reader = new FileReader();-->
 
-    reader.onload = function(event) {
-        var content = event.target.result;
-        var lines = content.split('\n');
-        var keywords_display = lines.join(' ');
-        document.getElementById('keywords').value = keywords_display;
+<!--    reader.onload = function(event) {-->
+<!--        var content = event.target.result;-->
+<!--        var lines = content.split('\n');-->
+<!--        var keywords_display = lines.join(' ');-->
+<!--        document.getElementById('keywords').value = keywords_display;-->
 
 
 
-    };
+<!--    };-->
 
-    reader.readAsText(file);
-}
+<!--    reader.readAsText(file);-->
+<!--}-->
 
 function toggleDropdownHover(isHovered) {
     //var elm = isHovered.getAttribute('id')
@@ -1280,18 +1296,60 @@ function toggleDropdown(button) {
     event.stopPropagation();
 }
 
-// Close dropdowns when clicking outside of them
-document.body.addEventListener('click', function(event) {
-    var dropdowns = document.querySelectorAll('.dropdown-content');
-    dropdowns.forEach(function(dropdown) {
-        if (!dropdown.contains(event.target)) {
-            dropdown.classList.remove('show');
-        }
-    });
+<!--// Close dropdowns when clicking outside of them-->
+<!--document.body.addEventListener('click', function(event) {-->
+<!--    var dropdowns = document.querySelectorAll('.dropdown-content');-->
+<!--    dropdowns.forEach(function(dropdown) {-->
+<!--        if (!dropdown.contains(event.target)) {-->
+<!--            dropdown.classList.remove('show');-->
+<!--        }-->
+<!--    });-->
+<!--});-->
+
+// Function to handle file selection
+function handleFileSelect(event) {
+    var file = event.target.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+
+            var lines = e.target.result.split('\n')
+                         .filter(function (line) {
+                             return line.trim() !== '';  // Trim and check if not empty
+                         })
+                         .slice(0, 60);
+
+                     // Combine the lines into a single string with space delimiters
+                     var content = lines.join(' ');
+
+                     // Display in the keywords input
+                     var keywordsInput = document.getElementById('keywords');
+                     keywordsInput.value = content;
+        };
+        reader.readAsText(file);
+    }
+}
+
+// Function to create and trigger file input element
+function uploadFile() {
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.txt';
+    fileInput.style.display = 'none'; // Hide the file input
+
+    // Listen for the change event on the file input
+    fileInput.addEventListener('change', handleFileSelect);
+
+    // Append the file input to the document body
+    document.body.appendChild(fileInput);
+
+    // Trigger a click on the file input
+    fileInput.click();
+}
+document.getElementById('customButton').addEventListener('click', function() {
+    // Your click event handler logic goes here
+    uploadFile();
 });
-
-
-
 </script>
 
 
