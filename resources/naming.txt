@@ -1,8 +1,8 @@
 methods
 languagemodels
 datasets
-patentsections
 ipclevels
+sections
 noofwords
 singlemulti
 structure

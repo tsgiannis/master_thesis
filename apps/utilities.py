@@ -5,6 +5,25 @@ from functools import wraps
 from flask import  session
 # instantiate
 # Read local `config.toml` file.
+ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+def read_naming():
+    list_of_variables = []
+
+    filepath =os.path.join(ROOT_DIRECTORY,'resources','naming.txt')
+    with open(filepath, 'r', encoding='utf-8') as file_obj:
+        for line in file_obj:
+            line = line.strip()
+            # if not line.startswith('#') :
+            #     print(line)
+            if  '#' in line:
+                # Take only the part left of #
+                line = line.split('#')[0].strip()
+            else:
+                list_of_variables.append(line)
+    return list_of_variables
+
+list_of_default_variables = read_naming()
+
 def load_config():
     config = toml.load(os.path.join('resources','config.toml'))#'resources\\config.toml')
 
@@ -14,9 +33,6 @@ def load_config():
 
     #Language Models
     languagemodels = config['languagemodels']
-
-    # datasets
-    datasets = config['datasets']
 
     #Sections
     datasets = config['datasets']
@@ -56,20 +72,59 @@ def get_element_by_value(lst, key_name, target_value):
             return element
     return None  # Return None if key or value not found in any dictionary
 
-def get_value_out_of_list_of_dicts(inputlist,dict_key):
 
+def find_default_folder(directory):
+    default_folder = None
+    first_folder = None
+
+    # List all directories in the specified directory
+    directories = [d for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))]
+    suffix = '.default'
+    # Loop through the directories
+    for d in directories:
+        if d.endswith(suffix):
+            # If a folder with ".default" suffix is found, assign it to default_folder and break the loop
+            default_folder = d[:-len(suffix)]
+            break
+        elif first_folder is None:
+            # Assign the first encountered folder to first_folder
+            first_folder = d
+
+    # Return default_folder if found, otherwise return the first encountered folder
+    return default_folder if default_folder else first_folder
+
+
+def get_value_at_index(string, index):
+    # Split the string by underscore
+    parts = string.split('_')
+
+    # Check if the index is valid
+    if index >= 0 and index < len(parts):
+        return parts[index]
+    else:
+        return None
+
+def get_value_out_of_list_of_dicts(inputlist,dict_key):
+        found = False
         # Initialize a variable to store the 'keywords' value
         keywords_value = None
 
+        try:
+            default_folder = find_default_folder(os.path.join(ROOT_DIRECTORY,'resources'))
+        except:
+            print('error')
         # Iterate through each dictionary in the list
         for input_dict in inputlist:
             # Check if 'keywords' is a key in the current dictionary
             if dict_key in input_dict:
                 # Retrieve the value associated with the 'keywords' key
-                keywords_value = input_dict[dict_key]
+                dict_value = input_dict[dict_key]
+                found = True
                 break  # Exit the loop once 'keywords' is found
-
-        return keywords_value
+        if not found :
+            position = list_of_default_variables.index(dict_key)
+            dict_value =get_value_at_index(default_folder,position)
+        return dict_value
 
 def replace_dictionary_value(inputlist, dict_key,new_value):
     # Iterate through each dictionary in the list
@@ -158,23 +213,7 @@ def get_value_for_key_in_list_of_dictionaries(list_of_dictionaries,key,target_va
             break
     return d['sections']
 
-def read_naming():
-    ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    filepath =os.path.join(ROOT_DIRECTORY,'resources','naming.txt')
-    with open(filepath, 'r', encoding='utf-8') as file_obj:
-        for line in file_obj:
-            line = line.strip()
-            # if not line.startswith('#') :
-            #     print(line)
-            if  '#' in line:
-                # Take only the part left of #
-                line = line.split('#')[0].strip()
-                print(line)
 
 
-if __name__ == '__main__':
-    # #load_config()
-    # a,b,c = load_config()
-    # print(a)
-    read_naming()
+
 

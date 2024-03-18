@@ -66,28 +66,14 @@ def get_filtered_options():
 
 @blueprint.route('/route', methods=['POST'])
 def routename():
-    # datasets, language_models, deep_learning = load_config()
-    # Your JSON string
-    # json_string = '[{"key1":"value1"},{"key2":"value2"},{"key3":"value3"}]'
 
-    # Decode the JSON string to a Python data structure
-    # decoded_data = json.loads(json_string)
     selected_options = json.loads(request.form.get('selections'))
-    # print(selected_option          )
-    # return jsonify({'status': 'success'})
-    # return '', 204  # 204 status means 'No Content'
+
+        # Will work with default
     meaningful, meaningless = keywords_processing(get_value_out_of_list_of_dicts(selected_options, 'keywords'))
     selected_options = replace_dictionary_value(selected_options, 'keywords', ' '.join(meaningful))
 
     df = execute(selected_options)
-    # Add new columns with checkboxes
-    # df[
-    #  'Success'] = '<input type="checkbox" class="custom-checkbox" onclick="toggleCheckmark(this)" data-result="success">'
-    # df[
-    # 'Failure'] = '<input type="checkbox" class="custom-checkbox" onclick="toggleCheckmark(this)" data-result="failure">'
-    # df['RelIR'] = '< input type = "checkbox" class="flipswitch" >'
-    # df['Success'] += '<span class="checkmark">✔️</span>'
-    # df['Failure'] += '<span class="checkmark">❌</span>'
 
     table_html = df.to_html(classes='table table-bordered table-striped text-center', index=False,
                             escape=False).replace('<th>', '<th class="text-center" th style = "background-color: red">')
@@ -126,8 +112,7 @@ def index():
     session['methods'], session['languagemodels'], session['datasets'], session['ipclevels'], \
     session['noofwords'], session['singlemulti'], session['structures'], session['ensemble'] = load_config()
     session['sections'] = 'Please Select Dataset'.split()
-    # contains_list_ = contains_list_recursive(datasets)
-    # contains_list = contains_list_recursive(language_models)
+
 
     return render_template('home/index.html', selected_option=None, segment='index', **locals())
 

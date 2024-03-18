@@ -1,7 +1,7 @@
 # Import libraries
 import os.path
 from datetime import datetime
-import base_utilities
+from base_utilities import *
 
 import tensorflow
 from tensorflow import keras
@@ -28,6 +28,8 @@ import os
 from apps.utilities import *
 from apps.extensions import db
 
+
+suffix = '.default'
 # Define the model class for the Logging table
 class Logging(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
@@ -49,6 +51,7 @@ class Logging(db.Model):
 
 def execute(arguments):
 # Load the model
+    logMessage('Initiation of Execution')
     directory_elements = []
     method = get_value_out_of_list_of_dicts(arguments, 'methods')
     languagemodel= get_value_out_of_list_of_dicts(arguments, 'languagemodels')
@@ -68,6 +71,14 @@ def execute(arguments):
     ROOT_DIRECTORY = os.getcwd()
     parent_directory =os.path.join(ROOT_DIRECTORY,'resources')
     directory_to_use = os.path.join(parent_directory,directory_path).lower()
+    if os.path.exists(directory_to_use) and os.path.isdir(directory_to_use):
+        pass
+    else:
+        default_directory = directory_to_use+suffix
+        if os.path.exists(default_directory) and os.path.isdir(default_directory):
+            directory_to_use = default_directory
+        else: # this should be strange
+            print(f'Fatal Error : {directory_to_use} is not valid directory found')
 
     resultstodisplay = get_value_out_of_list_of_dicts(arguments, 'results')
 
