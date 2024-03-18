@@ -5,6 +5,57 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 <style xmlns="http://www.w3.org/1999/html">
+    .modalWindow {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    color: white;
+  }
+
+
+
+    .toggle-btn {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .toggle-btn .slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+  }
+
+  /* Toggle Button Checked State */
+  .toggle-btn.checked {
+    background-color: #4cd964; /* Green color, you can change it */
+  }
+
+  .toggle-btn.checked .slider {
+    transform: translateX(30px);
+  }
+
+  /* Hide Checkbox */
+  .toggle-btn input[type="checkbox"] {
+    visibility: hidden;
+  }
     .custom-btn-size {
         font-size: 36px;
     }
@@ -181,7 +232,10 @@
 .dropdown-content {
     display: none;
 }
-
+.hidden_default
+{
+    display: none;
+}
 /* Show the dropdown content when the 'show' class is added */
 .dropdown-content.show {
     display: block;
@@ -215,17 +269,7 @@
             style="position: fixed; top: 50px; right: 100px; display: none;">Input Complete
     </button>
 
-    <div>
-        <ul class="ml-auto">
-            <li class="input-group d-flex align-items-center mb-0">
-                <label class="toggle">
-                    <input class="toggle-checkbox" type="checkbox" id="toggle-view" onclick="handleToggleView()">
-                    <div class="toggle-switch"></div>
-                    <span class="toggle-label" id="toggleinfo">Compact</span>
-                </label>
-            </li>
-        </ul>
-    </div>
+
     {% if selected_option %}
     <div class="alert alert-success" role="alert">
         {{ selected_option }}
@@ -269,34 +313,33 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <h2 class="mb-4">Enter Keywords or Upload a File</h2>
-        <div class="row">
 
-            <form id="keywordForm">
-                <div class="input-group-append">
-                    <label for="keywords">Enter Keywords:</label>
-                    <input type="text" class="form-control align-middle" id="keywords" name="keywords"
-                           placeholder="Type keywords here">
-
-                    <button class="btn btn-outline-secondary align-middle wrap-text-btn" type="button"
-                            onclick="keyword_processing()">Function<br>ality
-                    </button>
-
-
+    <div class="container mt-5" id = "InputSelections">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="background-color: blue; color: white; text-align: left;padding:10px;">Enter Keywords</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Keywords" id="keywords"  style="height: 60px;">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick = "uploadFile()">Upload File</button>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="fileInput">Upload File:</label>
-                    <input type="file" class="form-control-file" id="fileInput" name="fileInput" accept=".txt"
-                           onchange='readFile(this)' class="hidden">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary" onclick = "keyword_processing()">Check Functionality</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary btn-block" onclick="CheckNRun()" type="submit">Search</button>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="col-md-6 hidden_default modalWindow" id="wordTable">
 
-                <div id="customButton" class="custom-button">Upload Keywords File</div>
-            </form>
-            <div class="col-md-6">
-                <div id="wordTable">
                     <table class="table">
                         <thead>
                         <tr>
@@ -308,11 +351,9 @@
                         <!-- Add rows with good and bad words dynamically here -->
                         </tbody>
                     </table>
-                </div>
-            </div>
+                <button class = " btn btn-outline-secondary" onclick="closeModalWordTable()">Close</button>
 
-        </div>
-    </div>
+            </div>
     <hr/>
     <!-- Modal -->
     <div class="modal" id="resultsToDisplay" style="display: none;">
@@ -340,196 +381,23 @@
         </div>
     </div>
     <hr>
-    <!-- **** FULL VIEW START -->
-    <div id="fullview" style="display : none;">
-        <div class="card">
-            <div class="card-header text-center py-4">
-                <h3 class="title">
-                    Datasets
-                </h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        {% for key in session['datasets'][0]%}
-                        <th>{{ key }}</th>
-                        {% endfor %}
-                    </tr>
-
-
-                    </thead>
-                    <tbody>
-                    {% for item in session['datasets'] %}
-                    <tr>
-                        {% for key in item%}
-                        {% if 'link' in key %}
-                        <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
-                        {% else %}
-                        <td>{{ item[key] }}</td>
-                        {% endif %}
-
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-body">
-                <form id="form_datasets">  <!--   method="POST" action="{{ url_for('home_blueprint.routename') }}">-->
-                    <div class="form-row">
-
-                        <div class="form-row col-md-6">
-                            <div class="dropdown-toggle">
-                                <button class="btn btn-secondary dropdown-toggle" type="submit" id="btnDatasets"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span id="span_datasets"> Selection of Dataset</span>
-                                </button>
-                                <div name='datasets' class="dropdown-menu" id="Selection of Dataset">
-                                    {% for item in session['datasets'] %}
-                                    <a class="dropdown-item" onclick="handleDropdownItemClick(this)"
-                                       data-value="{{item['name']}}"
-                                       href="#">{{ item['name'] }}</a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-
-
-        <div class="card">
-            <div class="card-header text-center py-4">
-                <h3 class="title">
-                    Language Models
-                </h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        {% for key in session['languagemodels'][0]%}
-                        <th>{{ key }}</th>
-                        {% endfor %}
-                    </tr>
-
-
-                    </thead>
-                    <tbody>
-                    {% for item in session['languagemodels'] %}
-                    <tr>
-                        {% for key in item%}
-                        {% if 'link' in key %}
-                        <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
-                        {% else %}
-                        <td>{{ item[key] }}</td>
-                        {% endif %}
-
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-body">
-                <form id="form_languagemodels">
-                    <div class="form-row">
-
-                        <div class="form-row col-md-6">
-                            <div class="dropdown-toggle">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState_language"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span id="span_languagemodels">Selection of Language Models</span>
-                                </button>
-                                <div name='languagemodels' class="dropdown-menu"
-                                     id="Selection of Language Models">
-                                    {% for item in session['languagemodels'] %}
-                                    <a class="dropdown-item" onclick="handleDropdownItemClick(this)" href="#">{{
-                                        item['name'] }}</a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header text-center py-4">
-                <h3 class="title">
-                    Deep Learning Classifiers
-                </h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        {% for key in session['methods'][0]%}
-                        <th>{{ key }}</th>
-                        {% endfor %}
-                    </tr>
-
-
-                    </thead>
-                    <tbody>
-                    {% for item in session['methods'] %}
-                    <tr>
-                        {% for key in item%}
-                        {% if 'link' in key %}
-                        <td><a href={{ item[key] }} target="_blank">{{ item[key] }}</a></td>
-                        {% else %}
-                        <td>{{ item[key] }}</td>
-                        {% endif %}
-
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-body">
-                <form id='form_deep_learning_classifiers'>
-
-
-                    <div class="form-row col-md-6">
-
-                        <div class="dropdown-toggle">
-                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                    id="inputState_deeplearning"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="span_methods" data-default="Selection of Deep Learning Classifier">Selection of Deep Learning Classifier</span>
-                            </button>
-                            <div name='deep_learning' class="dropdown-menu" onclick = "toggleDropdown"
-                                 id="Selection of Language Models2">
-                                {% for item in session['methods'] %}
-                                {% if item['name'].lower() not in session['dynamic.methods'] %}
-                                <button class="dropdown-item" disabled>{{ item['name'] }}</button>
-                                {% else %}
-                                <button class="dropdown-item"
-                                        onclick="handleDropdownItemClick(this)">{{ item['name'] }}
-                                </button>
-                                {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </form>
-
-            </div>
-        </div>
-
-
+      <div>
+        <ul class="ml-auto">
+            <li class="input-group d-flex align-items-center mb-0">
+                <label class="toggle">
+                    <input class="toggle-checkbox" type="checkbox" id="toggle-advanced" onclick="toggleDiv()">
+                    <div class="toggle-switch"></div>
+                    <span class="toggle-label" id="toggleAdvanced">Advanced</span>
+                </label>
+            </li>
+        </ul>
     </div>
-    <!-- **** FULL VIEW END ********* -->
+
+
 
 
     <!-- **** COMPACT VIEW START *****  -->
-    <div id="compactview">
+    <div id="compactview" class = "hidden_default">
 
 
         <div class="container mt-4 text-center">
@@ -816,18 +684,20 @@
             </div>
 
         </div>
-    </div>
-    <!-- *****  COMPACT VIEW END  ******  -->  -->
-</div>
-<hr/>
-<form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
+         <form id="runForm" method="POST" action="{{ url_for('home_blueprint.routename') }}">
     <!-- Include any form fields as needed -->
 
     <!-- Fancy RUN button inside the form -->
     <button type="button" class="btn btn-success  btn-lg btn-block custom-btn-size" onclick="CheckNRun()" type="submit">
-        RUN
+        SEARCH
     </button>
 </form>
+    </div>
+    <!-- *****  COMPACT VIEW END  ******  -->
+
+</div>
+<hr/>
+
 
 
 {% endblock content %}
@@ -898,49 +768,6 @@
   reader.readAsText(input.files[0]);
 };
         }
-    // function readFile() {
-    //     // Create a file input element
-    //     var fileInput = document.createElement('input');
-    //     fileInput.type = 'file';
-    //     fileInput.accept = '.txt';
-    //
-    //     // Trigger a click on the file input
-    //     fileInput.click();
-    //
-    //     // Listen for the change event on the file input
-    //     fileInput.addEventListener('change', function () {
-    //         // Check if a file is selected
-    //         if (fileInput.files.length > 0) {
-    //             var file = fileInput.files[0];
-    //             var reader = new FileReader();
-    //
-    //             // Define the callback function when file reading is complete
-    //             reader.onload = function (e) {
-    //                 // Display the content in the keywords input
-    //                 var lines = e.target.result.split('\n')
-    //                     .filter(function (line) {
-    //                         return line.trim() !== '';  // Trim and check if not empty
-    //                     })
-    //                     .slice(0, 60);
-    //
-    //                 // Combine the lines into a single string with space delimiters
-    //                 var content = lines.join(' ');
-    //
-    //                 // Display in the keywords input
-    //                 var keywordsInput = document.getElementById('keywords');
-    //                 keywordsInput.value = content;
-    //             };
-    //
-    //             // Read the file as text
-    //             reader.readAsText(file);
-    //         } else {
-    //             alert('Please select a file.');
-    //         }
-    //     });
-    //
-    //     // Append the file input to the document body
-    //     document.body.appendChild(fileInput);
-    // }
 
     function addToCollection(collection, key, value) {
         // Check if the key already exists in the collection
@@ -1105,10 +932,7 @@
     }
 
     function CheckNRun() {
-        if (selections.length < 9) {
 
-            showAlertModal();
-        } else {
             // Call showResultsModals and obtain the selected option
             showResultsModals().then(function (selectedOption) {
                 const resultstodisplay = selectedOption;
@@ -1130,13 +954,13 @@
                         // Continue processing after the button click
                         console.log('Input complete button clicked with keywords:', keywords);
                         processSelections(keywords);
-                        document.getElementById('run ').submit();
+                        document.getElementById('run').submit();
                     });
                 }
 
 
             });
-        }
+
     }
 
     function completeUserInput() {
@@ -1177,6 +1001,7 @@
             .then(response => response.json())
             .then(data => {
                 updateTableRows(data['meaningful'], data['meaningless']);
+                openModalwordTable();
                 // Do something with the response from the Python function
             })
             .catch(error => console.error('Error:', error));
@@ -1230,53 +1055,6 @@ function showFileChooser() {
     fileInput.click();
 
 }
-//function readFile() {
-  // Trigger click event on hidden file input
-  //document.getElementById('fileInput').click();
-//}
-
-<!---->
-// Listen for change event on file input-->
-//document.getElementById('fileInput').addEventListener('change', function(event) {-->
-// var file = event.target.files[0];-->
-
-//  if (file) {-->
-//    // Initialize FileReader-->
-//    var fileReader = new FileReader();-->
-
-//   // Read file-->
-//   fileReader.readAsText(file);-->
-
-//   // Handle file reading-->
-//   fileReader.onload = function(event) {-->
-//      var fileContent = event.target.result;-->
-
-//    // Split file content by lines-->
-///      var lines = fileContent.split('\n');-->
-
-//      // Output the content to the input field-->
-//      var keywordsInput = document.getElementById('keywords');-->
-//     keywordsInput.value = lines.join(' ');-->
-//   }-->
-//  }-->
-//);
-
-<!--function readFile(input) {-->
-<!--    var file = input.files[0];-->
-<!--    var reader = new FileReader();-->
-
-<!--    reader.onload = function(event) {-->
-<!--        var content = event.target.result;-->
-<!--        var lines = content.split('\n');-->
-<!--        var keywords_display = lines.join(' ');-->
-<!--        document.getElementById('keywords').value = keywords_display;-->
-
-
-
-<!--    };-->
-
-<!--    reader.readAsText(file);-->
-<!--}-->
 
 function toggleDropdownHover(isHovered) {
     //var elm = isHovered.getAttribute('id')
@@ -1296,15 +1074,7 @@ function toggleDropdown(button) {
     event.stopPropagation();
 }
 
-<!--// Close dropdowns when clicking outside of them-->
-<!--document.body.addEventListener('click', function(event) {-->
-<!--    var dropdowns = document.querySelectorAll('.dropdown-content');-->
-<!--    dropdowns.forEach(function(dropdown) {-->
-<!--        if (!dropdown.contains(event.target)) {-->
-<!--            dropdown.classList.remove('show');-->
-<!--        }-->
-<!--    });-->
-<!--});-->
+
 
 // Function to handle file selection
 function handleFileSelect(event) {
@@ -1330,6 +1100,27 @@ function handleFileSelect(event) {
     }
 }
 
+
+ function toggleDiv() {
+  var toggleDiv = document.getElementById("compactview");
+  if (toggleDiv.style.display === "block") {
+    toggleDiv.style.display = "none";
+  } else {
+    toggleDiv.style.display = "block";
+  }
+}
+
+function openModalwordTable() {
+  var modal = document.getElementById("wordTable");
+  modal.style.display = "block";
+}
+
+function closeModalWordTable() {
+  var modal = document.getElementById("wordTable");
+  modal.style.display = "none";
+}
+
+
 // Function to create and trigger file input element
 function uploadFile() {
     var fileInput = document.createElement('input');
@@ -1346,10 +1137,7 @@ function uploadFile() {
     // Trigger a click on the file input
     fileInput.click();
 }
-document.getElementById('customButton').addEventListener('click', function() {
-    // Your click event handler logic goes here
-    uploadFile();
-});
+
 </script>
 
 
