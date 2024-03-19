@@ -110,6 +110,7 @@
         <thead >
             <tr>
                 <th scope="col">Codes</th>
+                <th scope="col">Descriptions</th>
                 <th scope="col">Relevant/Irrelevant</th>
             </tr>
         </thead>
@@ -117,6 +118,7 @@
             {% for index, row in dataframe.iterrows() %}
             <tr>
                 <td>{{ row['Codes'] }}</td>
+                <td>{{ row['Descriptions'] }}</td>
                 <td>
                     <input type="checkbox" id="checkbox{{ loop.index }}" name="checkbox{{ loop.index }}" class = "flipswitch" data-target="value{{ loop.index }}">
                     <label id="value{{ loop.index }}" style="display: none;" data-value="1">1</label>

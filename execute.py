@@ -1,6 +1,9 @@
 # Import libraries
 import os.path
 from datetime import datetime
+
+import requests
+
 from base_utilities import *
 
 import tensorflow
@@ -25,8 +28,35 @@ import pickle
 import datetime
 import pickle
 import os
+import xml.etree.ElementTree as ET
 from apps.utilities import *
 from apps.extensions import db
+
+
+
+def get_code_description(code):
+    api_key = 'iGHfGS3kQvG7WyR8fnYBalF4WJ8N'
+    url = f"http://ops.epo.org/3.2/rest-services/classification/cpc/{code}"
+    params = {
+        "depth": "1"
+    }
+    headers = {
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    # Make the GET request
+    response = requests.get(url, headers=headers, params=params)
+    if response.status_code == 200:
+        xmlp = ET.XMLParser(encoding="utf-8")
+        root = ET.fromstring(response.content, parser=xmlp)
+        for elem in root.iter():
+            if 'text' in elem.tag:
+                return elem.text
+                break
+
+
+    else:
+        return "N.A"
 
 
 suffix = '.default'
@@ -190,5 +220,13 @@ def execute(arguments):
 
     outputDF=pd.DataFrame(pred_class).T
     outputDF.columns = ['Codes']
+    if resultstodisplay.isnumeric():
+        descriptions =[]
+        for index, row in outputDF.iterrows():
+            description = get_code_description(row['Codes'])
+            descriptions.append(description)
+        outputDF['Descriptions'] = descriptions
+
+
     #print("the predicted codes (sorted) in labels", outputDF)
     return outputDF
