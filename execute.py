@@ -32,10 +32,45 @@ import xml.etree.ElementTree as ET
 from apps.utilities import *
 from apps.extensions import db
 
+def get_access_token(bearer_token):
+    base_address = "https://ops.epo.org/3.2/auth/accesstoken"
 
+    # Define headers
+    headers = {
+        "Authorization": f"Basic {bearer_token}",
+        "Accept": "application/x-www-form-urlencoded",
+        "User-Agent": "PostmanRuntime/7.30.0"
+    }
+
+    # Define form data
+    form_data = {
+        "grant_type": "client_credentials"
+    }
+
+    # Send POST request
+    response = requests.post(base_address, headers=headers, data=form_data)
+
+    # Print response headers
+    for header, value in response.headers.items():
+        print(f"{header} = {value}")
+
+    # Parse JSON response content
+    json_content = response.json()
+    return json_content
+
+
+
+def get_EPO_token():
+    bearer_token = 'VkJ6R2RSZUdYVmRaTzdiQ0drRFJTUTlURm1lMUdyOW46dlZaS2FWU2h6OGExdkQ0Yw=='
+    # Unbelievable hard and stupid implementation
+    # This post saved me : https://forums.epo.org/javascript-with-fetch-api-error403-with-x-rejection-reason-anonymousquotaperday-7998#p40848
+    token = get_access_token(bearer_token)
+    return token['access_token']
 
 def get_code_description(code):
-    api_key = 'iGHfGS3kQvG7WyR8fnYBalF4WJ8N'
+    api_key = get_EPO_token()
+    #api_key = 'VkJ6R2RSZUdYVmRaTzdiQ0drRFJTUTlURm1lMUdyOW46dlZaS2FWU2h6OGExdkQ0Yw=='
+    #api_key = '7HVldlciBrO5KmmfJGUfl9AR6RdiGmsW'
     url = f"http://ops.epo.org/3.2/rest-services/classification/cpc/{code}"
     params = {
         "depth": "1"
@@ -46,19 +81,32 @@ def get_code_description(code):
 
     # Make the GET request
     response = requests.get(url, headers=headers, params=params)
+    code_descriptions = []
     if response.status_code == 200:
         xmlp = ET.XMLParser(encoding="utf-8")
         root = ET.fromstring(response.content, parser=xmlp)
+        found_classification_symbol =False
         for elem in root.iter():
-            if 'text' in elem.tag:
-                return elem.text
-                break
-
+            # if 'classification-symbol' in elem.tag:
+            #     for elm in elem.iter():
+            #         if 'text' in elm.tag:
+            #             code_descriptions.append(elm.text)
+            #         else:
+            #             break
+            #
+            #     #return elem.text
+            #     #break
+            if 'classification-symbol' in elem.tag:
+                found_classification_symbol = True
+            elif found_classification_symbol and 'text' in elem.tag:
+                code_descriptions.append(elem.text)
+                found_classification_symbol = False
 
     else:
         return "N.A"
+    return code_descriptions
 
-
+#curl -X GET --header "Authorization: Bearer HG40q2C4VIlIt3smLlA2TgyoqTUe" "http://ops.epo.org/3.2/rest-services/classification/cpc/search?q=car%2Clight%2Cwheel"
 suffix = '.default'
 # Define the model class for the Logging table
 class Logging(db.Model):
@@ -223,9 +271,11 @@ def execute(arguments):
     if resultstodisplay.isnumeric():
         descriptions =[]
         for index, row in outputDF.iterrows():
-            description = get_code_description(row['Codes'])
-            descriptions.append(description)
-        outputDF['Descriptions'] = descriptions
+            #description = get_code_description(row['Codes'])
+            #descriptions.append(description)
+            descriptions.append(row['Codes'])
+
+        outputDF['Descriptions'] = get_code_description(','.join(descriptions))
 
 
     #print("the predicted codes (sorted) in labels", outputDF)
