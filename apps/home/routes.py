@@ -45,6 +45,12 @@ def save_to_database():
     db.session.commit()
     return 'Data saved to database successfully'
 
+@blueprint.route('/compare_to_espacenet', methods=['POST'])
+def compare_to_espacenet():
+    keywords = request.json
+    espacenet_results = espacenet_compare(keywords)
+    return jsonify(additional_data=espacenet_results)
+
 
 @blueprint.route('/get_filtered_options', methods=['POST'])
 def get_filtered_options():

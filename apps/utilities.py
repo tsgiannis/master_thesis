@@ -214,6 +214,7 @@ def get_value_for_key_in_list_of_dictionaries(list_of_dictionaries,key,target_va
     return d['sections']
 
 
-
+def espacenet_compare(keywords):
+    pass
 
 

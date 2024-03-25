@@ -96,13 +96,14 @@
     <div class="row">
       <div class="col-md-6">
         <h1 id = "sessionNo" name = "{{ session['logging_id'] }}">Experiment NO {{ session['logging_id'] }}</h1>
-        <p>These are the results for the keywords : {{ session['keywords'] }}</p>
+        <p id = "experiment_info">These are the results for the keywords : {{ session['keywords'] }}</p>
 
     </div>
   </div>
 </div>
 </div>
- <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
+    <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
+    <button id="Compare_To_EspaceNET" class="btn btn-info" onclick="compare_to_espacenet()" style="float: right;">Compare To EspaceNet</button>
 <!-- Your Bootstrap table -->
 <div class="container mt-5 data-table">
     <!-- Insert the generated HTML table here -->
@@ -183,7 +184,35 @@ function saveToDatabase() {
 
 
 }
+function compare_to_espacenet() {
+    // Collect data from the table
+    var keywords  =document.getElementById("experiment_info").textContent
+    var keyword_array = keywords.split(':').map(function(item) {
+    return item.trim();
+        }) ;
+    // Extract the second part and create a new comma-separated string
+    var keywords_for_espacenet = String(keyword_array.slice(1)).split(' ').join()
 
+    // Send data to backend
+    fetch('/compare_to_espacenet', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(keywords_for_espacenet)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Problem Sending Keywords to Back End');
+        }
+        console.log('Keywords for EspaceNet send ');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+
+}
    // Add click event to each cell using jQuery
 $(document).on('click', '.data-table tbody tr td:not(:has(input[type="checkbox"]))', function() {
     // Your custom logic when a cell is clicked
@@ -214,34 +243,25 @@ $(document).on('click', '.data-table tbody tr td:not(:has(input[type="checkbox"]
         // Show the modal using Bootstrap modal methods
         $('#myModal').modal('show');
     }
-   function toggleCheckmark(checkbox) {
-   //checkbox.checked = !checkbox.checked;
-    // Find the parent row of the checkbox
-    //var row = checkbox.closest('tr');
+   function processAndSendData() {
+            // Get additional data from input field or other elements
+            var additionalData = document.getElementById('additionalData').value;
+            // Send AJAX request to Flask route
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var processedData = JSON.parse(xhr.responseText).processed_data;
+                    var hiddenDiv = document.getElementById('hiddenDiv');
+                    hiddenDiv.style.display = 'block';
+                    hiddenDiv.textContent = processedData;
+                }
+            };
+            xhr.open("POST", "/additional-info", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({ additional_data: additionalData }));
+        }
 
-    // Find the checkmark span in the row
-    //var checkmark = row.querySelector('.checkmark');
 
-    //if (checkmark) {
-        // Get the result type from the checkbox's data-result attribute
-      //  var resultType = checkbox.getAttribute('data-result');
-
-        // Update checkmark content based on result type
-      //  checkmark.innerHTML = (resultType === 'success') ? '✔️' : '❌';
-   // } else {
-        // Create a new checkmark span
-        //var checkmark = document.createElement('span');
-        //checkmark.className = 'checkmark';
-
-        // Get the result type from the checkbox's data-result attribute
-       // var resultType = checkbox.getAttribute('data-result');
-
-        // Set checkmark content based on result type
-       // checkmark.innerHTML = (resultType === 'success') ? '✔️' : '❌';
-
-        // Append checkmark span after the checkbox
-        //checkbox.parentNode.appendChild(checkmark);
-    }
 document.addEventListener('change', function(event) {
   if (event.target.classList.contains('flipswitch')) {
     const checkbox = event.target;
