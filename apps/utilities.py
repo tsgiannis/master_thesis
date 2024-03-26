@@ -1,11 +1,34 @@
 #https://hackersandslackers.com/simplify-your-python-projects-configuration/
+import time
+
+import pandas as pd
 import toml
+import requests
 import os
+import xml.etree.ElementTree as ET
 from functools import wraps
 from flask import  session
+import base64
+import pycurl
+from io import BytesIO
+import urllib.parse
 # instantiate
 # Read local `config.toml` file.
 ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def get_EPO_key():
+    consumer_key = "VBzGdReGXVdZO7bCGkDRSQ9TFme1Gr9n"
+    consumer_secret = "vVZKaVShz8a1vD4c"
+
+    # Concatenate consumer key and consumer secret with a colon
+    combined = f"{consumer_key}:{consumer_secret}"
+
+    # Encode the combined string to Base64
+    encoded = base64.b64encode(combined.encode()).decode()
+    return encoded
+
+
 def read_naming():
     list_of_variables = []
 
@@ -215,6 +238,133 @@ def get_value_for_key_in_list_of_dictionaries(list_of_dictionaries,key,target_va
 
 
 def espacenet_compare(keywords):
-    pass
+    api_key = get_EPO_token()
+    criteria = keywords.split(',')
 
+    # Create groups of maximum 4 elements
+    grouped_elements = [criteria[i:i + 4] for i in range(0, len(criteria), 4)]
+    espacenet_results = []
+    # Take just the first group
+    first_group = grouped_elements[0]
+    espacenet_results += get_epo_response(api_key,first_group)
+
+    return espacenet_results
+
+
+
+
+
+def get_EPO_token():
+    bearer_token = get_EPO_key()
+    #bearer_token = 'VkJ6R2RSZUdYVmRaTzdiQ0drRFJTUTlURm1lMUdyOW46dlZaS2FWU2h6OGExdkQ0Yw=='
+    # Unbelievable hard and stupid implementation
+    # This post saved me : https://forums.epo.org/javascript-with-fetch-api-error403-with-x-rejection-reason-anonymousquotaperday-7998#p40848
+    token = get_access_token(bearer_token)
+    return token['access_token']
+
+def get_access_token(bearer_token):
+    base_address = "https://ops.epo.org/3.2/auth/accesstoken"
+
+    # Define headers
+    headers = {
+        "Authorization": f"Basic {bearer_token}",
+        "Accept": "application/x-www-form-urlencoded",
+        "User-Agent": "PostmanRuntime/7.30.0"
+    }
+
+    # Define form data
+    form_data = {
+        "grant_type": "client_credentials"
+    }
+
+    # Send POST request
+    response = requests.post(base_address, headers=headers, data=form_data)
+
+    # Print response headers
+    # for header, value in response.headers.items():
+    #     print(f"{header} = {value}")
+
+    # Parse JSON response content
+    json_content = response.json()
+    return json_content
+
+def get_code_description(code):
+    api_key = get_EPO_token()
+    #api_key = 'VkJ6R2RSZUdYVmRaTzdiQ0drRFJTUTlURm1lMUdyOW46dlZaS2FWU2h6OGExdkQ0Yw=='
+    #api_key = '7HVldlciBrO5KmmfJGUfl9AR6RdiGmsW'
+    url = f"http://ops.epo.org/3.2/rest-services/classification/cpc/{code}"
+    params = {
+        "depth": "1"
+    }
+    headers = {
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    # Make the GET request
+    response = requests.get(url, headers=headers, params=params)
+    code_descriptions = []
+    if response.status_code == 200:
+        xmlp = ET.XMLParser(encoding="utf-8")
+        root = ET.fromstring(response.content, parser=xmlp)
+        found_classification_symbol =False
+        for elem in root.iter():
+            # if 'classification-symbol' in elem.tag:
+            #     for elm in elem.iter():
+            #         if 'text' in elm.tag:
+            #             code_descriptions.append(elm.text)
+            #         else:
+            #             break
+            #
+            #     #return elem.text
+            #     #break
+            if 'classification-symbol' in elem.tag:
+                found_classification_symbol = True
+            elif found_classification_symbol and 'text' in elem.tag:
+                code_descriptions.append(elem.text)
+                found_classification_symbol = False
+
+    else:
+        return "N.A"
+    return code_descriptions
+
+def get_epo_response(api_key,criteria):
+# Define the URL
+    url = "http://ops.epo.org/3.2/rest-services/classification/cpc/search"
+
+
+    params = {
+        "q": f"{','.join(criteria)}"  # Use comma instead of space
+    }
+    # Define the headers (replace 'YOUR_TOKEN' with your actual token)
+    headers = {
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    # Make the GET request
+    response = requests.get(url, params=params, headers=headers)
+
+
+    results = []
+
+    if response.status_code == 200:
+        xmlp = ET.XMLParser(encoding="utf-8")
+        root = ET.fromstring(response.content, parser=xmlp)
+        found_classification_symbol = False
+        for elem in root.iter():
+            print(elem.tag)
+            if 'classification-statistics' in elem.tag:
+                found_classification_symbol = True
+                element_values = list(elem.attrib.values())
+                classification_symbol = element_values[0]
+                classification_percentage = element_values[1]
+
+
+            elif found_classification_symbol and 'text' in elem.tag:
+                description = elem.text
+                results.append({'Code': classification_symbol,'Percentage':classification_percentage, 'Description': description})
+                found_classification_symbol = False
+
+    else:
+        return "N.A"
+    return results
 

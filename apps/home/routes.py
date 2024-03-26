@@ -47,7 +47,7 @@ def save_to_database():
 
 @blueprint.route('/compare_to_espacenet', methods=['POST'])
 def compare_to_espacenet():
-    keywords = request.json
+    keywords = list(request.json.values())[0]
     espacenet_results = espacenet_compare(keywords)
     return jsonify(additional_data=espacenet_results)
 
