@@ -40,7 +40,7 @@ from apps.extensions import db
 
 
 
-#curl -X GET --header "Authorization: Bearer HG40q2C4VIlIt3smLlA2TgyoqTUe" "http://ops.epo.org/3.2/rest-services/classification/cpc/search?q=car%2Clight%2Cwheel"
+#curl -X GET --header "Authorization: Bearer HG40q--2C4VIlIt3smLlA2TgyoqTUe" "http://ops.epo.org/3.2/rest-services/classification/cpc/search?q=car%2Clight%2Cwheel"
 suffix = '.default'
 # Define the model class for the Logging table
 class Logging(db.Model):
