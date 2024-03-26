@@ -5,6 +5,22 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 <style>
+    .hidden_default
+{
+    display: none;
+}
+    .modalWindow {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    color: white;
+  }
           thead th {
             color: white;
         }
@@ -30,12 +46,24 @@
   border-radius: 3px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   outline: none;
-  font-size: 10px;
+  font-size: 8px;
   font-family: Trebuchet, Arial, sans-serif;
   font-weight: bold;
   cursor: pointer;
   border: 1px solid #ddd;
 }
+
+   .Codes {
+        color: whitesmoke !important;
+    }
+   .percentages {
+       color: green;
+   }
+
+    .Descriptions {
+        color: aliceblue;
+    }
+
 
 .flipswitch:after {
   position: absolute;
@@ -102,10 +130,30 @@
   </div>
 </div>
 </div>
+
+<div class="col-md-6 hidden_default modalWindow" id="EspaceNet_Search_results">
+    <h2>Comparison results for the first 4 keywords</h2>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Codes</th>
+                            <th>Percentage</th>
+                            <th>Descriptions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Add rows with good and bad words dynamically here -->
+                        </tbody>
+                    </table>
+                <button class = " btn btn-outline-secondary" onclick="closeModalWordTable()">Close</button>
+</div>
+
+
     <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
-    <button id="Compare_To_EspaceNET" class="btn btn-info" onclick="compare_to_espacenet()" style="float: right;">Compare To EspaceNet</button>
+    <button id="Compare_To_EspaceNET" class="btn btn-info" onclick="processAndSendData()" style="float: right;">Compare To EspaceNet</button>
 <!-- Your Bootstrap table -->
 <div class="container mt-5 data-table">
+
     <!-- Insert the generated HTML table here -->
     <table id = "codesTable" class="table table-bordered table-striped text-center">
         <thead >
@@ -150,6 +198,17 @@
 <script>
     // Plain JavaScript function to handle button click
 // Plain JavaScript function to handle button click
+
+
+function openModalEspaceNetTable() {
+  var modal = document.getElementById("EspaceNet_Search_results");
+  modal.style.display = "block";
+}
+
+function closeModalWordTable() {
+  var modal = document.getElementById("EspaceNet_Search_results");
+  modal.style.display = "none";
+}
 function saveToDatabase() {
     // Collect data from the table
     var sessionID =document.getElementById('sessionNo').getAttribute("name");
@@ -245,20 +304,31 @@ $(document).on('click', '.data-table tbody tr td:not(:has(input[type="checkbox"]
     }
    function processAndSendData() {
             // Get additional data from input field or other elements
-            var additionalData = document.getElementById('additionalData').value;
+            var keywords  =document.getElementById("experiment_info").textContent
+            var keyword_array = keywords.split(':').map(function(item) {
+            return item.trim();
+                }) ;
+    // Extract the second part and create a new comma-separated string
+            var keywords_for_espacenet = String(keyword_array.slice(1)).split(' ').join()
             // Send AJAX request to Flask route
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    var processedData = JSON.parse(xhr.responseText).processed_data;
-                    var hiddenDiv = document.getElementById('hiddenDiv');
-                    hiddenDiv.style.display = 'block';
-                    hiddenDiv.textContent = processedData;
+                    var processedData = JSON.parse(xhr.responseText);
+                    // Extract Codes, Percentages, Descriptions from the JSON data
+                    var Codes = processedData.additional_data.map(item => item.Code);
+                    var Percentages = processedData.additional_data.map(item => item.Percentage);
+                    var Descriptions = processedData.additional_data.map(item => item.Description);
+                    updateTableRows(Codes,Percentages,Descriptions);
+                    var hiddenDiv = document.getElementById('EspaceNet_Search_results');
+                    //hiddenDiv.style.display = 'block';
+                    //hiddenDiv.textContent = processedData;
+                    openModalEspaceNetTable()
                 }
             };
-            xhr.open("POST", "/additional-info", true);
+            xhr.open("POST", "/compare_to_espacenet", true);
             xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify({ additional_data: additionalData }));
+            xhr.send(JSON.stringify({ keywords_for_espacenet }));
         }
 
 
@@ -278,6 +348,41 @@ document.addEventListener('change', function(event) {
     console.log(dataValue); // Output: The value of the data-value attribute
   }
 });
+
+
+    function updateTableRows(Codes,Percentages, Descriptions) {
+        const tableBody = document.querySelector('#EspaceNet_Search_results tbody');
+
+        // Clear existing rows
+        tableBody.innerHTML = '';
+        const maxRows = Math.max(Codes.length, Descriptions.length);
+        // Add new rows based on 'meaningful' and 'meaningless' words
+        for (let i = 0; i < maxRows; i++) {
+            const row = tableBody.insertRow();
+            row.style.cssText = '';
+
+            // Insert cell for 'Codes' words in the first column
+            const cellCode = row.insertCell(0);
+            if (i < Codes.length) {
+                cellCode.textContent = Codes[i];
+                cellCode.classList.add('Codes');
+            }
+
+            // Insert cell for 'Percentage' words in the second column
+            const cellpercentages = row.insertCell(1);
+            if (i < Percentages.length) {
+                cellpercentages.textContent = Percentages[i];
+                cellpercentages.classList.add('percentages');
+            }
+            // Insert cell for 'Percentage' words in the second column
+            const cellDescriptions = row.insertCell(2);
+            if (i < Descriptions.length) {
+                cellDescriptions.textContent = Descriptions[i];
+                cellDescriptions.classList.add('Descriptions');
+            }
+        }
+    }
+
 
 </script>
 {% endblock javascripts %}
