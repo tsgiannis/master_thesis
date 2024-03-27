@@ -9,9 +9,9 @@ import xml.etree.ElementTree as ET
 from functools import wraps
 from flask import  session
 import base64
-import pycurl
-from io import BytesIO
-import urllib.parse
+
+
+
 # instantiate
 # Read local `config.toml` file.
 ROOT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
