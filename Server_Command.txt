@@ -1,0 +1,8 @@
+FLASK_APP=run.py FLASK_DEBUG=false flask run --host==0.0.0.0
+
+Git stupidity
+git reset --hard HEAD
+
+
+if this doesn't work the next command but it deletes folders
+git clean -d -f .

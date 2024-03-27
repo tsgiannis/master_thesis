@@ -1,0 +1,11 @@
+car
+light
+wheel
+gas
+petrol
+flash
+engine
+and
+then
+after
+brake
