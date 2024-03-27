@@ -7,9 +7,10 @@
 <style xmlns="http://www.w3.org/1999/html">
     @media only screen and (max-width: 600px) {
   #keywords {
-        width: 90%; /* Take full width of the screen */
+        width: 100%; /* Take full width of the screen */
         font-size: 14px;
-        padding: 10px 10px 10px 20px;/* Adjust font size for smaller screens */
+
+
   }
 }
 
@@ -64,6 +65,30 @@
   .toggle-btn input[type="checkbox"] {
     visibility: hidden;
   }
+
+  /* Custom form control */
+.custom-form-control {
+  display: block;
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.custom-form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+}
+
     .custom-btn-size {
         font-size: 36px;
     }
@@ -1145,6 +1170,31 @@ function uploadFile() {
     // Trigger a click on the file input
     fileInput.click();
 }
+// ********* EXPERIMENT **************
+    // Function to check if the device is a mobile device
+function isMobileDevice() {
+  return window.innerWidth <= 600; // Adjust the width as needed for your mobile detection
+}
+
+// Function to add or remove the mobile-specific class based on device type
+function toggleMobileClass() {
+  var textbox = document.getElementById('keywords');
+  if (isMobileDevice()) {
+    textbox.classList.add('custom-form-control');
+    textbox.classList.remove('form-control');
+  } else {
+    textbox.classList.remove('custom-form-control');
+    textbox.classList.add('form-control');
+  }
+}
+
+// Call the function initially to set the class based on the device type
+toggleMobileClass();
+
+// Add event listener to handle window resize events
+window.addEventListener('resize', toggleMobileClass);
+
+
 
 </script>
 
