@@ -10,7 +10,7 @@
         justify-content: center; /* Center items horizontally */
         align-items: center; /* Center items vertically */
 
-        padding: 20px;
+        padding: 5px;
     }
     .sliding-div {
         flex: 0 0 45%; /* Set initial width to 45% */
@@ -363,12 +363,12 @@ function processAndSendData() {
             // Slide div1 to the left
             var div1 = document.getElementById('Prediction Results');
             div1.style.width = divWidth + 'px';
-            div1.style.transform = 'translateX(-' + (divWidth / 4) + 'px)';
+            div1.style.transform = 'translateX(-' + (divWidth*32 /100) + 'px)';
             var div1Top = document.getElementById('Prediction Results').getBoundingClientRect().top;
             // Slide div2 to the right (to become visible)
             var div2 = document.getElementById('EspaceNet_Search_results');
             div2.style.width = divWidth + 'px';
-            div2.style.transform = 'translateX(' + (divWidth * 0.75) + 'px)'
+            div2.style.transform = 'translateX(' + (divWidth * 69/100) + 'px)'
             var espanet_results = document.getElementById("EspaceNet_Search_results");
              espanet_results.style.display = "block";
             // Set the top position of the second div to match the first div
@@ -382,6 +382,7 @@ function processAndSendData() {
             //document.getElementById('container').style.height = Math.max(div1Height, div2Height)
             document.getElementById('container').setAttribute("style","height:" +container_width +"px");
             console.log(document.getElementById('container').style.height);
+            div2.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
             checkSimilarities();
         }
     };
