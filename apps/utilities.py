@@ -306,25 +306,52 @@ def get_code_description(code):
     if response.status_code == 200:
         xmlp = ET.XMLParser(encoding="utf-8")
         root = ET.fromstring(response.content, parser=xmlp)
-        found_classification_symbol =False
-        for elem in root.iter():
-            # if 'classification-symbol' in elem.tag:
-            #     for elm in elem.iter():
-            #         if 'text' in elm.tag:
-            #             code_descriptions.append(elm.text)
-            #         else:
-            #             break
-            #
-            #     #return elem.text
-            #     #break
-            if 'classification-symbol' in elem.tag:
-                found_classification_symbol = True
-            elif found_classification_symbol and 'text' in elem.tag:
-                code_descriptions.append(elem.text)
-                found_classification_symbol = False
+        namespaces = {'cpc': 'http://www.epo.org/cpcexport'}
 
-    else:
-        return "N.A"
+        # Iterate over each classification item
+        for item in root.findall('.//cpc:classification-item', namespaces=namespaces):
+            classification_symbol = item.find(".//cpc:classification-symbol", namespaces=namespaces).text.strip()
+
+            # Extract all title parts and concatenate them into a single description
+            description_parts = item.findall(".//cpc:title-part/cpc:text", namespaces=namespaces)
+            description = " ".join(part.text.strip() for part in description_parts)
+
+            description = capitalize_words(description)
+            code_descriptions.append(description)
+            #print("Classification Symbol:", classification_symbol)
+            #print("Description:", description)
+            #print()
+
+
+
+
+
+
+
+
+
+
+
+
+    #     found_classification_symbol =False
+    #     for elem in root.iter():
+    #         # if 'classification-symbol' in elem.tag:
+    #         #     for elm in elem.iter():
+    #         #         if 'text' in elm.tag:
+    #         #             code_descriptions.append(elm.text)
+    #         #         else:
+    #         #             break
+    #         #
+    #         #     #return elem.text
+    #         #     #break
+    #         if 'classification-symbol' in elem.tag:
+    #             found_classification_symbol = True
+    #         elif found_classification_symbol and 'text' in elem.tag:
+    #             code_descriptions.append(elem.text)
+    #             found_classification_symbol = False
+    #
+    # else:
+    #     return "N.A"
     return code_descriptions
 
 def get_epo_response(api_key,criteria):
@@ -368,3 +395,6 @@ def get_epo_response(api_key,criteria):
         return "N.A"
     return results
 
+# Function to capitalize the first letter of each word
+def capitalize_words(text):
+    return ' '.join(word.capitalize() for word in text.split())

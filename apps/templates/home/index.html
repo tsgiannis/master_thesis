@@ -13,7 +13,9 @@
 
   }
 }
-
+.btn-glow {
+        box-shadow: 0 0 10px rgba(0, 0, 255, 0.8); /* Change the color and blur radius as needed */
+    }
     .modalWindow {
     display: none; /* Hidden by default */
     position: fixed;
@@ -356,20 +358,34 @@
                     </div>
                     <input type="text" class="form-control" placeholder="Keywords" id="keywords"  style="height: 60px;">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" onclick = "uploadFile()">Upload File</button>
+                        <button class="btn btn-danger" type="button" onclick = "CheckNRun()">Search</button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <button class="btn btn-primary" onclick = "keyword_processing()">Check Functionality</button>
+                <div class="row align-items-center">
+
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-block" onclick = "keyword_processing()">Check Functionality</button>
                     </div>
-                    <div class="col">
-                        <button class="btn btn-danger btn-block" onclick="CheckNRun()" type="submit">Search</button>
+                    <div class="col-md-4">
+                        <button class="btn btn-info btn-block" onclick="uploadFile()" type="submit">Upload Keyword File</button>
                     </div>
+
+                    <div class="col-md-4">
+                    <p >Please select No of Results to Display:</p>
+                    <div class="btn-group" role="group" id = "resultsToDisplay">
+                        <button type="button" class="btn btn-secondary mr-2" data-value = "3"  onclick="selectOption(this)">3</button>
+                        <button type="button" class="btn btn-secondary mr-2" data-value = "5"  onclick="selectOption(this)">5</button>
+                        <button type="button" class="btn btn-secondary mr-2 btn-glow" data-value="10"  onclick="selectOption(this)">10<i
+                                class="fas fa-check position-absolute top-0 start-0 translate-middle" style="color: green;"></i></button>
+                        <button type="button" class="btn btn-secondary mr-2" data-value="all"  onclick="selectOption(this)">all</button>
+                    </div>
+                </div>
+                    </div>
+                </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+
 
     <div class="col-md-6 hidden_default modalWindow" id="wordTable">
 
@@ -389,30 +405,7 @@
             </div>
     <hr/>
     <!-- Modal -->
-    <div class="modal" id="resultsToDisplay" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Results Selector</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <p>Please select No of Results to Display:</p>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-secondary mr-2">3</button>
-                        <button type="button" class="btn btn-secondary mr-2">5</button>
-                        <button type="button" class="btn btn-secondary mr-2">10</button>
-                        <button type="button" class="btn btn-secondary mr-2">all</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <hr>
       <div>
         <ul class="ml-auto">
@@ -870,27 +863,7 @@
 
     }
 
-    function showResultsModal() {
-        return new Promise(function (resolve, reject) {
-            $('#resultsToDisplay').modal('show');
 
-            // Event listener for the buttons in the modal
-            $('#resultsToDisplay .btn').click(function () {
-                var selectedOption = $(this).text().trim(); // Get the text of the clicked button
-                $('#resultsToDisplay').modal('hide');
-                console.log("Selected option:", selectedOption);
-                resolve(selectedOption); // Resolve the promise with the selected option
-            });
-
-            // Close the modal after 5 seconds if no selection is made
-            var timeoutId = setTimeout(function () {
-                $('#resultsToDisplay').modal('hide');
-                var defaultOption = '3';
-                console.log("No selection made within 3 seconds. Resolving with default value:", defaultOption);
-                resolve(defaultOption); // Resolve with default value after timeout
-            }, 5000);
-        });
-    }
 
     function waitForKeywords(callback) {
         var intervalId = setInterval(function () {
@@ -967,12 +940,11 @@
     function CheckNRun() {
 
             // Call showResultsModals and obtain the selected option
-            showResultsModals().then(function (selectedOption) {
-                const resultstodisplay = selectedOption;
-                addToCollection(selections, 'results', resultstodisplay);
-                console.log("Selected option assigned to variable:", resultstodisplay);
-                // Pass someSelection to another function or use it as needed
+                const resultstodisplay = document.querySelector('#resultsToDisplay .btn.btn-glow').getAttribute('data-value');
 
+            // Use the selected value if available, otherwise use the default value
+                const selectedValue = resultstodisplay || selectedOption;
+                addToCollection(selections, 'results', selectedValue);
                 // Check if keywords are already present
                 if (checkKeywordsPresence()) {
                     // If keywords are already present, process selections directly
@@ -992,7 +964,7 @@
                 }
 
 
-            });
+
 
     }
 
@@ -1194,7 +1166,28 @@ toggleMobileClass();
 // Add event listener to handle window resize events
 window.addEventListener('resize', toggleMobileClass);
 
+function selectOption(button) {
+        // Remove active class and glow effect from all buttons
+        document.querySelectorAll('#resultsToDisplay button').forEach(btn => {
+            btn.classList.remove('btn-glow');
+            btn.innerHTML = btn.getAttribute('data-value');
+        });
 
+        // Add the checkmark icon to the selected button
+
+        // Get the value of the clicked button
+        const selectedValue = button.getAttribute('data-value');
+    // Trigger a reflow to force the browser to apply the changes
+        void button.offsetWidth;
+    button.innerHTML = selectedValue + '<i class="fas fa-check position-absolute top-0 end-0" style="color: green;"></i>';
+        setTimeout(() => {
+
+            // Add glow effect to the selected button
+            button.classList.add("btn-glow");
+        }, 10);
+
+        console.log(button.classList); // You can use this value as needed
+    }
 
 </script>
 

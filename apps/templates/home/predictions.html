@@ -5,6 +5,19 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 <style>
+    #container {
+        display: flex; /* Use flexbox to align items in a row */
+        justify-content: center; /* Center items horizontally */
+        align-items: center; /* Center items vertically */
+
+        padding: 20px;
+    }
+    .sliding-div {
+        flex: 0 0 45%; /* Set initial width to 45% */
+        transition: transform 0.3s ease; /* Add smooth transition for sliding effect */
+        /*overflow: hidden; /* Prevents content from overflowing outside the div */
+        margin: 0 10px;
+    }
     .hidden_default
 {
     display: none;
@@ -118,9 +131,7 @@
 {% endblock stylesheets %}
 
 {% block content %}
-<div class = "content">
-<div class="container-fluid fancy-header">
-  <div class="container">
+<div class = "content" >
     <div class="row">
       <div class="col-md-6">
         <h1 id = "sessionNo" name = "{{ session['logging_id'] }}">Experiment NO {{ session['logging_id'] }}</h1>
@@ -128,10 +139,44 @@
 
     </div>
   </div>
-</div>
-</div>
 
-<div class="col-md-6 hidden_default modalWindow" id="EspaceNet_Search_results">
+
+
+
+
+
+    <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
+    <button id="Compare_To_EspaceNET" class="btn btn-info" onclick="processAndSendData()" style="float: right;">Compare To EspaceNet</button>
+<div class="container-fluid fancy-header" id = "container"  > <!-- id = "container" style="background-color: lightgray; padding: 20px;"> -->
+
+
+<!-- Your Bootstrap table -->
+<div class="container mt-5 data-table" >
+<div class = "sliding-div" id="Prediction Results">
+    <!-- Insert the generated HTML table here -->
+    <table id = "codesTable" class="table table-bordered table-striped text-center">
+        <thead >
+            <tr>
+                <th scope="col">Codes</th>
+                <th scope="col">Descriptions</th>
+                <th scope="col">Relevant/Irrelevant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for index, row in dataframe.iterrows() %}
+            <tr>
+                <td><a href="https://worldwide.espacenet.com/classification?locale=en_EP#!/CPC={{ row['Codes'] }}" target="_blank" class="code-link">{{ row['Codes'] }}</a></td>
+                <td style="text-align: left;">{{ row['Descriptions'] }}</td>
+                <td>
+                    <input type="checkbox" id="checkbox{{ loop.index }}" name="checkbox{{ loop.index }}" class = "flipswitch" data-target="value{{ loop.index }}">
+                    <label id="value{{ loop.index }}" style="display: none;" data-value="1">1</label>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+    <div class="col-md-6 hidden_default sliding-div" id="EspaceNet_Search_results">
     <h2>Comparison results for the first 4 keywords</h2>
                     <table class="table">
                         <thead>
@@ -145,51 +190,14 @@
                         <!-- Add rows with good and bad words dynamically here -->
                         </tbody>
                     </table>
-                <button class = " btn btn-outline-secondary" onclick="closeModalWordTable()">Close</button>
+
 </div>
-
-
-    <button id="saveButton" class="btn btn-primary" onclick="saveToDatabase()">Save to Database</button>
-    <button id="Compare_To_EspaceNET" class="btn btn-info" onclick="processAndSendData()" style="float: right;">Compare To EspaceNet</button>
-<!-- Your Bootstrap table -->
-<div class="container mt-5 data-table">
-
-    <!-- Insert the generated HTML table here -->
-    <table id = "codesTable" class="table table-bordered table-striped text-center">
-        <thead >
-            <tr>
-                <th scope="col">Codes</th>
-                <th scope="col">Descriptions</th>
-                <th scope="col">Relevant/Irrelevant</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for index, row in dataframe.iterrows() %}
-            <tr>
-                <td>{{ row['Codes'] }}</td>
-                <td>{{ row['Descriptions'] }}</td>
-                <td>
-                    <input type="checkbox" id="checkbox{{ loop.index }}" name="checkbox{{ loop.index }}" class = "flipswitch" data-target="value{{ loop.index }}">
-                    <label id="value{{ loop.index }}" style="display: none;" data-value="1">1</label>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-<!-- Modal structure -->
-<!-- Modal structure -->
-<div id="myModal" class="modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cell Content</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body" id="modalContent"></div>
-        </div>
     </div>
 </div>
+</div>
+
+<!-- Modal structure -->
+
 
 {% endblock content %}
 
@@ -200,15 +208,9 @@
 // Plain JavaScript function to handle button click
 
 
-function openModalEspaceNetTable() {
-  var modal = document.getElementById("EspaceNet_Search_results");
-  modal.style.display = "block";
-}
 
-function closeModalWordTable() {
-  var modal = document.getElementById("EspaceNet_Search_results");
-  modal.style.display = "none";
-}
+
+
 function saveToDatabase() {
     // Collect data from the table
     var sessionID =document.getElementById('sessionNo').getAttribute("name");
@@ -282,14 +284,14 @@ $(document).on('click', '.data-table tbody tr td:not(:has(input[type="checkbox"]
 });
 
 
-    // Add mouseover and mouseout events to toggle the 'active' class
-    $(document).on('mouseover', '.data-table tbody tr td', function() {
-        $(this).addClass('active');
-    });
-
-    $(document).on('mouseout', '.data-table tbody tr td', function() {
-        $(this).removeClass('active');
-    });
+    // // Add mouseover and mouseout events to toggle the 'active' class
+    // $(document).on('mouseover', '.data-table tbody tr td', function() {
+    //     $(this).addClass('active');
+    // });
+    //
+    // $(document).on('mouseout', '.data-table tbody tr td', function() {
+    //     $(this).removeClass('active');
+    // });
 
     // Show modal function
     function showModal(cell) {
@@ -302,35 +304,91 @@ $(document).on('click', '.data-table tbody tr td:not(:has(input[type="checkbox"]
         // Show the modal using Bootstrap modal methods
         $('#myModal').modal('show');
     }
-   function processAndSendData() {
-            // Get additional data from input field or other elements
-            var keywords  =document.getElementById("experiment_info").textContent
-            var keyword_array = keywords.split(':').map(function(item) {
-            return item.trim();
-                }) ;
-    // Extract the second part and create a new comma-separated string
-            var keywords_for_espacenet = String(keyword_array.slice(1)).split(' ').join()
-            // Send AJAX request to Flask route
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var processedData = JSON.parse(xhr.responseText);
-                    // Extract Codes, Percentages, Descriptions from the JSON data
-                    var Codes = processedData.additional_data.map(item => item.Code);
-                    var Percentages = processedData.additional_data.map(item => item.Percentage);
-                    var Descriptions = processedData.additional_data.map(item => item.Description);
-                    updateTableRows(Codes,Percentages,Descriptions);
-                    var hiddenDiv = document.getElementById('EspaceNet_Search_results');
-                    //hiddenDiv.style.display = 'block';
-                    //hiddenDiv.textContent = processedData;
-                    openModalEspaceNetTable()
-                }
-            };
-            xhr.open("POST", "/compare_to_espacenet", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify({ keywords_for_espacenet }));
-        }
+   // function processAndSendData() {
+   //          // Get additional data from input field or other elements
+   //          var keywords  =document.getElementById("experiment_info").textContent
+   //          var keyword_array = keywords.split(':').map(function(item) {
+   //          return item.trim();
+   //              }) ;
+   //  // Extract the second part and create a new comma-separated string
+   //          var keywords_for_espacenet = String(keyword_array.slice(1)).split(' ').join()
+   //          // Send AJAX request to Flask route
+   //          var xhr = new XMLHttpRequest();
+   //          xhr.onreadystatechange = function() {
+   //              if (xhr.readyState == 4 && xhr.status == 200) {
+   //                  var processedData = JSON.parse(xhr.responseText);
+   //                  // Extract Codes, Percentages, Descriptions from the JSON data
+   //                  var Codes = processedData.additional_data.map(item => item.Code);
+   //                  var Percentages = processedData.additional_data.map(item => item.Percentage);
+   //                  var Descriptions = processedData.additional_data.map(item => item.Description);
+   //                  updateTableRows(Codes,Percentages,Descriptions);
+   //                  var hiddenDiv = document.getElementById('EspaceNet_Search_results');
+   //                  //hiddenDiv.style.display = 'block';
+   //                  //hiddenDiv.textContent = processedData;
+   //                  openModalEspaceNetTable()
+   //              }
+   //          };
+   //          xhr.open("POST", "/compare_to_espacenet", true);
+   //          xhr.setRequestHeader("Content-Type", "application/json");
+   //          xhr.send(JSON.stringify({ keywords_for_espacenet }));
+   //      }
 
+function processAndSendData() {
+    // Get additional data from input field or other elements
+    var keywords = document.getElementById("experiment_info").textContent;
+    var keyword_array = keywords.split(':').map(function(item) {
+        return item.trim();
+    });
+
+    // Extract the second part and create a new comma-separated string
+    var keywords_for_espacenet = String(keyword_array.slice(1)).split(' ').join();
+    // Get the width of the container div
+    var containerWidth = document.getElementById('container').offsetWidth;
+    // Set the width of the divs based on the container width
+    var divWidth = containerWidth * 0.5; // 45% of the container width
+    // Send AJAX request to Flask route
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var processedData = JSON.parse(xhr.responseText);
+
+            // Extract Codes, Percentages, Descriptions from the JSON data
+            var Codes = processedData.additional_data.map(item => item.Code);
+            var Percentages = processedData.additional_data.map(item => item.Percentage);
+            var Descriptions = processedData.additional_data.map(item => item.Description);
+
+            // Update the second div with the comparison results
+            updateTableRows(Codes, Percentages, Descriptions);
+
+            // Slide div1 to the left
+            var div1 = document.getElementById('Prediction Results');
+            div1.style.width = divWidth + 'px';
+            div1.style.transform = 'translateX(-' + (divWidth / 4) + 'px)';
+            var div1Top = document.getElementById('Prediction Results').getBoundingClientRect().top;
+            // Slide div2 to the right (to become visible)
+            var div2 = document.getElementById('EspaceNet_Search_results');
+            div2.style.width = divWidth + 'px';
+            div2.style.transform = 'translateX(' + (divWidth * 0.75) + 'px)'
+            var espanet_results = document.getElementById("EspaceNet_Search_results");
+             espanet_results.style.display = "block";
+            // Set the top position of the second div to match the first div
+            document.getElementById('EspaceNet_Search_results').style.position = 'absolute';
+            document.getElementById('EspaceNet_Search_results').style.top = div1Top + 'px';
+            // Get the heights of the first and second divs
+            var div1Height = document.getElementById('Prediction Results').offsetHeight;
+            var div2Height = document.getElementById('EspaceNet_Search_results').offsetHeight;
+            // Open the modal with the comparison results
+            var container_width = Math.max(div1Height, div2Height) * 1.1
+            //document.getElementById('container').style.height = Math.max(div1Height, div2Height)
+            document.getElementById('container').setAttribute("style","height:" +container_width +"px");
+            console.log(document.getElementById('container').style.height);
+        }
+    };
+
+    xhr.open("POST", "/compare_to_espacenet", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({ keywords_for_espacenet }));
+}
 
 document.addEventListener('change', function(event) {
   if (event.target.classList.contains('flipswitch')) {
