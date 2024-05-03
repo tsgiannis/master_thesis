@@ -178,7 +178,7 @@
 </div>
     <div class="col-md-6 hidden_default sliding-div" id="EspaceNet_Search_results">
     <h2>Comparison results for the first 4 keywords</h2>
-                    <table class="table">
+                    <table class="table" id ="espacenet_results">
                         <thead>
                         <tr>
                             <th>Codes</th>
@@ -382,6 +382,7 @@ function processAndSendData() {
             //document.getElementById('container').style.height = Math.max(div1Height, div2Height)
             document.getElementById('container').setAttribute("style","height:" +container_width +"px");
             console.log(document.getElementById('container').style.height);
+            checkSimilarities();
         }
     };
 
@@ -440,7 +441,59 @@ document.addEventListener('change', function(event) {
             }
         }
     }
+function checkSimilarities() {
+    // Get reference to the tables
+    var table1Rows = document.getElementById('codesTable').getElementsByTagName('tr');
+    var table2Rows = document.getElementById('espacenet_results').getElementsByTagName('tr');
 
+// Iterate through each row of the first table
+// Iterate through each row of the first table
+    for (var i = 1; i < table1Rows.length; i++) {
+        var table1CodeCell = table1Rows[i].querySelector('td:first-child'); // Assuming the code is in the first column
 
+        // Get the code from the cell
+        var table1Code = table1CodeCell.textContent.trim();
+
+        // Iterate through each row of the second table
+        for (var j = 1; j < table2Rows.length; j++) {
+            var table2CodeCell = table2Rows[j].querySelector('td:first-child'); // Assuming the code is in the first column
+
+            // Get the code from the cell
+            var table2Code = table2CodeCell.textContent.trim();
+
+            // Compare the codes and calculate the number of matching characters
+            var matchingChars = 0;
+            var minLength = Math.min(table1Code.length, table2Code.length);
+            for (var k = 0; k < minLength; k++) {
+                if (table1Code[k] === table2Code[k]) {
+                    matchingChars++;
+                } else {
+                    break;
+                }
+            }
+
+            // Perform colorization based on the number of matching characters
+            // For example, change the background color of the code cell in table 1
+            if (matchingChars === 3) {
+                table1CodeCell.style.backgroundColor = '#ADFF2F'; // Green-Yellow
+            } else if (matchingChars === 2) {
+                table1CodeCell.style.backgroundColor = '#90EE90'; // Light Green
+            } else if (matchingChars >= 4) {
+                table1CodeCell.style.backgroundColor = '#32CD32'; // Light Green
+            }
+
+            // For the second table
+            // Perform colorization based on the number of matching characters
+            // For example, change the background color of the code cell in table 2
+            if (matchingChars === 3) {
+                table2CodeCell.style.backgroundColor = '#ADFF2F'; // Green-Yellow
+            } else if (matchingChars === 2) {
+                table2CodeCell.style.backgroundColor = '#90EE90'; // Light Green
+            } else if (matchingChars >= 4) {
+                table2CodeCell.style.backgroundColor = '#32CD32'; // Light Green
+            }
+        }
+    }
+}
 </script>
 {% endblock javascripts %}
