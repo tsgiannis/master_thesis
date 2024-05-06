@@ -21,16 +21,25 @@ def hash_pass(password):
 
 
 def verify_pass(provided_password, stored_password):
-    return True
+    #return True
     """Verify a stored password against one provided by user"""
-""" Need to simplify this code"""
-    # stored_password = stored_password.decode('ascii')
-    # salt = stored_password[:64]
-    # stored_password = stored_password[64:]
-    # pwdhash = hashlib.pbkdf2_hmac('sha512',
-    #                               provided_password.encode('utf-8'),
-    #                               salt.encode('ascii'),
-    #                               100000)
-    # pwdhash = binascii.hexlify(pwdhash).decode('ascii')
+    try:
+        stored_password = stored_password.decode('ascii')
+        salt = stored_password[:64]
+        stored_password = stored_password[64:]
+        pwdhash = hashlib.pbkdf2_hmac('sha512',
+                                      provided_password.encode('utf-8'),
+                                      salt.encode('ascii'),
+                                      100000)
+        pwdhash = binascii.hexlify(pwdhash).decode('ascii')
+        return pwdhash == stored_password
+    except:
+        return False
 
-#provided_password == stored_password
+
+if __name__=='__main__':
+    password = hash_pass("Passw0rd$")
+    print(password)
+    ver = verify_pass('Passw0rd$',password)
+    print(ver)
+#this_is_a_test

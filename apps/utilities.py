@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 from functools import wraps
 from flask import  session
 import base64
-
+import pickle
 
 
 # instantiate
@@ -398,3 +398,12 @@ def get_epo_response(api_key,criteria):
 # Function to capitalize the first letter of each word
 def capitalize_words(text):
     return ' '.join(word.capitalize() for word in text.split())
+
+def save_object(object_to_save,save_filename ='object.pickle'):
+    with open(save_filename, 'wb') as f:
+        pickle.dump(object_to_save, f)
+
+def load_object(filename_of_object = 'object.pickle'):
+    with open(filename_of_object, 'rb') as f:
+        loaded_object = pickle.load(f)
+        return loaded_object
