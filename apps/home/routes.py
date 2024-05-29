@@ -132,8 +132,8 @@ def index():
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
-    session['datasets'], session['language_models'], session['methods'], session['ipcs'], session[
-        'single_multi'] = load_config()
+    session['methods'], session['languagemodels'], session['datasets'], session['ipclevels'], \
+    session['noofwords'], session['singlemulti'], session['structures'], session['ensemble'] = load_config()
     try:
 
         if not template.endswith('.html'):

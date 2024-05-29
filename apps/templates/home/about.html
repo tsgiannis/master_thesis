@@ -49,7 +49,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    {% for key in session['language_models'][0]%}
+                    {% for key in session['languagemodels'][0]%}
                     <th>{{ key }}</th>
                     {% endfor %}
                 </tr>
@@ -57,7 +57,7 @@
 
                 </thead>
                 <tbody>
-                {% for item in session['language_models'] %}
+                {% for item in session['languagemodels'] %}
                 <tr>
                     {% for key in item%}
                     {% if 'link' in key %}
@@ -83,7 +83,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    {% for key in session['deep_learning'][0]%}
+                    {% for key in session['methods'][0]%}
                     <th>{{ key }}</th>
                     {% endfor %}
                 </tr>
@@ -91,7 +91,7 @@
 
                 </thead>
                 <tbody>
-                {% for item in session['deep_learning'] %}
+                {% for item in session['methods'] %}
                 <tr>
                     {% for key in item%}
                     {% if 'link' in key %}
